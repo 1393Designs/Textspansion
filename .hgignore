@@ -1,0 +1,6 @@
+syntax: glob
+bin/*
+gen/*
+lib/*
+build.xml
+*.properties
