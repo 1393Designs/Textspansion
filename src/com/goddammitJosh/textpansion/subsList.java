@@ -84,7 +84,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
             subsMap = new TreeMap();
             for(String e : substitutions)
             {
-                subsMap.put(e.charAt(0), e);
+                subsMap.put(e, e);
             }
         }
         
@@ -150,7 +150,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         switch (item.getItemId())
         {
             case R.id.add_item:
-                addItem(subsMap);
+                addItem();
                 return true;
             case R.id.delete:
                 deleteItems();
@@ -185,36 +185,36 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         }
     }
 
-    public void addItem(SortedMap map)
+    public void addItem()
     {
-		Dialog dialog = new Dialog(subsList.this);
+		final Dialog dialog = new Dialog(subsList.this);
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Adding a thingy");
 		dialog.setCancelable(true);
 		
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
-		EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
+		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
-		EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
+		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
 		
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
-		@Override
 			public void onClick(View v) {
-				finish();
+				dialog.dismiss();
 			}
 		});
 		
 		Button add_button = (Button) dialog.findViewById(R.id.addButton);
 		add_button.setOnClickListener(new OnClickListener() {
-		@Override
 			public void onClick(View v) {
-				// map.put('H', "Herp");
-				// Log.d("textspansion", map.firstKey().toString());
-				// subs.clear();
-				// subs.addAll(map.values());
-				// aa.notifyDataSetChanged();
-				// dialog.hide();
+				String short_name = short_input.getText().toString();
+				String long_name = long_input.getText().toString();
+				subsMap.put(short_name, long_name);
+				//Log.d("textspansion", subsMap.firstKey().toString());
+				subs.clear();
+				subs.addAll(subsMap.values());
+				aa.notifyDataSetChanged();
+				dialog.dismiss();
 			}
 		});
 		dialog.show();
@@ -238,7 +238,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         // when showing by key, use map.remove(subsget((int)item))
         if (map.isEmpty())
             Log.d("textspansion", "IT BE EMPTY");
-        map.remove(subs.get((int)item).charAt(0));
+        map.remove(subs.get((int)item));
         Log.d("textspansion", map.firstKey().toString());
         subs.clear();
         subs.addAll(map.values());
