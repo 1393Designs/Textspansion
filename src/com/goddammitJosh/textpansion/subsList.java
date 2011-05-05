@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 
 import android.app.Activity;
+import android.app.Dialog;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.Comparator;
 
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnClickListener;
 
 import android.util.Log;
 import android.text.ClipboardManager;
@@ -183,12 +187,40 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 
     public void addItem(SortedMap map)
     {
-        map.put('H', "Herp");
-        Log.d("textspansion", map.firstKey().toString());
-        subs.clear();
-        subs.addAll(map.values());
-        aa.notifyDataSetChanged();
+		Dialog dialog = new Dialog(subsList.this);
+		dialog.setContentView(R.menu.maindialog);
+		dialog.setTitle("Adding a thingy");
+		dialog.setCancelable(true);
+		
+		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
+		EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
+		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
+		EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
+		
+		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
+		cancel_button.setOnClickListener(new OnClickListener() {
+		@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
+		Button add_button = (Button) dialog.findViewById(R.id.addButton);
+		add_button.setOnClickListener(new OnClickListener() {
+		@Override
+			public void onClick(View v) {
+				// map.put('H', "Herp");
+				// Log.d("textspansion", map.firstKey().toString());
+				// subs.clear();
+				// subs.addAll(map.values());
+				// aa.notifyDataSetChanged();
+				// dialog.hide();
+			}
+		});
+		dialog.show();
+
     }
+	
 
     public void deleteItems()
     {
