@@ -67,8 +67,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         mDbHelper = new subsDbAdapter(this);
         mDbHelper.open();
         fillData();
-        ListView lv = getListView();
-        registerForContextMenu(lv);
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -89,7 +88,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onMenuItemSelected(int featureId, MenuItem item)
     {
         switch (item.getItemId())
         {
@@ -98,13 +97,12 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
                 return true;
             // add delete here ?
         }
-        return super.onOptionsItemSelected(item);
+        return super.onMenuItemSelected(featureId, item);
     }
 
     private void createSub()
     {
-        String subName = "sub " +mSubNumber++;
-        mDbHelper.createSub(subName, "herp");
+        mDbHelper.createSub("Something", "herp");
         fillData();
     }
 
@@ -113,12 +111,12 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         mSubsCursor = mDbHelper.fetchAllSubs();
         startManagingCursor(mSubsCursor);
 
-        String[] from = new String[] { subsDbAdapter.KEY_ABBR };
-        int[] to = new int[] { R.id.list_item };
+        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
+        int[] to = new int[]{R.id.line1, R.id.line2};
 
         // Now create an array adapter and set it to display using the stock android row
-        SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(this,
-            android.R.layout.simple_list_item_1, mSubsCursor, from, to);
+        SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+            R.layout.subs_row, mSubsCursor, from, to);
         setListAdapter(subsAdapter);
     }
 
