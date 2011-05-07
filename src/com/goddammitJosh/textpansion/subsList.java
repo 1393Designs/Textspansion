@@ -38,11 +38,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 //sorted map
-/*import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;*/
 
 import android.widget.SimpleCursorAdapter;
 import android.database.Cursor;
@@ -56,8 +51,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     private subsDbAdapter mDbHelper;
     private Cursor mSubsCursor;
 
-    //private final ClipboardManager cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-
+    private ClipboardManager cb;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -67,7 +61,9 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         mDbHelper = new subsDbAdapter(this);
         mDbHelper.open();
         fillData();
-        registerForContextMenu(getListView());
+        registerForContextMenu(getListView()); 
+        cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+
     }
 
     @Override
@@ -176,10 +172,10 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         switch (item.getItemId()) // can get replaced by android:onClick="method name" in sub_context_menu.xml?
         {
             case R.id.edit_item:
-                //editItem(info.id);
+                editItem(info.id);
                 return true;
             case R.id.delete_item:
-                //deleteItem(subsMap, info.id);
+                deleteItem(info.id);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -226,24 +222,17 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 /*    public void deleteItems()
     {
         Toast.makeText(getApplicationContext(), "Multi-delete coming not so soon.", Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
     public void editItem(long item)
     {
 		
-        Toast.makeText(getApplicationContext(), "Edit coming not so soon.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "This will edit the item!", Toast.LENGTH_SHORT).show();
     }
     
-    public void deleteItem(SortedMap map, long item)
+    public void deleteItem(long item)
     {
-        // when showing by key, use map.remove(subsget((int)item))
-        if (map.isEmpty())
-            Log.d("textspansion", "IT BE EMPTY");
-        map.remove(subs.get((int)item));
-        Log.d("textspansion", map.firstKey().toString());
-        subs.clear();
-        subs.addAll(map.values());
-        aa.notifyDataSetChanged();
-    }*/
+        Toast.makeText(getApplicationContext(), "This will delete the item!", Toast.LENGTH_SHORT).show();
+    }
 
 }
