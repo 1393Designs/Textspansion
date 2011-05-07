@@ -71,8 +71,14 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     {
         super.onListItemClick(l, v, position, id);
         Cursor c = mSubsCursor;
+        c.moveToPosition(position);
         Log.i("textspansion", "Clicked");
-        Toast.makeText(getApplicationContext(), "Clicked!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR))
+            , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL))
+            , Toast.LENGTH_SHORT).show();
+
+        cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
     }
 
     @Override
@@ -89,74 +95,15 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         switch (item.getItemId())
         {
             case INSERT_ID:
-                createSub();
+                addItem();
                 return true;
             // add delete here ?
         }
         return super.onMenuItemSelected(featureId, item);
     }
 
-    private void createSub()
-    {
-        mDbHelper.createSub("Something", "herp");
-        fillData();
-    }
 
-    private void fillData()
-    {
-        mSubsCursor = mDbHelper.fetchAllSubs();
-        startManagingCursor(mSubsCursor);
-
-        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-        int[] to = new int[]{R.id.line1, R.id.line2};
-
-        // Now create an array adapter and set it to display using the stock android row
-        SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-            R.layout.subs_row, mSubsCursor, from, to);
-        setListAdapter(subsAdapter);
-    }
-
-        
-
-
-
-		
     
-
-/*    @Override
-    public Object onRetainNonConfigurationInstance()
-    {
-        SortedMap savedMap = new TreeMap();
-        savedMap.putAll(subsMap);
-        return savedMap;
-    }   */
-
-/*    @Override // ours!
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sub_list_menu, menu);
-        return true;
-    }
-
-    @Override // ours!
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        //Handle item selection
-        switch (item.getItemId())
-        {
-            case R.id.add_item:
-                createSub();
-                
-                return true;
-            //case R.id.delete:
-            //    deleteItems();
-            //    return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
     {
@@ -182,7 +129,22 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         }
     }
 
-/*    public void addItem()
+// -------------------- Database Manipulation --------------------
+    private void fillData()
+    {
+        mSubsCursor = mDbHelper.fetchAllSubs();
+        startManagingCursor(mSubsCursor);
+
+        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
+        int[] to = new int[]{R.id.line1, R.id.line2};
+
+        // Now create an array adapter and set it to display using the stock android row
+        SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+            R.layout.subs_row, mSubsCursor, from, to);
+        setListAdapter(subsAdapter);
+    }
+
+    public void addItem()
     {
 		final Dialog dialog = new Dialog(subsList.this);
 		dialog.setContentView(R.menu.maindialog);
@@ -206,24 +168,15 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				subsMap.put(short_name, long_name);
-				//Log.d("textspansion", subsMap.firstKey().toString());
-				subs.clear();
-				subs.addAll(subsMap.values());
-				aa.notifyDataSetChanged();
+                                
+                                mDbHelper.createSub(short_name, long_name);
+                                fillData();
 				dialog.dismiss();
 			}
 		});
 		dialog.show();
-
-    }*/
+    }
 	
-
-/*    public void deleteItems()
-    {
-        Toast.makeText(getApplicationContext(), "Multi-delete coming not so soon.", Toast.LENGTH_SHORT).show();
-    }*/
-
     public void editItem(long item)
     {
 		
