@@ -116,7 +116,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        int index = info.position;
 
         switch (item.getItemId()) // can get replaced by android:onClick="method name" in sub_context_menu.xml?
         {
@@ -124,7 +123,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
                 editItem(info.position);
                 return true;
             case R.id.delete_item:
-                deleteItem(info.id);
+                deleteItem(info.position);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -196,8 +195,10 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
                 // set previous values as defaults
                 Cursor c = mSubsCursor;
                 c.moveToPosition(item);
-                short_text.setHint(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
-                long_text.setHint(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+                final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+                final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+                short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
+                long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
 		
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
@@ -211,18 +212,27 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-                                
-                                mDbHelper.updateSub(theItem, short_name, long_name);
-                                fillData();
-				dialog.dismiss();
+                                if ( short_name.equals(old_short) && long_name.equals(old_full) )
+                                {
+                                    dialog.dismiss();
+                                }
+                                else
+                                {
+                                    mDbHelper.updateSub(theItem, short_name, long_name);
+                                    fillData();
+				    dialog.dismiss();
+                                }
 			}
 		});
 		dialog.show();
     }
     
-    public void deleteItem(long item)
+    public void deleteItem(int item)
     {
-        Toast.makeText(getApplicationContext(), "This will delete the item!", Toast.LENGTH_SHORT).show();
+        //mDbHelper.deleteSub(item+1);
+        //fillData();
+        Toast.makeText(getApplicationContext(), "Delete is still buggy.  Sowwy :("
+            , Toast.LENGTH_SHORT).show();
     }
 
 }
