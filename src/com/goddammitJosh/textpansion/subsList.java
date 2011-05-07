@@ -116,10 +116,12 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        int index = info.position;
+
         switch (item.getItemId()) // can get replaced by android:onClick="method name" in sub_context_menu.xml?
         {
             case R.id.edit_item:
-                editItem(info.id);
+                editItem(info.position);
                 return true;
             case R.id.delete_item:
                 deleteItem(info.id);
@@ -132,6 +134,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 // -------------------- Database Manipulation --------------------
     private void fillData()
     {
+        
         mSubsCursor = mDbHelper.fetchAllSubs();
         startManagingCursor(mSubsCursor);
 
@@ -177,10 +180,44 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 		dialog.show();
     }
 	
-    public void editItem(long item)
+    public void editItem(int item)
     {
+                final int theItem = item+1; // SQL starts counting from 1
+		final Dialog dialog = new Dialog(subsList.this);
+		dialog.setContentView(R.menu.maindialog);
+		dialog.setTitle("Adding a thingy");
+		dialog.setCancelable(true);
 		
-        Toast.makeText(getApplicationContext(), "This will edit the item!", Toast.LENGTH_SHORT).show();
+		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
+		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
+		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
+		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
+                
+                // set previous values as defaults
+                Cursor c = mSubsCursor;
+                c.moveToPosition(item);
+                short_text.setHint(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
+                long_text.setHint(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+		
+		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
+		cancel_button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		
+		Button add_button = (Button) dialog.findViewById(R.id.addButton);
+		add_button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				String short_name = short_input.getText().toString();
+				String long_name = long_input.getText().toString();
+                                
+                                mDbHelper.updateSub(theItem, short_name, long_name);
+                                fillData();
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
     }
     
     public void deleteItem(long item)

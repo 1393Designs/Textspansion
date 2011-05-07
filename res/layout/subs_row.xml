@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+    
+
     <TextView android:id="@+id/line1"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:textSize="20dp"/>
+        android:textStyle="bold"/>
     <TextView android:id="@+id/line2"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp"
-        android:textSize="18dp"/>
+        android:textColor="#cccccc"
+        android:layout_height="fill_parent"/>
 </LinearLayout>

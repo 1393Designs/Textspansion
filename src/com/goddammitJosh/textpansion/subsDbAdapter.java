@@ -138,7 +138,7 @@ public class subsDbAdapter
     public Cursor fetchAllSubs()
     {
         return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
-                KEY_FULL}, null, null, null, null, null);
+                KEY_FULL}, null, null, null, null, KEY_ABBR);
     }
 
     /**
