@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:padding="6dip">
     
 
-    <TextView android:id="@+id/line1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:textColor="#ffffff"
-        android:textStyle="bold"/>
     <TextView android:id="@+id/line2"
         android:layout_width="fill_parent"
         android:textColor="#cccccc"
-        android:layout_height="fill_parent"/>
-</LinearLayout>
+        android:layout_height="26dip"
+        android:layout_below="@id/line2"/>
+    <TextView android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="True"
+        android:layout_above="@id/line1"/>
+</RelativeLayout>
