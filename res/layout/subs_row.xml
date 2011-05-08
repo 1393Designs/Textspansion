@@ -17,6 +17,5 @@
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="True"
         android:layout_above="@id/line1"/>
 </RelativeLayout>

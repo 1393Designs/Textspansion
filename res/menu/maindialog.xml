@@ -28,6 +28,10 @@
 	<Button android:id="@+id/addButton" android:layout_below="@id/long_entry"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="Add!" />
+
+	<Button android:id="@+id/okayButton" android:layout_below="@id/long_entry"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="Okay!" />
 	 
 	<Button android:id="@+id/cancelButton" 
 		android:layout_below="@id/long_entry" android:layout_toRightOf="@id/addButton"

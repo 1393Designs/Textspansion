@@ -138,11 +138,11 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         startManagingCursor(mSubsCursor);
 
         String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-        int[] to = new int[]{R.id.line1, R.id.line2};
+        int[] to = new int[]{android.R.id.text1, android.R.id.text2};
 
         // Now create an array adapter and set it to display using the stock android row
         SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-            R.layout.subs_row, mSubsCursor, from, to);
+            android.R.layout.two_line_list_item, mSubsCursor, from, to);
         setListAdapter(subsAdapter);
     }
 
@@ -184,7 +184,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
                 final int theItem = item+1; // SQL starts counting from 1
 		final Dialog dialog = new Dialog(subsList.this);
 		dialog.setContentView(R.menu.maindialog);
-		dialog.setTitle("Adding a thingy");
+		dialog.setTitle("Editing a thingy");
 		dialog.setCancelable(true);
 		
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
@@ -207,8 +207,8 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 			}
 		});
 		
-		Button add_button = (Button) dialog.findViewById(R.id.addButton);
-		add_button.setOnClickListener(new OnClickListener() {
+		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
+		okay_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
