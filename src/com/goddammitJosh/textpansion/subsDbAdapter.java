@@ -114,7 +114,6 @@ public class subsDbAdapter
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_ABBR, abbr);
         initialValues.put(KEY_FULL, full);
-
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
 
@@ -126,7 +125,6 @@ public class subsDbAdapter
      */
     public boolean deleteSub(long rowId)
     {
-
         return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
@@ -177,9 +175,11 @@ public class subsDbAdapter
     public boolean updateSub(long rowId, String abbr, String full)
     {
         ContentValues args = new ContentValues();
+		//deleteSub(rowId);
         args.put(KEY_ABBR, abbr);
         args.put(KEY_FULL, full);
 
         return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+	
 }

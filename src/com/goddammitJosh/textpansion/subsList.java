@@ -13,7 +13,6 @@ import android.widget.Button;
 
 import android.app.Activity;
 import android.app.Dialog;
-
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.lang.String;
@@ -32,6 +31,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
 
+//Export 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.IOException;
+import android.os.Environment;
+
+//Import
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 //context menu
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -45,6 +55,7 @@ import android.database.Cursor;
 public class subsList extends ListActivity //implements OnGlobalFocusChangeListener
 {
     public static final int INSERT_ID = Menu.FIRST;
+	public static final int EXPORT_ID = Menu.NONE;
 
     private int mSubNumber = 1;
 
@@ -52,6 +63,9 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     private Cursor mSubsCursor;
 
     private ClipboardManager cb;
+	
+	private String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
+	private static final String TAG = "Textspansion: SubsList";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -84,9 +98,14 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0, INSERT_ID, 0, R.string.menu_add_item);
-        return result;
+        //boolean result = super.onCreateOptionsMenu(menu);
+        //menu.add(0, INSERT_ID, 0, R.string.menu_add_item);
+		//menu.add(0, EXPORT_ID, 0, R.string.menu_export);
+		//menu.add(0, IMPORT_ID, 0, R.string.menu_import);
+		//return result;
+		MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sub_list_menu, menu);
+        return true;
     }
 
     @Override
@@ -94,10 +113,16 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     {
         switch (item.getItemId())
         {
-            case INSERT_ID:
+            case R.id.add_item:
                 addItem();
                 return true;
             // add delete here ?
+			case R.id.menu_export:
+				exportSubs();
+				return true;
+			case R.id.menu_import:
+				importSubs();
+				return true;
         }
         return super.onMenuItemSelected(featureId, item);
     }
@@ -133,13 +158,12 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 // -------------------- Database Manipulation --------------------
     private void fillData()
     {
-        
         mSubsCursor = mDbHelper.fetchAllSubs();
         startManagingCursor(mSubsCursor);
-
+		
         String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
         int[] to = new int[]{android.R.id.text1, android.R.id.text2};
-
+		
         // Now create an array adapter and set it to display using the stock android row
         SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
             android.R.layout.two_line_list_item, mSubsCursor, from, to);
@@ -165,14 +189,13 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 			}
 		});
 		
-		Button add_button = (Button) dialog.findViewById(R.id.addButton);
-		add_button.setOnClickListener(new OnClickListener() {
+		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
+		okay_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-                                
-                                mDbHelper.createSub(short_name, long_name);
-                                fillData();
+				mDbHelper.createSub(short_name, long_name);
+				fillData();
 				dialog.dismiss();
 			}
 		});
@@ -181,7 +204,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 	
     public void editItem(int item)
     {
-                final int theItem = item+1; // SQL starts counting from 1
+		final int theItem = item+1; // SQL starts counting from 1
 		final Dialog dialog = new Dialog(subsList.this);
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Editing a thingy");
@@ -192,13 +215,14 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
 		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
                 
-                // set previous values as defaults
-                Cursor c = mSubsCursor;
-                c.moveToPosition(item);
-                final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-                final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-                short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
-                long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+			// set previous values as defaults
+			Cursor c = mSubsCursor;
+			c.moveToPosition(item);
+			final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+			final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+			short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
+			long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+		
 		
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
@@ -210,18 +234,19 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 		okay_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "Editing "+theItem+".", Toast.LENGTH_SHORT).show();
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-                                if ( short_name.equals(old_short) && long_name.equals(old_full) )
-                                {
-                                    dialog.dismiss();
-                                }
-                                else
-                                {
-                                    mDbHelper.updateSub(theItem, short_name, long_name);
-                                    fillData();
-				    dialog.dismiss();
-                                }
+				if ( short_name.equals(old_short) && long_name.equals(old_full) )
+				{
+					dialog.dismiss();
+				}
+				else
+				{
+					mDbHelper.updateSub(theItem, short_name, long_name);
+					fillData();
+					dialog.dismiss();
+				}
 			}
 		});
 		dialog.show();
@@ -229,10 +254,67 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     
     public void deleteItem(int item)
     {
-        //mDbHelper.deleteSub(item+1);
-        //fillData();
-        Toast.makeText(getApplicationContext(), "Delete is still buggy.  Sowwy :("
-            , Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), "Want to delete: " + item, Toast.LENGTH_SHORT).show(); 
+        mDbHelper.deleteSub(item+1);
+        fillData();
     }
 
+	public void exportSubs()
+	{
+		try{
+			File root = new File(extStoDir);
+			if(!root.exists())
+				root.mkdirs();
+			if(root.canWrite()){
+				Cursor c = mSubsCursor;
+				String subs_short = null, subs_full  = null;
+				int i = 0;
+				c.moveToPosition(i);
+				File outTXT = new File(extStoDir, "subs.txt");
+				FileWriter outTXTWriter = new FileWriter(outTXT);
+				BufferedWriter out = new BufferedWriter(outTXTWriter);
+				//for(i=0; i < 2; i++)
+				do
+				{
+					subs_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+					subs_full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+					out.write(subs_short + "\t" + subs_full + "\n");
+					c.move(1);
+				}while(!c.isAfterLast());
+				
+				out.close();
+				Toast.makeText(getApplicationContext(), "Substitutions saved to SD!",Toast.LENGTH_SHORT).show();
+			}
+			else
+				Toast.makeText(getApplicationContext(), "App isn't allowed to write to SD! :(",Toast.LENGTH_SHORT).show();
+		}catch(IOException e){
+			Log.e(TAG, "Could not write file :" + e.getMessage());
+		}
+	}
+	
+	public void importSubs()
+	{
+		try{
+			File root = new File(extStoDir);
+			File inTXT = new File(extStoDir, "subs.txt");
+			//FileWriter outTXTWriter = new FileWriter(new File(extStoDir, "test.txt"));
+			//BufferedWriter out = new BufferedWriter(outTXTWriter);
+			if(inTXT.exists())
+			{
+				//Toast.makeText(getApplicationContext(), "There is an importable file!", Toast.LENGTH_SHORT).show(); 
+				BufferedReader buf = new BufferedReader(new FileReader(inTXT));
+				String temp = null;
+				String[] splits = null;
+				//do
+				while((temp=buf.readLine()) != null)
+				{
+					splits = temp.split("\t");
+					mDbHelper.createSub(splits[0], splits[1]);
+					fillData();
+				}
+			}
+		}catch(IOException e){
+			Log.e(TAG, "Could not read file :" + e.getMessage());
+		}
+	}
 }

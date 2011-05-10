@@ -7,6 +7,8 @@
     <string name="toast_copied"> copied.</string>
     <string name="menu_add_item">Add</string>
     <string name="menu_delete">Delete</string>
+	<string name="menu_export">Export</string>
+	<string name="menu_import">Import</string>
     <string name="context_edit">Edit</string>
     <string-array name="subs_array">
         <item>Goddammit, Josh!</item>
