@@ -1,0 +1,25 @@
+/* ----- Key -----
+ * "-" = not done
+ * "+" = in progress
+ * "*" = done
+ */
+
+- duplicate protection on add and edit
+- fix import
+- bug reporting!!!
+- about page
+- UI settings (sort by)
+- tutorial (items are instructions)
+- donation/billing
+- auto paste service!
+
+// Market stuffs
+- website
+- screenshots
+- description
+- email??
+- bigger art for market.android.com
+
+
+- build a rickshaw
+- get helicopter, fly it

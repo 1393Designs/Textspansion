@@ -124,9 +124,11 @@ public class subsDbAdapter
      * @param rowId id of sub to delete
      * @return true if deleted, false otherwise
      */
-    public boolean deleteSub(String oldFull)
+    public boolean deleteSub(String oldFull, String oldAbbr)
     {
-        return mDb.delete(DATABASE_TABLE, KEY_FULL + "=" +"'" +oldFull.replace("'", "''") +"'" , null) > 0;
+        String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
+                    +KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
+        return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
     }
 
     /**
@@ -173,14 +175,17 @@ public class subsDbAdapter
      * @param full value to which the sub's full text will be set
      * @return true if the sub was successfully updated, false otherwise
      */
-    public boolean updateSub(String oldFull, String abbr, String full)
+    public boolean updateSub(String oldFull, String oldAbbr, String abbr, String full)
     {
+        String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
+                    +KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
+
         ContentValues args = new ContentValues();
 		//deleteSub(rowId);
         args.put(KEY_ABBR, abbr);
         args.put(KEY_FULL, full);
 
-        return mDb.update(DATABASE_TABLE, args, KEY_FULL + "=" +"'" +oldFull.replace("'", "''") +"'", null) > 0;
+        return mDb.update(DATABASE_TABLE, args, whereClause, null) > 0;
         // can this add an "ORDER BY"
     }
 	
