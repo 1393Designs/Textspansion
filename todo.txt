@@ -4,6 +4,7 @@
  * "*" = done
  */
 
+- remove some toast notifications
 - duplicate protection on add and edit
 - fix import
 - bug reporting!!!
