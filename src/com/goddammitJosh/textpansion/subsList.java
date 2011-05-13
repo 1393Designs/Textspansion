@@ -243,7 +243,7 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 				}
 				else
 				{
-					mDbHelper.updateSub(theItem, short_name, long_name);
+					mDbHelper.updateSub(old_full, short_name, long_name);
 					fillData();
 					dialog.dismiss();
 				}
@@ -254,8 +254,11 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     
     public void deleteItem(int item)
     {
+	Cursor c = mSubsCursor;
+	c.moveToPosition(item);
+	final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
 		Toast.makeText(getApplicationContext(), "Want to delete: " + item, Toast.LENGTH_SHORT).show(); 
-        mDbHelper.deleteSub(item+1);
+        mDbHelper.deleteSub(old_full);
         fillData();
     }
 

@@ -55,6 +55,7 @@ public class subsDbAdapter
         {
 
             db.execSQL(DATABASE_CREATE);
+            // collation for capital/noncapital sorting
         }
 
         @Override
@@ -123,9 +124,9 @@ public class subsDbAdapter
      * @param rowId id of sub to delete
      * @return true if deleted, false otherwise
      */
-    public boolean deleteSub(long rowId)
+    public boolean deleteSub(String oldFull)
     {
-        return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDb.delete(DATABASE_TABLE, KEY_FULL + "=" +"'" +oldFull.replace("'", "''") +"'" , null) > 0;
     }
 
     /**
@@ -172,14 +173,15 @@ public class subsDbAdapter
      * @param full value to which the sub's full text will be set
      * @return true if the sub was successfully updated, false otherwise
      */
-    public boolean updateSub(long rowId, String abbr, String full)
+    public boolean updateSub(String oldFull, String abbr, String full)
     {
         ContentValues args = new ContentValues();
 		//deleteSub(rowId);
         args.put(KEY_ABBR, abbr);
         args.put(KEY_FULL, full);
 
-        return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDb.update(DATABASE_TABLE, args, KEY_FULL + "=" +"'" +oldFull.replace("'", "''") +"'", null) > 0;
+        // can this add an "ORDER BY"
     }
 	
 }
