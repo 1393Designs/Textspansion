@@ -77,7 +77,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         fillData();
         registerForContextMenu(getListView()); 
         cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-
     }
 
     @Override
@@ -98,11 +97,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        //boolean result = super.onCreateOptionsMenu(menu);
-        //menu.add(0, INSERT_ID, 0, R.string.menu_add_item);
-		//menu.add(0, EXPORT_ID, 0, R.string.menu_export);
-		//menu.add(0, IMPORT_ID, 0, R.string.menu_import);
-		//return result;
 		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sub_list_menu, menu);
         return true;
@@ -116,7 +110,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
             case R.id.add_item:
                 addItem();
                 return true;
-            // add delete here ?
 			case R.id.menu_export:
 				exportSubs();
 				return true;
@@ -126,8 +119,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         }
         return super.onMenuItemSelected(featureId, item);
     }
-
-
     
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
@@ -194,7 +185,11 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				mDbHelper.createSub(short_name, long_name);
+				if(short_name.compareTo("") == 0)
+					short_name = long_name;
+				if (mDbHelper.createSub(short_name, long_name) == -1)
+					Toast.makeText(getApplicationContext(),
+                    "That item already exists.", Toast.LENGTH_SHORT).show();
 				fillData();
 				dialog.dismiss();
 			}
@@ -243,7 +238,11 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 				}
 				else
 				{
-					mDbHelper.updateSub(old_full, old_short, short_name, long_name);
+					if(short_name.compareTo("") == 0)
+						short_name = long_name;
+					if( !mDbHelper.updateSub(old_full, old_short, short_name, long_name))
+                        Toast.makeText(getApplicationContext(),
+                        "That item already exists.", Toast.LENGTH_SHORT).show();
 					fillData();
 					dialog.dismiss();
 				}
@@ -258,7 +257,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 	c.moveToPosition(item);
 	final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 	final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-		Toast.makeText(getApplicationContext(), "Want to delete: " + item, Toast.LENGTH_SHORT).show(); 
         mDbHelper.deleteSub(old_full, old_short);
         fillData();
     }
@@ -277,7 +275,6 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 				File outTXT = new File(extStoDir, "subs.txt");
 				FileWriter outTXTWriter = new FileWriter(outTXT);
 				BufferedWriter out = new BufferedWriter(outTXTWriter);
-				//for(i=0; i < 2; i++)
 				do
 				{
 					subs_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
@@ -301,15 +298,11 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 		try{
 			File root = new File(extStoDir);
 			File inTXT = new File(extStoDir, "subs.txt");
-			//FileWriter outTXTWriter = new FileWriter(new File(extStoDir, "test.txt"));
-			//BufferedWriter out = new BufferedWriter(outTXTWriter);
 			if(inTXT.exists())
 			{
-				//Toast.makeText(getApplicationContext(), "There is an importable file!", Toast.LENGTH_SHORT).show(); 
 				BufferedReader buf = new BufferedReader(new FileReader(inTXT));
 				String temp = null;
 				String[] splits = null;
-				//do
 				while((temp=buf.readLine()) != null)
 				{
 					splits = temp.split("\t");

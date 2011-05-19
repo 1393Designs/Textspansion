@@ -4,8 +4,8 @@
  * "*" = done
  */
 
-- remove some toast notifications
-- duplicate protection on add and edit
+* remove some toast notifications
+* duplicate protection on add and edit
 - fix import
 - bug reporting!!!
 - about page
@@ -23,4 +23,4 @@
 
 
 - build a rickshaw
-- get helicopter, fly it
+* get helicopter, fly it

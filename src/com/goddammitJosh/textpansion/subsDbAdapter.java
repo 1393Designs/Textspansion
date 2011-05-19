@@ -67,6 +67,67 @@ public class subsDbAdapter
             onCreate(db);
         }
     }
+	
+	public void addTutorial()
+	{
+		ContentValues steps = new ContentValues();
+		String shortName, longName;
+		
+		shortName = "1) Welcome!";
+		longName = "Welcome to Textspansion, the first rapid text-insertion app for Android!";
+		
+		steps.put(KEY_ABBR, shortName);
+		steps.put(KEY_FULL, longName);
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
+			mDb.insert(DATABASE_TABLE, null, steps);
+		/*
+		shortName = "2) How To Use";
+		longName = "Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.";
+		
+		steps.put(KEY_ABBR, shortName);
+		steps.put(KEY_FULL, longName);
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
+			mDb.insert(DATABASE_TABLE, null, steps);
+			
+		shortName = "2b) How To Use";
+		longName = "Simply paste it where ever you want it!";
+		
+		steps.put(KEY_ABBR, shortName);
+		steps.put(KEY_FULL, longName);
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
+			mDb.insert(DATABASE_TABLE, null, steps);
+		
+		shortName = "3) Adding";
+		longName = "Click your device's menu key, then \"Add!\"";
+		
+		steps.put(KEY_ABBR, shortName);
+		steps.put(KEY_FULL, longName);
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
+			mDb.insert(DATABASE_TABLE, null, steps);
+			
+		shortName = "3b) Editing entries";
+		longName = "Long-pressing on an item to edit or delete it.";
+		
+		steps.put(KEY_ABBR, shortName);
+		steps.put(KEY_FULL, longName);
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
+			mDb.insert(DATABASE_TABLE, null, steps);
+			
+		shortName = "4) Get Started!";
+		longName = "The tutorial is accessible via the settings panel. Happy Textspanding!";
+		
+		steps.put(KEY_ABBR, shortName);
+		steps.put(KEY_FULL, longName);
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
+			mDb.insert(DATABASE_TABLE, null, steps);
+		*/
+	}
 
     /**
      * Constructor - takes the context to allow the database to be
@@ -115,7 +176,13 @@ public class subsDbAdapter
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_ABBR, abbr);
         initialValues.put(KEY_FULL, full);
-        return mDb.insert(DATABASE_TABLE, null, initialValues);
+        if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
+        {
+            Log.d("TEXTSPANSION", "Already exists");
+            return -1;
+        }
+        else
+            return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
 
     /**
@@ -184,8 +251,13 @@ public class subsDbAdapter
 		//deleteSub(rowId);
         args.put(KEY_ABBR, abbr);
         args.put(KEY_FULL, full);
-
-        return mDb.update(DATABASE_TABLE, args, whereClause, null) > 0;
+        if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
+        {
+            Log.d("TEXTSPANSION", "Already exists");
+            return false;
+        }
+        else
+            return mDb.update(DATABASE_TABLE, args, whereClause, null) > 0;
         // can this add an "ORDER BY"
     }
 	
