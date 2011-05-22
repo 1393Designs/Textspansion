@@ -81,7 +81,7 @@ public class subsDbAdapter
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
 			mDb.insert(DATABASE_TABLE, null, steps);
-		/*
+		
 		shortName = "2) How To Use";
 		longName = "Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.";
 		
@@ -126,7 +126,7 @@ public class subsDbAdapter
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)            
 			mDb.insert(DATABASE_TABLE, null, steps);
-		*/
+		
 	}
 
     /**

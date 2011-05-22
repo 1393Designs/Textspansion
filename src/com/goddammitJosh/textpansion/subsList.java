@@ -48,11 +48,15 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 //sorted map
-
 import android.widget.SimpleCursorAdapter;
 import android.database.Cursor;
 
-public class subsList extends ListActivity //implements OnGlobalFocusChangeListener
+import android.content.Intent;
+import android.preference.PreferenceManager;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+
+public class subsList extends ListActivity implements OnSharedPreferenceChangeListener
 {
     public static final int INSERT_ID = Menu.FIRST;
 	public static final int EXPORT_ID = Menu.NONE;
@@ -67,17 +71,44 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 	private String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
 	private static final String TAG = "Textspansion: SubsList";
 
+	private File dbFile = new File("/data/data/com.goddammitJosh.textpansion/databases/", "data");
+	private boolean addTut = false;
+	
+	private SharedPreferences prefs;
+	
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subs_list); // TODO: change to a real list
         mDbHelper = new subsDbAdapter(this);
+		if(!dbFile.exists())
+		{
+			Log.i("Textspansion", "FILE NO EXIST");
+			addTut = true;
+		}
+		else
+		{
+			Log.i("Textspansion", "FILE EXISTS");
+		}
         mDbHelper.open();
+		mSubsCursor = mDbHelper.fetchAllSubs();
+		if(addTut)
+			mDbHelper.addTutorial();
         fillData();
         registerForContextMenu(getListView()); 
         cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+		
+		//Setup preferences
+		//prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
+		prefs.registerOnSharedPreferenceChangeListener(this);
     }
+	
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
+		//if(key.equals("tutorial"))
+			Log.i("Shared Prefs", key);
+	}
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id)
@@ -94,6 +125,28 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
         cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
     }
 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		mDbHelper.close();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		mDbHelper.open();
+		if(prefs.contains("tutorial"))
+		{
+			mDbHelper.addTutorial();
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.remove("tutorial");
+			editor.commit();
+		}
+		fillData();
+	}
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -115,6 +168,9 @@ public class subsList extends ListActivity //implements OnGlobalFocusChangeListe
 				return true;
 			case R.id.menu_import:
 				importSubs();
+				return true;
+			case R.id.menu_settings:
+				startActivity(new Intent(this, settings.class));
 				return true;
         }
         return super.onMenuItemSelected(featureId, item);

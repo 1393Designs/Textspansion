@@ -9,4 +9,7 @@
 	<item android:id="@+id/menu_import"
 		android:title="@string/menu_import" 
 		android:icon="@android:drawable/ic_menu_save" />
+	<item android:id="@+id/menu_settings"
+		android:title="@string/menu_settings"
+		android:icon="@android:drawable/ic_menu_preferences" />
 </menu>

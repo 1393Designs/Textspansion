@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference android:key="username" android:title="@string/settings1" android:summary="@string/settings2"></CheckBoxPreference>
-
+	xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference android:key="username" android:title="@string/settings1" android:summary="@string/settings2" />
+	<Preference android:title="Tutorial" android:summary="Will add the Tutorial again in the substitutions list." android:key="tutorial" />
+	<Preference android:title="About" android:key="aboutizzle" />
 </PreferenceScreen>
