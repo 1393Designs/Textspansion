@@ -10,17 +10,21 @@
             <intent-filter> <!-- allows long press stuff! -->
                 <action android:name="android.intent.action.SEARCH_LONG_PRESS" />
                 <flag android:name="android.intent.flag.ACTIVITY_PREVIOUS_IS_TOP" />
+				
                 <action android:name="android.intent.action.EDIT" />
-                <category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.DEFAULT" />
+				
 				<action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>		
+		<activity android:name="importExt" android:label="Import data to Textspansion">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
-				<data android:scheme="file" android:pathPattern=".*\\.txt" android:host="*" />
+				<data android:mimeType="text/xml" android:pathPattern=".*xml" />
 			</intent-filter>
-        </activity>		
+		</activity>
         <activity android:name="settings" android:label="@string/tab_title_settings"/>
     </application>
 </manifest> 

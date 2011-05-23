@@ -1,4 +1,5 @@
-/* ----- Key -----
+/* 
+   ----- Key -----
  * "-" = not done
  * "+" = in progress
  * "*" = done
@@ -6,20 +7,25 @@
 
 * remove some toast notifications
 * duplicate protection on add and edit
-- fix import
+* fix import
+* implement .txt recognition for import
 - bug reporting!!!
-- about page
-- UI settings (sort by)
-- tutorial (items are instructions)
+* about page
+* UI settings (sort by)
+* tutorial (items are instructions)
 - donation/billing
 - auto paste service!
+- multi-delete
+
+//Bugs
++ Importing from Email does not work
 
 // Market stuffs
-- website
+* website
 - screenshots
 - description
 - email??
-- bigger art for market.android.com
+* bigger art for market.android.com
 
 
 - build a rickshaw

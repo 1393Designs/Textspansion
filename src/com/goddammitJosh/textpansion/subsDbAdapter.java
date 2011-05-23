@@ -197,16 +197,25 @@ public class subsDbAdapter
                     +KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
         return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
     }
+	
+	public boolean abandonShip()
+	{
+		return mDb.delete(DATABASE_TABLE, null, null) > 0;
+	}
 
     /**
      * Return a Cursor over the list of all substitutions in the database
      * 
      * @return Cursor over all subs
      */
-    public Cursor fetchAllSubs()
+    public Cursor fetchAllSubs(boolean sortByShort)
     {
-        return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
+		if(sortByShort)
+			return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
                 KEY_FULL}, null, null, null, null, KEY_ABBR);
+		else
+			return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
+                KEY_FULL}, null, null, null, null, KEY_FULL);
     }
 
     /**

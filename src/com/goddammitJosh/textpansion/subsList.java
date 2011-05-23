@@ -32,15 +32,20 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 
 //Export 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
+import org.xmlpull.v1.XmlSerializer;
+import android.util.Xml;
 import android.os.Environment;
 
 //Import
 import java.io.BufferedReader;
 import java.io.FileReader;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+import java.io.FileInputStream;
 
 //context menu
 import android.view.ContextMenu;
@@ -75,12 +80,28 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	private boolean addTut = false;
 	
 	private SharedPreferences prefs;
+	private SharedPreferences derp;
+	private boolean sortByShort;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subs_list); // TODO: change to a real list
+		
+		//Setup preferences
+		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		
+		derp = PreferenceManager.getDefaultSharedPreferences(this);
+
+		if(derp.getString("sortie", "HERPADERP").equals("short"))
+			sortByShort = true;
+		else if(derp.getString("sortie", "HERPADERP").equals("long"))
+			sortByShort = false;
+		else
+			Log.i("SORTING BY", "OOP");
+		
         mDbHelper = new subsDbAdapter(this);
 		if(!dbFile.exists())
 		{
@@ -92,17 +113,12 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 			Log.i("Textspansion", "FILE EXISTS");
 		}
         mDbHelper.open();
-		mSubsCursor = mDbHelper.fetchAllSubs();
+		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		if(addTut)
 			mDbHelper.addTutorial();
         fillData();
         registerForContextMenu(getListView()); 
         cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-		
-		//Setup preferences
-		//prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
-		prefs.registerOnSharedPreferenceChangeListener(this);
     }
 	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
@@ -137,6 +153,14 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	{
 		super.onResume();
 		mDbHelper.open();
+		
+		if(derp.getString("sortie", "HERPADERP").equals("short"))
+			sortByShort = true;
+		else if(derp.getString("sortie", "HERPADERP").equals("long"))
+			sortByShort = false;
+		else
+			Log.i("SORTING BY", "OOP");
+		
 		if(prefs.contains("tutorial"))
 		{
 			mDbHelper.addTutorial();
@@ -205,7 +229,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 // -------------------- Database Manipulation --------------------
     private void fillData()
     {
-        mSubsCursor = mDbHelper.fetchAllSubs();
+        mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
         startManagingCursor(mSubsCursor);
 		
         String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
@@ -317,6 +341,8 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
         fillData();
     }
 
+// ---------------------------------- FILE I/O -----------------------------------------	
+	
 	public void exportSubs()
 	{
 		try{
@@ -328,18 +354,38 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 				String subs_short = null, subs_full  = null;
 				int i = 0;
 				c.moveToPosition(i);
-				File outTXT = new File(extStoDir, "subs.txt");
-				FileWriter outTXTWriter = new FileWriter(outTXT);
-				BufferedWriter out = new BufferedWriter(outTXTWriter);
-				do
-				{
-					subs_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-					subs_full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-					out.write(subs_short + "\t" + subs_full + "\n");
-					c.move(1);
-				}while(!c.isAfterLast());
 				
-				out.close();
+				File outTXT = new File(extStoDir, "subs.xml");
+				XmlSerializer serializer = Xml.newSerializer();
+				FileOutputStream fio = new FileOutputStream(outTXT);
+				try{
+					serializer.setOutput(fio, null);
+					serializer.startDocument("UTF-8", true);
+					serializer.startTag("", "Textspansion");
+					
+					do
+					{
+						subs_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+						subs_full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+						
+						serializer.startTag("", "Subs");
+						serializer.startTag("", "Short");
+						serializer.text(subs_short);
+						serializer.endTag("", "Short");
+						serializer.startTag("", "Long");
+						serializer.text(subs_full);
+						serializer.endTag("", "Long");
+						serializer.endTag("", "Subs");
+						
+						c.move(1);
+					}while(!c.isAfterLast());
+					
+					serializer.endTag("", "Textspansion");
+					serializer.endDocument();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				} 
+				
 				Toast.makeText(getApplicationContext(), "Substitutions saved to SD!",Toast.LENGTH_SHORT).show();
 			}
 			else
@@ -349,25 +395,64 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		}
 	}
 	
-	public void importSubs()
-	{
+	public void importSubs() 
+	{		
 		try{
 			File root = new File(extStoDir);
-			File inTXT = new File(extStoDir, "subs.txt");
+			File inTXT = new File(extStoDir, "subs.xml");
 			if(inTXT.exists())
 			{
-				BufferedReader buf = new BufferedReader(new FileReader(inTXT));
-				String temp = null;
-				String[] splits = null;
-				while((temp=buf.readLine()) != null)
+				FileInputStream fio = new FileInputStream(inTXT);
+				XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+				factory.setNamespaceAware(true);
+				XmlPullParser xpp = factory.newPullParser();
+				
+				String shortName, longName;
+				
+				xpp.setInput(fio, null);
+				int eventType = xpp.getEventType();
+				eventType = xpp.next();
+				//eventType = xpp.next();
+				
+				if(xpp.getName().equals("Textspansion")) 
 				{
-					splits = temp.split("\t");
-					mDbHelper.createSub(splits[0], splits[1]);
+					eventType = xpp.next();
+					while (eventType != XmlPullParser.END_DOCUMENT) {
+						if(eventType == XmlPullParser.START_TAG && xpp.getName().equals("Short")) 
+						{
+							Log.i("IMPORT", "Start tag "+xpp.getName());
+							//Parses to value of short Tag
+							eventType = xpp.next();
+							Log.i("IMPORT", "Short Name Text: "+xpp.getText());
+							shortName = xpp.getText();
+							//Parses to END_TAG
+							eventType = xpp.next();
+							//Parses to START_TAG
+							eventType = xpp.next();
+							Log.i("IMPORT", "Start Tag: "+xpp.getName());
+							//Parses to value of long Tag
+							eventType = xpp.next();
+							Log.i("IMPORT", "Long Name Text: "+xpp.getText());
+							longName = xpp.getText();
+							//Parses to END_TAG
+							eventType = xpp.next();
+							
+							if(shortName.compareTo("") == 0)
+								shortName = longName;
+							if (mDbHelper.createSub(shortName, longName) == -1)
+								Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
+						}
+						eventType = xpp.next();
+					}
 					fillData();
 				}
+				else
+					Toast.makeText(getApplicationContext(), "File is not compatible with Textspansion", Toast.LENGTH_SHORT).show(); 
 			}
 		}catch(IOException e){
-			Log.e(TAG, "Could not read file :" + e.getMessage());
+			Log.i(TAG, "Could not read file :" + e.getMessage());
+		}catch(XmlPullParserException e){
+			Log.i(TAG, "Could not parse file :" + e.getMessage());
 		}
 	}
 }
