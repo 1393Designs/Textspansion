@@ -40,12 +40,14 @@ import android.util.Xml;
 import android.os.Environment;
 
 //Import
-import java.io.BufferedReader;
-import java.io.FileReader;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-import java.io.FileInputStream;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+import java.io.InputStream;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import android.net.Uri;
+import java.net.URI;
 
 //context menu
 import android.view.ContextMenu;
@@ -80,7 +82,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	private boolean addTut = false;
 	
 	private SharedPreferences prefs;
-	private SharedPreferences derp;
+	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
 	
     @Override
@@ -93,11 +95,11 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		
-		derp = PreferenceManager.getDefaultSharedPreferences(this);
+		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		if(derp.getString("sortie", "HERPADERP").equals("short"))
+		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
 			sortByShort = true;
-		else if(derp.getString("sortie", "HERPADERP").equals("long"))
+		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
 		else
 			Log.i("SORTING BY", "OOP");
@@ -133,12 +135,13 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
         Cursor c = mSubsCursor;
         c.moveToPosition(position);
         Log.i("textspansion", "Clicked");
-        Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR))
+        Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
             , Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL))
-            , Toast.LENGTH_SHORT).show();
-
+			
         cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+		
+		if(sharedPrefs.getBoolean("endOnCopy", true))
+			finish();
     }
 
 	@Override
@@ -154,9 +157,9 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		super.onResume();
 		mDbHelper.open();
 		
-		if(derp.getString("sortie", "HERPADERP").equals("short"))
+		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
 			sortByShort = true;
-		else if(derp.getString("sortie", "HERPADERP").equals("long"))
+		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
 		else
 			Log.i("SORTING BY", "OOP");
@@ -189,9 +192,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
                 return true;
 			case R.id.menu_export:
 				exportSubs();
-				return true;
-			case R.id.menu_import:
-				importSubs();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));
@@ -309,7 +309,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 		okay_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "Editing "+theItem+".", Toast.LENGTH_SHORT).show();
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
 				if ( short_name.equals(old_short) && long_name.equals(old_full) )
@@ -392,67 +391,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 				Toast.makeText(getApplicationContext(), "App isn't allowed to write to SD! :(",Toast.LENGTH_SHORT).show();
 		}catch(IOException e){
 			Log.e(TAG, "Could not write file :" + e.getMessage());
-		}
-	}
-	
-	public void importSubs() 
-	{		
-		try{
-			File root = new File(extStoDir);
-			File inTXT = new File(extStoDir, "subs.xml");
-			if(inTXT.exists())
-			{
-				FileInputStream fio = new FileInputStream(inTXT);
-				XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-				factory.setNamespaceAware(true);
-				XmlPullParser xpp = factory.newPullParser();
-				
-				String shortName, longName;
-				
-				xpp.setInput(fio, null);
-				int eventType = xpp.getEventType();
-				eventType = xpp.next();
-				//eventType = xpp.next();
-				
-				if(xpp.getName().equals("Textspansion")) 
-				{
-					eventType = xpp.next();
-					while (eventType != XmlPullParser.END_DOCUMENT) {
-						if(eventType == XmlPullParser.START_TAG && xpp.getName().equals("Short")) 
-						{
-							Log.i("IMPORT", "Start tag "+xpp.getName());
-							//Parses to value of short Tag
-							eventType = xpp.next();
-							Log.i("IMPORT", "Short Name Text: "+xpp.getText());
-							shortName = xpp.getText();
-							//Parses to END_TAG
-							eventType = xpp.next();
-							//Parses to START_TAG
-							eventType = xpp.next();
-							Log.i("IMPORT", "Start Tag: "+xpp.getName());
-							//Parses to value of long Tag
-							eventType = xpp.next();
-							Log.i("IMPORT", "Long Name Text: "+xpp.getText());
-							longName = xpp.getText();
-							//Parses to END_TAG
-							eventType = xpp.next();
-							
-							if(shortName.compareTo("") == 0)
-								shortName = longName;
-							if (mDbHelper.createSub(shortName, longName) == -1)
-								Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
-						}
-						eventType = xpp.next();
-					}
-					fillData();
-				}
-				else
-					Toast.makeText(getApplicationContext(), "File is not compatible with Textspansion", Toast.LENGTH_SHORT).show(); 
-			}
-		}catch(IOException e){
-			Log.i(TAG, "Could not read file :" + e.getMessage());
-		}catch(XmlPullParserException e){
-			Log.i(TAG, "Could not parse file :" + e.getMessage());
 		}
 	}
 }

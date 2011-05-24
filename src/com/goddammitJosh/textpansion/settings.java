@@ -11,6 +11,12 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.app.Activity;
 import android.util.Log;
+import android.content.pm.PackageInfo;
+import android.text.util.Linkify;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.widget.TextView;
+
 
 public class settings extends PreferenceActivity
 {
@@ -88,17 +94,39 @@ public class settings extends PreferenceActivity
 	
 	}
 
+	
 	public void aboutDialog(){
-		AlertDialog.Builder ad = new AlertDialog.Builder(this);
-		ad.setIcon(R.drawable.icon);
-		ad.setTitle("About");
-		ad.setView(LayoutInflater.from(this).inflate(R.layout.about_dialog,null));
+		final TextView message = new TextView(getApplicationContext());
+		
+		try{
+			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
+			String versionInfo = pInfo.versionName;
 
-		ad.setPositiveButton("That's nice", 
-		new android.content.DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int arg1) {
-			}
-		});
-		ad.show();
+			String versionString = String.format("Version: %s", versionInfo);
+			String authors = "Authors: Sean Barag and Vincent Tran";
+			String website = "Visit our website: http://1393Designatum.com";
+			String cp = "\u00A92011 1393 Designatum, All Rights Reserved.";
+
+			message.setPadding(10, 10, 10, 10);
+			message.setText(versionString + "\n\n" + authors + "\n\n" + website + "\n\n" +  cp);
+			Linkify.addLinks(message, Linkify.EMAIL_ADDRESSES);
+			Linkify.addLinks(message, Linkify.WEB_URLS);
+			
+			AlertDialog.Builder ad = new AlertDialog.Builder(this);
+			ad.setIcon(R.drawable.icon);
+			ad.setTitle("About");
+			ad.setView(message);
+
+			ad.setPositiveButton("That's nice", 
+			new android.content.DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int arg1) {
+				}
+			});
+			ad.show();
+			
+		}catch(Exception e){
+			Log.i("SETTINGS", "Error displaying ABOUT");
+		}
+
 	}
 }

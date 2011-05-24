@@ -17,6 +17,13 @@ import android.net.Uri;
 import java.net.URI;
 import android.widget.Toast;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+import java.io.InputStream;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 
 public class importExt extends Activity
 {
@@ -32,81 +39,45 @@ public class importExt extends Activity
 		setContentView(R.layout.import_view);
 		
 		Intent intent = getIntent();
-		Uri dataUri = intent.getData();
-		String uriTemp = dataUri.toString();
-		URI dataURI = null;
-		try{
-			dataURI = new URI(uriTemp);
-		}catch(Exception e){
-			Log.i("ImportExt", "Wuh oh! " + e.getMessage());
-		}
-		
 		mDbHelper = new subsDbAdapter(this);
 		mDbHelper.open();
-		
-		importSubs(dataURI);
-		
+		importSubs(intent);
 		mDbHelper.close();
-		
 		startActivity(new Intent(this, subsList.class));
-		
 		finish();
 	}
 	
-	public void importSubs(URI dataURI) 
+	public void importSubs(Intent intent) 
 	{		
 		try{
-			File inTXT = new File(dataURI);
-			if(inTXT.exists())
-			{
-				FileInputStream fio = new FileInputStream(inTXT);
-				XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-				factory.setNamespaceAware(true);
-				XmlPullParser xpp = factory.newPullParser();
-				
-				String shortName, longName;
-				
-				xpp.setInput(fio, null);
-				int eventType = xpp.getEventType();
-				eventType = xpp.next();
-				//eventType = xpp.next();
-				
-				if(xpp.getName().equals("Textspansion")) 
+			InputStream attachment = getContentResolver().openInputStream(intent.getData());
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+			.newDocumentBuilder();
+			Document doc = builder.parse(attachment);
+			attachment.close();
+			
+			Element textspansion = doc.getDocumentElement();
+			NodeList shortName = textspansion.getElementsByTagName("Short");
+			NodeList longName = textspansion.getElementsByTagName("Long");
+			
+			if (shortName.getLength() <= 0 || longName.getLength() <= 0) {
+				Toast.makeText(this, "Unable to import this file", Toast.LENGTH_LONG).show();
+			}
+			else{
+				String shortNameStr, longNameStr;
+				for (int i =0; i<shortName.getLength(); i++)
 				{
-					eventType = xpp.next();
-					while (eventType != XmlPullParser.END_DOCUMENT) {
-						if(eventType == XmlPullParser.START_TAG && xpp.getName().equals("Short")) 
-						{
-							Log.i("IMPORT", "Start tag "+xpp.getName());
-							//Parses to value of short Tag
-							eventType = xpp.next();
-							Log.i("IMPORT", "Short Name Text: "+xpp.getText());
-							shortName = xpp.getText();
-							//Parses to END_TAG
-							eventType = xpp.next();
-							//Parses to START_TAG
-							eventType = xpp.next();
-							Log.i("IMPORT", "Start Tag: "+xpp.getName());
-							//Parses to value of long Tag
-							eventType = xpp.next();
-							Log.i("IMPORT", "Long Name Text: "+xpp.getText());
-							longName = xpp.getText();
-							//Parses to END_TAG
-							eventType = xpp.next();
-							
-							if(shortName.compareTo("") == 0)
-								shortName = longName;
-							if (mDbHelper.createSub(shortName, longName) == -1)
-								Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
-						}
-						eventType = xpp.next();
-					}
+					shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
+					longNameStr = longName.item(i).getFirstChild().getNodeValue();
+					
+					if(shortNameStr.compareTo("") == 0)
+						shortNameStr = longNameStr;
+					if (mDbHelper.createSub(shortNameStr, longNameStr) == -1)
+						Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
 				}
-				else
-					Toast.makeText(getApplicationContext(), "File is not compatible with Textspansion", Toast.LENGTH_SHORT).show(); 
 			}
 		}catch(Exception e){
-			Log.i("IMPORTEXT", "Could not parse file :" + e.getMessage());
+			Log.i("IMPORT Local", "Error: " + e.getMessage());
 		}
 	}
 	

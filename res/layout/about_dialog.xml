@@ -12,7 +12,7 @@
 		android:paddingLeft="10px"
 		android:paddingRight="10px"
 		android:paddingTop="5px"
-		android:text=
-		"Version 0.8\nAuthors: Sean Barag and Vincent Tran\n\n\u00A92011 1393K Dollar Suit Company Marketing Agency, All Rights Reserved." />
+		android:autoLink="all"
+		android:text="Version 0.8\nAuthors: Sean Barag and Vincent Tran\n\nVisit our website at http://1393designatum.com\n\n\u00A92011 1393 Designatum, All Rights Reserved." />
 
 </LinearLayout>
