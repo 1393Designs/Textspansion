@@ -13,12 +13,11 @@
 * about page
 * UI settings (sort by)
 * tutorial (items are instructions)
-- donation/billing
 - auto paste service!
 - multi-delete
 
 //Bugs
-+ Importing from Email does not work
+* Importing from Email does not work
 
 // Market stuffs
 * website

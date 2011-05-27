@@ -6,6 +6,9 @@
 	<item android:id="@+id/menu_export"
 		android:title="@string/menu_export"
 		android:icon="@android:drawable/ic_menu_share" />
+	<item android:id="@+id/multi_delete"
+		android:title="Multi-Delete"
+		android:icon="@android:drawable/ic_menu_agenda" />
 	<item android:id="@+id/menu_settings"
 		android:title="@string/menu_settings"
 		android:icon="@android:drawable/ic_menu_preferences" />

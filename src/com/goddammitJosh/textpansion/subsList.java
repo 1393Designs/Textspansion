@@ -10,6 +10,8 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CheckedTextView;
+
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -18,13 +20,13 @@ import java.util.ArrayList;
 import java.lang.String;
 
 import java.util.Comparator;
-
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnClickListener;
 
 import android.util.Log;
 import android.text.ClipboardManager;
+import android.view.ViewManager;
 
 //menu
 import android.view.Menu;
@@ -58,6 +60,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.SimpleCursorAdapter;
 import android.database.Cursor;
 
+//Preference stuff
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
@@ -83,7 +86,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
-	private boolean sortByShort;
+	private boolean sortByShort = true;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -140,6 +143,9 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 			
         cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
 		
+		//Intent psIntent = new Intent(getApplicationContext(), paste_service.class);
+        //getApplicationContext().startService(psIntent);
+		
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
     }
@@ -192,6 +198,9 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
                 return true;
 			case R.id.menu_export:
 				exportSubs();
+				return true;
+			case R.id.multi_delete:
+				startActivity(new Intent(this, multiDelete.class));
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));
