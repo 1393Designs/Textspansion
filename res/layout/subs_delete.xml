@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal">
+	
+	<CheckBox  android:id="@+id/listCheckBox" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:focusable="true"
+		android:gravity="left"/>
+	
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	>
+	
+		<TextView android:id="@+id/ShortText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:gravity="top"
+			android:singleLine="false"
+			/>
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LongText" 
+			android:textSize="16sp"
+			android:gravity="bottom"
+			android:singleLine="false"
+			/>
+			
+	</LinearLayout>
+
+</LinearLayout>
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content">
 	  
@@ -33,4 +70,4 @@
 			android:layout_height="wrap_content" 
 			android:focusable="true" />
 	</RelativeLayout>
-</RelativeLayout>
+</RelativeLayout>-->

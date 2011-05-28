@@ -11,6 +11,14 @@ import android.content.SharedPreferences;
 import android.app.ListActivity;
 import android.os.Bundle;
 import java.lang.Object;
+import android.widget.Button;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.util.SparseBooleanArray;
+import java.lang.Boolean;
+import android.widget.LinearLayout;
+import android.widget.CheckBox;	
+import android.widget.TextView;
 
 
 public class multiDelete extends ListActivity
@@ -54,29 +62,84 @@ public class multiDelete extends ListActivity
         list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		list.setItemsCanFocus(false);
 		
+		final Button confirm = (Button) findViewById(R.id.multi_confirm);
+		confirm.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v){
+				deleteSelected();
+			}
+		});
+		
+		final Button cancel = (Button) findViewById(R.id.multi_cancel);
+		cancel.setOnClickListener(new View.OnClickListener(){
+			public void onClick(View v){
+				finish();
+			}
+		});
+
 		mDbHelper.close();
 	}
 	
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-		MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.multi_delete_menu, menu);
-        return true;
-    }
-	
-	@Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.multi_confirm:
-                return true;
-			case R.id.multi_cancel:
-				finish();
-				return true;
+	public void deleteSelected(){
+		Log.i("Delete", "YOU CALLLLLLLLLLED????????");
+		ListView lv = getListView();
+		String where, abbr, full = null;
+		LinearLayout itemLayout;
+		CheckBox cb;
+		
+		SparseBooleanArray SBA = getListView().getCheckedItemPositions();
+		
+		long[] derp = getListView().getCheckedItemIds();
+		
+		if (derp.length==0)
+			Log.i("Delete", "SUMPIN WRONG");
+		
+		for(int i = 0; i < derp.length; i++)
+		{
+			Log.i("Delete derp", "Checked ID: " + derp[i]);
+		}
+		
+		// for( int i = 0; i < lv.getChildCount(); i++)
+		// {
+			// itemLayout = (LinearLayout)lv.getChildAt(i);
+			// cb = (CheckBox)itemLayout.findViewById(R.id.listCheckBox);
 			
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
+
+			
+			// if (cb.isChecked())
+			// {
+				// abbr = ((TextView)itemLayout.findViewById(R.id.ShortText)).getText().toString();
+				// full = ((TextView)itemLayout.findViewById(R.id.LongText)).getText().toString();
+				// //where.concat(KEY_ABBR +"=" +{read short} +" AND " +{read long})
+				// //if(i != (lv.getChildCount()-1))
+				// //	where.concat(" OR ");
+				
+				// Log.i("DELETE", abbr);
+			// }
+		// }
+		// SparseBooleanArray SBA = getListView().getCheckedItemPositions();
+		
+		// long[] derp = getListView().getCheckedItemIds();
+		
+		// for(int i = 0; i < derp.length; i++)
+		// {
+		
+			// Log.i("Delete derp", "Checked ID: " + derp[i]);
+		
+		// }
+		// for(int i = 0; i < SBA.size(); i++)
+		// {
+			// Log.i("Delete", Boolean.toString(SBA.valueAt(i)));
+		
+		
+		
+		// }
+	
+	
+	
+	
+	
+	
+	
+	}
+
 }
