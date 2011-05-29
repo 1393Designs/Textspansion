@@ -201,6 +201,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 				return true;
 			case R.id.multi_delete:
 				startActivity(new Intent(this, multiDelete.class));
+                                fillData();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));

@@ -31,7 +31,7 @@
 		
         <activity android:name="settings" android:label="@string/tab_title_settings"/>
 		
-		<activity android:name="multiDelete" android:label="Multi-Delete"/>
+		<activity android:name="multiDelete" android:label="Multi-Delete" android:configChanges="orientation|keyboardHidden"/>
 		
     </application>
 </manifest> 

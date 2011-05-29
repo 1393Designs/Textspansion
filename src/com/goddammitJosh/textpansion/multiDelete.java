@@ -20,21 +20,100 @@ import android.widget.LinearLayout;
 import android.widget.CheckBox;	
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+// inner class
+import android.content.Context;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.util.AttributeSet;
 
 public class multiDelete extends ListActivity
 {
+        private static ArrayList<String[]> selected = new ArrayList<String[]>(0);
+    static class deleteListItem extends LinearLayout implements Checkable
+    {
+
+        private String _short;
+        private String _long;
+ 
+        private CheckBox _checkbox;
+    
+        public deleteListItem(Context context, AttributeSet attrs)
+        {
+            super(context, attrs);
+        
+
+        }
+    
+        @Override
+        protected void onFinishInflate()
+        {
+            super.onFinishInflate();
+
+
+            final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
+            _checkbox = (CheckBox) findViewById(R.id.listCheckBox);
+            _checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    if (isChecked)
+                    {
+                        _short = ((TextView) ll.getChildAt(0)).getText().toString();
+                        _long  = ((TextView) ll.getChildAt(1)).getText().toString();
+                        selected.add(new String[]{_short, _long});
+                    }
+                }
+            });
+    //        _short = ((TextView) ll.getChildAt(0)).getText().toString();
+            //Log.i("deleteListItem", ((TextView) ll.findViewById(R.id.ShortText)).getText().toString() );
+            Log.i("TESTING", "");
+    //        _long = ((TextView) ).getText().toString();
+            // find checked text view;
+            int childCount = getChildCount();
+
+        }
+    
+        @Override
+        public boolean isChecked()
+        {
+            Log.i("deleteListItem", "SEEIN IF CHECKEDED");
+            return _checkbox != null ? _checkbox.isChecked() : false;
+        }
+    
+        @Override
+        public void setChecked(boolean checked)
+        {
+            Log.i("deleteListItem", "SETTIN' CHECKEDDDD");
+            if (_checkbox != null)
+                _checkbox.setChecked(checked);
+        }
+    
+        @Override
+        public void toggle()
+        {
+            Log.i("deleteListItem", "THEYRE TOGGLIN MAH BUTTINZ");
+            if (_checkbox != null)
+                _checkbox.toggle();
+        }
+    }
+
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
+        private SimpleCursorAdapter subsAdapter; 
 
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.subs_main);
+        setContentView(R.layout.delete_list);
 		//R.layout.subs_list 		 android.R.layout.simple_list_item_multiple_choice
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -53,8 +132,8 @@ public class multiDelete extends ListActivity
         int[] to = new int[]{R.id.ShortText, R.id.LongText};
 		
         // Now create an array adapter and set it to display using the stock android row
-        SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-            R.layout.subs_delete, mSubsCursor, from, to);
+        subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+            R.layout.delete_list_item, mSubsCursor, from, to);
 
         setListAdapter(subsAdapter);
 		
@@ -78,68 +157,24 @@ public class multiDelete extends ListActivity
 
 		mDbHelper.close();
 	}
-	
-	public void deleteSelected(){
-		Log.i("Delete", "YOU CALLLLLLLLLLED????????");
-		ListView lv = getListView();
-		String where, abbr, full = null;
-		LinearLayout itemLayout;
-		CheckBox cb;
-		
-		SparseBooleanArray SBA = getListView().getCheckedItemPositions();
-		
-		long[] derp = getListView().getCheckedItemIds();
-		
-		if (derp.length==0)
-			Log.i("Delete", "SUMPIN WRONG");
-		
-		for(int i = 0; i < derp.length; i++)
-		{
-			Log.i("Delete derp", "Checked ID: " + derp[i]);
-		}
-		
-		// for( int i = 0; i < lv.getChildCount(); i++)
-		// {
-			// itemLayout = (LinearLayout)lv.getChildAt(i);
-			// cb = (CheckBox)itemLayout.findViewById(R.id.listCheckBox);
-			
 
-			
-			// if (cb.isChecked())
-			// {
-				// abbr = ((TextView)itemLayout.findViewById(R.id.ShortText)).getText().toString();
-				// full = ((TextView)itemLayout.findViewById(R.id.LongText)).getText().toString();
-				// //where.concat(KEY_ABBR +"=" +{read short} +" AND " +{read long})
-				// //if(i != (lv.getChildCount()-1))
-				// //	where.concat(" OR ");
-				
-				// Log.i("DELETE", abbr);
-			// }
-		// }
-		// SparseBooleanArray SBA = getListView().getCheckedItemPositions();
-		
-		// long[] derp = getListView().getCheckedItemIds();
-		
-		// for(int i = 0; i < derp.length; i++)
-		// {
-		
-			// Log.i("Delete derp", "Checked ID: " + derp[i]);
-		
-		// }
-		// for(int i = 0; i < SBA.size(); i++)
-		// {
-			// Log.i("Delete", Boolean.toString(SBA.valueAt(i)));
-		
-		
-		
-		// }
+        @Override
+        protected void onStop()
+        {
+            super.onStop();
+            mSubsCursor.close();
+	    mDbHelper.close();
+        }
 	
-	
-	
-	
-	
-	
-	
+	public void deleteSelected()
+        {
+            Log.i("Delete", "Opening");
+	    mDbHelper.open();
+	    Log.i("Delete", "Opened");
+            for(int i = 0; i < selected.size(); i++ )
+            {
+                mDbHelper.deleteSub(selected.get(i)[0], selected.get(i)[1]);
+            }
 	}
 
 }
