@@ -195,6 +195,7 @@ public class subsDbAdapter
     {
         String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
                     +KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
+		Log.i("SUBS", "where clause: " + whereClause + ".");
         return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
     }
 	

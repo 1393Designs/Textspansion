@@ -35,39 +35,3 @@
 	</LinearLayout>
 
 </LinearLayout>
-
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content">
-	  
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-	  android:id="@+id/linLayout"
-	  android:layout_alignParentLeft="true"
-	  android:paddingRight="40dp" 
-	  android:focusable="false">
-		<TextView android:id="@+id/ShortText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="16sp"
-			android:textStyle="bold"
-			/>
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/LongText" 
-			android:textSize="16sp"
-			android:layout_below="@id/ShortText"/>
-	</RelativeLayout>
-	
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/linLayout2"
-		android:layout_alignParentRight="true">
-		<CheckBox  android:id="@+id/listCheckBox" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:focusable="true" />
-	</RelativeLayout>
-</RelativeLayout>-->

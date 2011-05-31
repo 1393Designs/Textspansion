@@ -10,17 +10,6 @@
 	<string name="menu_export">Export</string>
 	<string name="menu_import">Import</string>
 	<string name="menu_settings">Settings</string>
-	<string name="menu_cancel">Cancel</string>
+	<string name="menu_cancel">Done</string>
     <string name="context_edit">Edit</string>
-	<string name="settings1">First!</string>
-	<string name="settings2">Herp derp!</string>
-    <string-array name="subs_array">
-        <item>Goddammit, Josh!</item>
-        <item>SPAAAAAAAAAAAAAAAAAAAAAAAACE</item>
-        <item>Scrub</item>
-        <item>Mr. Dotted Line Face Man</item>
-        <item>SCAAAARLET LETTER</item>
-        <item>Come on!</item>
-        <item>LAWL</item>
-    </string-array>	
 </resources>

@@ -342,10 +342,10 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
     
     public void deleteItem(int item)
     {
-	Cursor c = mSubsCursor;
-	c.moveToPosition(item);
-	final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-	final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+		Cursor c = mSubsCursor;
+		c.moveToPosition(item);
+		final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+		final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
         mDbHelper.deleteSub(old_full, old_short);
         fillData();
     }

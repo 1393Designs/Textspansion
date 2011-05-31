@@ -19,6 +19,9 @@ import java.lang.Boolean;
 import android.widget.LinearLayout;
 import android.widget.CheckBox;	
 import android.widget.TextView;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
 
 import java.util.ArrayList;
 
@@ -31,10 +34,10 @@ import android.util.AttributeSet;
 
 public class multiDelete extends ListActivity
 {
-        private static ArrayList<String[]> selected = new ArrayList<String[]>(0);
-    static class deleteListItem extends LinearLayout implements Checkable
+	private static ArrayList<String[]> selected = new ArrayList<String[]>(0);
+	
+	static class deleteListItem extends LinearLayout implements Checkable
     {
-
         private String _short;
         private String _long;
  
@@ -43,15 +46,12 @@ public class multiDelete extends ListActivity
         public deleteListItem(Context context, AttributeSet attrs)
         {
             super(context, attrs);
-        
-
         }
     
         @Override
         protected void onFinishInflate()
         {
             super.onFinishInflate();
-
 
             final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
             _checkbox = (CheckBox) findViewById(R.id.listCheckBox);
@@ -68,11 +68,6 @@ public class multiDelete extends ListActivity
                     }
                 }
             });
-    //        _short = ((TextView) ll.getChildAt(0)).getText().toString();
-            //Log.i("deleteListItem", ((TextView) ll.findViewById(R.id.ShortText)).getText().toString() );
-            Log.i("TESTING", "");
-    //        _long = ((TextView) ).getText().toString();
-            // find checked text view;
             int childCount = getChildCount();
 
         }
@@ -80,14 +75,12 @@ public class multiDelete extends ListActivity
         @Override
         public boolean isChecked()
         {
-            Log.i("deleteListItem", "SEEIN IF CHECKEDED");
             return _checkbox != null ? _checkbox.isChecked() : false;
         }
     
         @Override
         public void setChecked(boolean checked)
         {
-            Log.i("deleteListItem", "SETTIN' CHECKEDDDD");
             if (_checkbox != null)
                 _checkbox.setChecked(checked);
         }
@@ -95,7 +88,6 @@ public class multiDelete extends ListActivity
         @Override
         public void toggle()
         {
-            Log.i("deleteListItem", "THEYRE TOGGLIN MAH BUTTINZ");
             if (_checkbox != null)
                 _checkbox.toggle();
         }
@@ -106,7 +98,7 @@ public class multiDelete extends ListActivity
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
-        private SimpleCursorAdapter subsAdapter; 
+    private SimpleCursorAdapter subsAdapter; 
 
 	
 	@Override
@@ -114,7 +106,6 @@ public class multiDelete extends ListActivity
     {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_list);
-		//R.layout.subs_list 		 android.R.layout.simple_list_item_multiple_choice
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
@@ -144,7 +135,7 @@ public class multiDelete extends ListActivity
 		final Button confirm = (Button) findViewById(R.id.multi_confirm);
 		confirm.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v){
-				deleteSelected();
+				deleteDialog();
 			}
 		});
 		
@@ -157,24 +148,58 @@ public class multiDelete extends ListActivity
 
 		mDbHelper.close();
 	}
-
-        @Override
-        protected void onStop()
-        {
-            super.onStop();
-            mSubsCursor.close();
-	    mDbHelper.close();
-        }
 	
-	public void deleteSelected()
-        {
-            Log.i("Delete", "Opening");
-	    mDbHelper.open();
-	    Log.i("Delete", "Opened");
-            for(int i = 0; i < selected.size(); i++ )
-            {
-                mDbHelper.deleteSub(selected.get(i)[0], selected.get(i)[1]);
-            }
+	private void fillData()
+    {
+		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
+        startManagingCursor(mSubsCursor);
+		
+        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
+        int[] to = new int[]{R.id.ShortText, R.id.LongText};
+		
+        subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+		R.layout.delete_list_item, mSubsCursor, from, to);
+
+        setListAdapter(subsAdapter);
 	}
 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		mSubsCursor.close();
+		mDbHelper.close();
+	}
+
+	public void deleteSelected()
+	{
+		mDbHelper.open();
+		for(int i = 0; i < selected.size(); i++ )
+		{
+			mDbHelper.deleteSub(selected.get(i)[1], selected.get(i)[0]);
+		}
+		fillData();
+	}
+	
+	public void deleteDialog(){
+		AlertDialog.Builder dd = new AlertDialog.Builder(this);
+		dd.setIcon(R.drawable.icon);
+		dd.setTitle("Are you sure?");
+		dd.setView(LayoutInflater.from(this).inflate(R.layout.delete_selected_dialog,null));
+
+		dd.setPositiveButton("Yes, delete selected", 
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			deleteSelected();
+			}
+		});
+		
+		dd.setNegativeButton("NO", 
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			}
+		});
+		
+		dd.show();
+	}
 }
