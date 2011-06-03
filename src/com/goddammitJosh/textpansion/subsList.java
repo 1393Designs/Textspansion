@@ -240,11 +240,11 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		startManagingCursor(mSubsCursor);
 		
 		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-		int[] to = new int[]{android.R.id.text1, android.R.id.text2};
+		int[] to = new int[]{R.id.ShortTextMain, R.id.LongTextMain};
 		
 		// Now create an array adapter and set it to display using the stock android row
 		SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-			android.R.layout.two_line_list_item, mSubsCursor, from, to);
+			R.layout.subs_row, mSubsCursor, from, to);
 		setListAdapter(subsAdapter);
 	}
 

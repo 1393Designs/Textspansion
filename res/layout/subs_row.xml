@@ -2,18 +2,15 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:padding="6dip">
-	<TextView android:id="@+id/line2"
-		android:layout_width="fill_parent"
-		android:textColor="#cccccc"
-		android:layout_height="26dip"
-		android:layout_below="@id/line2"/>
-	<TextView android:id="@+id/line1"
+	android:layout_height="fill_parent">
+	<TextView android:id="@+id/ShortTextMain"
+		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textColor="#ffffff"
-		android:textStyle="bold"
-		android:layout_alignParentTop="true"
-		android:layout_above="@id/line1"/>
+		android:layout_alignParentTop="true"/>
+	<TextView android:id="@+id/LongTextMain"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/ShortTextMain"/>
 </RelativeLayout>
