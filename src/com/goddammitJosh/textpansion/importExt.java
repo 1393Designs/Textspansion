@@ -59,9 +59,10 @@ public class importExt extends Activity
 			Element textspansion = doc.getDocumentElement();
 			NodeList shortName = textspansion.getElementsByTagName("Short");
 			NodeList longName = textspansion.getElementsByTagName("Long");
+			NodeList textie = textspansion.getElementsByTagName("Textspansion");
 			
-			if (shortName.getLength() <= 0 || longName.getLength() <= 0) {
-				Toast.makeText(this, "Unable to import this file", Toast.LENGTH_LONG).show();
+			if (textie.getLength() == 0 || (shortName.getLength() <= 0 || longName.getLength() <= 0) || (shortName.getLength() != longName.getLength())) {
+				Toast.makeText(this, "The xml is malformed and can't be imported.", Toast.LENGTH_LONG).show();
 			}
 			else{
 				String shortNameStr, longNameStr;
@@ -77,7 +78,7 @@ public class importExt extends Activity
 				}
 			}
 		}catch(Exception e){
-			Log.i("IMPORT Local", "Error: " + e.getMessage());
+			Toast.makeText(this, "Unable to import this file.", Toast.LENGTH_LONG).show();
 		}
 	}
 	

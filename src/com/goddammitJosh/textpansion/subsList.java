@@ -356,10 +356,12 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	{
 		try{
 			File root = new File(extStoDir);
+			Cursor c = mSubsCursor;
 			if(!root.exists())
 				root.mkdirs();
-			if(root.canWrite()){
-				Cursor c = mSubsCursor;
+			if(c.getCount() < 1)
+				Toast.makeText(getApplicationContext(), "You have nothing to write out.",Toast.LENGTH_SHORT).show();
+			else if(root.canWrite()){
 				String subs_short = null, subs_full  = null;
 				int i = 0;
 				c.moveToPosition(i);

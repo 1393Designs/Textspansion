@@ -270,5 +270,4 @@ public class subsDbAdapter
             return mDb.update(DATABASE_TABLE, args, whereClause, null) > 0;
         // can this add an "ORDER BY"
     }
-	
 }
