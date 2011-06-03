@@ -8,7 +8,7 @@
 	
 	<application android:label="@string/app_name" android:icon="@drawable/icon">
 	
-		<activity android:name="subsList" android:label="@string/app_name">
+		<activity android:name="subsList" android:label="@string/app_name" android:configChanges="orientation|keyboardHidden">
 			<intent-filter> <!-- allows long press stuff! -->
 				<action android:name="android.intent.action.SEARCH_LONG_PRESS" />
 				<flag android:name="android.intent.flag.ACTIVITY_PREVIOUS_IS_TOP" />
@@ -29,7 +29,7 @@
 			</intent-filter>
 		</activity>
 		
-		<activity android:name="settings" android:label="@string/tab_title_settings"/>
+		<activity android:name="settings" android:label="@string/tab_title_settings" android:configChanges="orientation|keyboardHidden"/>
 		
 		<activity android:name="multiDelete" android:label="Multi-Delete" android:configChanges="orientation|keyboardHidden"/>
 		
