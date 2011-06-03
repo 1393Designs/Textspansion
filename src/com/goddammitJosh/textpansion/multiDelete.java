@@ -1,4 +1,4 @@
-package com.goddammitJosh.textpansion;
+package com.designatum_1393.textspansion;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;

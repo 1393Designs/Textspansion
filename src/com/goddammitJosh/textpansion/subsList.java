@@ -1,4 +1,4 @@
-package com.goddammitJosh.textpansion;
+package com.designatum_1393.textspansion;
 
 import android.app.ListActivity;
 import android.os.Bundle;
@@ -81,7 +81,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	private String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
 	private static final String TAG = "Textspansion: SubsList";
 
-	private File dbFile = new File("/data/data/com.goddammitJosh.textpansion/databases/", "data");
+	private File dbFile = new File("/data/data/com.designatum_1393.textspansion/databases/", "data");
 	private boolean addTut = false;
 	
 	private SharedPreferences prefs;

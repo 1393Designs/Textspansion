@@ -1,4 +1,4 @@
-package com.goddammitJosh.textpansion;
+package com.designatum_1393.textspansion;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.goddammitJosh.textpansion;
+package com.designatum_1393.textspansion;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class importExt extends Activity
 {
 
-	private File dbFile = new File("/data/data/com.goddammitJosh.textpansion/databases/", "data");
+	private File dbFile = new File("/data/data/com.designatum_1393.textspansion/databases/", "data");
 	private subsDbAdapter mDbHelper;
 	private Cursor mSubsCursor;
 	
