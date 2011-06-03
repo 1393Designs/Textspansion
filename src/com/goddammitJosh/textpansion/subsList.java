@@ -100,23 +100,20 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+		mDbHelper = new subsDbAdapter(this);
+        if(!dbFile.exists()) 
+        { 
+             SharedPreferences.Editor editor = sharedPrefs.edit(); 
+             editor.putString("sortie", "short"); 
+             editor.commit(); 
+             addTut = true; 
+        } 
+
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
-		else
-			Log.i("SORTING BY", "OOP");
-		
-		mDbHelper = new subsDbAdapter(this);
-		if(!dbFile.exists())
-		{
-			Log.i("Textspansion", "FILE NO EXIST");
-			addTut = true;
-		}
-		else
-		{
-			Log.i("Textspansion", "FILE EXISTS");
-		}
+
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		if(addTut)
