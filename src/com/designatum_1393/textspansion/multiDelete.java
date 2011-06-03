@@ -3,7 +3,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.database.Cursor;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.preference.PreferenceManager;
@@ -112,8 +111,6 @@ public class multiDelete extends ListActivity
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
-		else
-			Log.i("SORTING BY", "OOP");
 		
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);

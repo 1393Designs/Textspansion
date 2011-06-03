@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Simple substitutions database access helper class. Defines the basic CRUD
@@ -61,8 +60,6 @@ public class subsDbAdapter
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-					+ newVersion + ", which will destroy all old data");
 			db.execSQL("DROP TABLE IF EXISTS subs");
 			onCreate(db);
 		}
@@ -178,7 +175,6 @@ public class subsDbAdapter
 		initialValues.put(KEY_FULL, full);
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
 		{
-			Log.d("TEXTSPANSION", "Already exists");
 			return -1;
 		}
 		else
@@ -195,7 +191,6 @@ public class subsDbAdapter
 	{
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
 					+KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
-		Log.i("SUBS", "where clause: " + whereClause + ".");
 		return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
 	}
 	
@@ -263,7 +258,6 @@ public class subsDbAdapter
 		args.put(KEY_FULL, full);
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
 		{
-			Log.d("TEXTSPANSION", "Already exists");
 			return false;
 		}
 		else

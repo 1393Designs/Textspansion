@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.app.Activity;
-import android.util.Log;
 import android.content.pm.PackageInfo;
 import android.text.util.Linkify;
 import android.content.Context;
@@ -124,9 +123,7 @@ public class settings extends PreferenceActivity
 			});
 			ad.show();
 			
-		}catch(Exception e){
-			Log.i("SETTINGS", "Error displaying ABOUT");
-		}
+		}catch(Exception e){}
 
 	}
 }

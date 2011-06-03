@@ -8,7 +8,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
-import android.util.Log;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -25,7 +24,6 @@ public class deleteList extends LinearLayout
 	protected void onFinishInflate()
 	{
 		super.onFinishInflate();
-		Log.i("deleteList", "INNNNNNFFLLLLLAAAATTTTEEEEDDDD");
 	}
 }
 

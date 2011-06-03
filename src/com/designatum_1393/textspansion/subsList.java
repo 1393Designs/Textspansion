@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnClickListener;
 
-import android.util.Log;
 import android.text.ClipboardManager;
 import android.view.ViewManager;
 
@@ -125,7 +124,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
 		//if(key.equals("tutorial"))
-			Log.i("Shared Prefs", key);
 	}
 
 	@Override
@@ -134,7 +132,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		super.onListItemClick(l, v, position, id);
 		Cursor c = mSubsCursor;
 		c.moveToPosition(position);
-		Log.i("textspansion", "Clicked");
 		Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
 			, Toast.LENGTH_SHORT).show();
 			
@@ -164,8 +161,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
-		else
-			Log.i("SORTING BY", "OOP");
 		
 		if(prefs.contains("tutorial"))
 		{
@@ -398,8 +393,6 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 			}
 			else
 				Toast.makeText(getApplicationContext(), "App isn't allowed to write to SD! :(",Toast.LENGTH_SHORT).show();
-		}catch(IOException e){
-			Log.e(TAG, "Could not write file :" + e.getMessage());
-		}
+		}catch(IOException e){}
 	}
 }

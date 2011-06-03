@@ -3,7 +3,6 @@ package com.designatum_1393.textspansion;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.app.Activity;
-import android.util.Log;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import org.xmlpull.v1.XmlPullParser;
