@@ -30,11 +30,11 @@ public class importExt extends Activity
 
 	private File dbFile = new File("/data/data/com.goddammitJosh.textpansion/databases/", "data");
 	private subsDbAdapter mDbHelper;
-    private Cursor mSubsCursor;
+	private Cursor mSubsCursor;
 	
 	@Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_view);
 		

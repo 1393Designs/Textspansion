@@ -37,75 +37,75 @@ public class multiDelete extends ListActivity
 	private static ArrayList<String[]> selected = new ArrayList<String[]>(0);
 	
 	static class deleteListItem extends LinearLayout implements Checkable
-    {
-        private String _short;
-        private String _long;
+	{
+		private String _short;
+		private String _long;
  
-        private CheckBox _checkbox;
-    
-        public deleteListItem(Context context, AttributeSet attrs)
-        {
-            super(context, attrs);
-        }
-    
-        @Override
-        protected void onFinishInflate()
-        {
-            super.onFinishInflate();
+		private CheckBox _checkbox;
+	
+		public deleteListItem(Context context, AttributeSet attrs)
+		{
+			super(context, attrs);
+		}
+	
+		@Override
+		protected void onFinishInflate()
+		{
+			super.onFinishInflate();
 
-            final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
-            _checkbox = (CheckBox) findViewById(R.id.listCheckBox);
-            _checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
-                    if (isChecked)
-                    {
-                        _short = ((TextView) ll.getChildAt(0)).getText().toString();
-                        _long  = ((TextView) ll.getChildAt(1)).getText().toString();
-                        selected.add(new String[]{_short, _long});
-                    }
-                }
-            });
-            int childCount = getChildCount();
+			final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
+			_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
+			_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+			{
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+				{
+					if (isChecked)
+					{
+						_short = ((TextView) ll.getChildAt(0)).getText().toString();
+						_long  = ((TextView) ll.getChildAt(1)).getText().toString();
+						selected.add(new String[]{_short, _long});
+					}
+				}
+			});
+			int childCount = getChildCount();
 
-        }
-    
-        @Override
-        public boolean isChecked()
-        {
-            return _checkbox != null ? _checkbox.isChecked() : false;
-        }
-    
-        @Override
-        public void setChecked(boolean checked)
-        {
-            if (_checkbox != null)
-                _checkbox.setChecked(checked);
-        }
-    
-        @Override
-        public void toggle()
-        {
-            if (_checkbox != null)
-                _checkbox.toggle();
-        }
-    }
+		}
+	
+		@Override
+		public boolean isChecked()
+		{
+			return _checkbox != null ? _checkbox.isChecked() : false;
+		}
+	
+		@Override
+		public void setChecked(boolean checked)
+		{
+			if (_checkbox != null)
+				_checkbox.setChecked(checked);
+		}
+	
+		@Override
+		public void toggle()
+		{
+			if (_checkbox != null)
+				_checkbox.toggle();
+		}
+	}
 
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
-    private SimpleCursorAdapter subsAdapter; 
+	private SimpleCursorAdapter subsAdapter; 
 
 	
 	@Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.delete_list);
+		setContentView(R.layout.delete_list);
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
@@ -117,19 +117,19 @@ public class multiDelete extends ListActivity
 		
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-        startManagingCursor(mSubsCursor);
+		startManagingCursor(mSubsCursor);
 		
-        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-        int[] to = new int[]{R.id.ShortText, R.id.LongText};
+		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
+		int[] to = new int[]{R.id.ShortText, R.id.LongText};
 		
-        // Now create an array adapter and set it to display using the stock android row
-        subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-            R.layout.delete_list_item, mSubsCursor, from, to);
+		// Now create an array adapter and set it to display using the stock android row
+		subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+			R.layout.delete_list_item, mSubsCursor, from, to);
 
-        setListAdapter(subsAdapter);
+		setListAdapter(subsAdapter);
 		
 		ListView list=getListView();
-        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		list.setItemsCanFocus(false);
 		
 		final Button confirm = (Button) findViewById(R.id.multi_confirm);
@@ -150,17 +150,17 @@ public class multiDelete extends ListActivity
 	}
 	
 	private void fillData()
-    {
+	{
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-        startManagingCursor(mSubsCursor);
+		startManagingCursor(mSubsCursor);
 		
-        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-        int[] to = new int[]{R.id.ShortText, R.id.LongText};
+		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
+		int[] to = new int[]{R.id.ShortText, R.id.LongText};
 		
-        subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+		subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
 		R.layout.delete_list_item, mSubsCursor, from, to);
 
-        setListAdapter(subsAdapter);
+		setListAdapter(subsAdapter);
 	}
 
 	@Override

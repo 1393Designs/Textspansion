@@ -68,15 +68,15 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
 public class subsList extends ListActivity implements OnSharedPreferenceChangeListener
 {
-    public static final int INSERT_ID = Menu.FIRST;
+	public static final int INSERT_ID = Menu.FIRST;
 	public static final int EXPORT_ID = Menu.NONE;
 
-    private int mSubNumber = 1;
+	private int mSubNumber = 1;
 
-    private subsDbAdapter mDbHelper;
-    private Cursor mSubsCursor;
+	private subsDbAdapter mDbHelper;
+	private Cursor mSubsCursor;
 
-    private ClipboardManager cb;
+	private ClipboardManager cb;
 	
 	private String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
 	private static final String TAG = "Textspansion: SubsList";
@@ -88,11 +88,11 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort = true;
 	
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.subs_list); // TODO: change to a real list
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.subs_list); // TODO: change to a real list
 		
 		//Setup preferences
 		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
@@ -107,7 +107,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		else
 			Log.i("SORTING BY", "OOP");
 		
-        mDbHelper = new subsDbAdapter(this);
+		mDbHelper = new subsDbAdapter(this);
 		if(!dbFile.exists())
 		{
 			Log.i("Textspansion", "FILE NO EXIST");
@@ -117,38 +117,38 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		{
 			Log.i("Textspansion", "FILE EXISTS");
 		}
-        mDbHelper.open();
+		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		if(addTut)
 			mDbHelper.addTutorial();
-        fillData();
-        registerForContextMenu(getListView()); 
-        cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-    }
+		fillData();
+		registerForContextMenu(getListView()); 
+		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+	}
 	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
 		//if(key.equals("tutorial"))
 			Log.i("Shared Prefs", key);
 	}
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id)
-    {
-        super.onListItemClick(l, v, position, id);
-        Cursor c = mSubsCursor;
-        c.moveToPosition(position);
-        Log.i("textspansion", "Clicked");
-        Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
-            , Toast.LENGTH_SHORT).show();
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id)
+	{
+		super.onListItemClick(l, v, position, id);
+		Cursor c = mSubsCursor;
+		c.moveToPosition(position);
+		Log.i("textspansion", "Clicked");
+		Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
+			, Toast.LENGTH_SHORT).show();
 			
-        cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+		cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
 		
 		//Intent psIntent = new Intent(getApplicationContext(), paste_service.class);
-        //getApplicationContext().startService(psIntent);
+		//getApplicationContext().startService(psIntent);
 		
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
-    }
+	}
 
 	@Override
 	protected void onStop()
@@ -180,79 +180,79 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		fillData();
 	}
 	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sub_list_menu, menu);
-        return true;
-    }
+		inflater.inflate(R.menu.sub_list_menu, menu);
+		return true;
+	}
 
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.add_item:
-                addItem();
-                return true;
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.add_item:
+				addItem();
+				return true;
 			case R.id.menu_export:
 				exportSubs();
 				return true;
 			case R.id.multi_delete:
 				startActivity(new Intent(this, multiDelete.class));
-                                fillData();
+								fillData();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));
 				return true;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
-    
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
-    {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sub_context_menu, menu);
-    }
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.sub_context_menu, menu);
+	}
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item)
-    {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 
-        switch (item.getItemId()) // can get replaced by android:onClick="method name" in sub_context_menu.xml?
-        {
-            case R.id.edit_item:
-                editItem(info.position);
-                return true;
-            case R.id.delete_item:
-                deleteItem(info.position);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
+		switch (item.getItemId()) // can get replaced by android:onClick="method name" in sub_context_menu.xml?
+		{
+			case R.id.edit_item:
+				editItem(info.position);
+				return true;
+			case R.id.delete_item:
+				deleteItem(info.position);
+				return true;
+			default:
+				return super.onContextItemSelected(item);
+		}
+	}
 
 // -------------------- Database Manipulation --------------------
-    private void fillData()
-    {
-        mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-        startManagingCursor(mSubsCursor);
+	private void fillData()
+	{
+		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
+		startManagingCursor(mSubsCursor);
 		
-        String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-        int[] to = new int[]{android.R.id.text1, android.R.id.text2};
+		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
+		int[] to = new int[]{android.R.id.text1, android.R.id.text2};
 		
-        // Now create an array adapter and set it to display using the stock android row
-        SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-            android.R.layout.two_line_list_item, mSubsCursor, from, to);
-        setListAdapter(subsAdapter);
-    }
+		// Now create an array adapter and set it to display using the stock android row
+		SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
+			android.R.layout.two_line_list_item, mSubsCursor, from, to);
+		setListAdapter(subsAdapter);
+	}
 
-    public void addItem()
-    {
+	public void addItem()
+	{
 		final Dialog dialog = new Dialog(subsList.this);
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Adding a thingy");
@@ -279,16 +279,16 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 					short_name = long_name;
 				if (mDbHelper.createSub(short_name, long_name) == -1)
 					Toast.makeText(getApplicationContext(),
-                    "That item already exists.", Toast.LENGTH_SHORT).show();
+					"That item already exists.", Toast.LENGTH_SHORT).show();
 				fillData();
 				dialog.dismiss();
 			}
 		});
 		dialog.show();
-    }
+	}
 	
-    public void editItem(int item)
-    {
+	public void editItem(int item)
+	{
 		final int theItem = item+1; // SQL starts counting from 1
 		final Dialog dialog = new Dialog(subsList.this);
 		dialog.setContentView(R.menu.maindialog);
@@ -299,7 +299,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
 		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
-                
+				
 			// set previous values as defaults
 			Cursor c = mSubsCursor;
 			c.moveToPosition(item);
@@ -330,25 +330,25 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 					if(short_name.compareTo("") == 0)
 						short_name = long_name;
 					if( !mDbHelper.updateSub(old_full, old_short, short_name, long_name))
-                        Toast.makeText(getApplicationContext(),
-                        "That item already exists.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(),
+						"That item already exists.", Toast.LENGTH_SHORT).show();
 					fillData();
 					dialog.dismiss();
 				}
 			}
 		});
 		dialog.show();
-    }
-    
-    public void deleteItem(int item)
-    {
+	}
+	
+	public void deleteItem(int item)
+	{
 		Cursor c = mSubsCursor;
 		c.moveToPosition(item);
 		final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 		final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-        mDbHelper.deleteSub(old_full, old_short);
-        fillData();
-    }
+		mDbHelper.deleteSub(old_full, old_short);
+		fillData();
+	}
 
 // ---------------------------------- FILE I/O -----------------------------------------	
 	

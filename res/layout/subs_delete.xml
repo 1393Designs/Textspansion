@@ -24,9 +24,9 @@
 			android:gravity="top"
 			android:singleLine="false"
 			/>
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/LongText" 
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/LongText" 
 			android:textSize="16sp"
 			android:gravity="bottom"
 			android:singleLine="false"

@@ -16,16 +16,16 @@ import java.util.ArrayList;
 
 public class deleteList extends LinearLayout
 {
-    public deleteList(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
+	public deleteList(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+	}
 
-    @Override
-    protected void onFinishInflate()
-    {
-        super.onFinishInflate();
-        Log.i("deleteList", "INNNNNNFFLLLLLAAAATTTTEEEEDDDD");
-    }
+	@Override
+	protected void onFinishInflate()
+	{
+		super.onFinishInflate();
+		Log.i("deleteList", "INNNNNNFFLLLLLAAAATTTTEEEEDDDD");
+	}
 }
 
