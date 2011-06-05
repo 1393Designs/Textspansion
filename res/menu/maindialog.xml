@@ -12,6 +12,8 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content" 
 		android:background="@android:drawable/editbox_background"
+		android:imeOptions="actionNext"
+		android:singleLine="true"
 		android:layout_below="@id/short_label" />
 		
 	<TextView android:id="@+id/long_label" android:layout_below="@id/short_entry"

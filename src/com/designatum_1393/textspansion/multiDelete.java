@@ -31,6 +31,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.util.AttributeSet;
 
+import android.util.Log;
+
 public class multiDelete extends ListActivity
 {
 	private static ArrayList<String[]> selected = new ArrayList<String[]>(0);
@@ -41,6 +43,7 @@ public class multiDelete extends ListActivity
 		private String _long;
  
 		private CheckBox _checkbox;
+		private String[] arr;
 	
 		public deleteListItem(Context context, AttributeSet attrs)
 		{
@@ -51,9 +54,13 @@ public class multiDelete extends ListActivity
 		protected void onFinishInflate()
 		{
 			super.onFinishInflate();
+			Log.i("multidelete", "Inflate finished");
 
 			final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
 			_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
+			
+
+
 			_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
 			{
 				@Override
@@ -63,8 +70,16 @@ public class multiDelete extends ListActivity
 					{
 						_short = ((TextView) ll.getChildAt(0)).getText().toString();
 						_long  = ((TextView) ll.getChildAt(1)).getText().toString();
-						selected.add(new String[]{_short, _long});
+						arr = new String[]{_short, _long};
+						selected.add(arr);
+						Log.i("multidelete", "Added: " +_short +", " +_long);
 					}
+					else
+					{
+						selected.remove(arr);
+						Log.i("multidelete", "Removed: " +_short +", " +_long);
+					}
+					
 				}
 			});
 			int childCount = getChildCount();
@@ -80,13 +95,22 @@ public class multiDelete extends ListActivity
 		@Override
 		public void setChecked(boolean checked)
 		{
-			if (_checkbox != null)
-				_checkbox.setChecked(checked);
+			if ( selected.contains(arr) )
+			{
+				Log.i("multidelete", "should be true: " +_short);
+				_checkbox.setChecked(true);
+			}
+			else
+			{
+				Log.i("multidelete", "should be false: " +_short);
+				_checkbox.setChecked(false);
+			}
 		}
 	
 		@Override
 		public void toggle()
 		{
+			Log.i("multidelete", "toggled");
 			if (_checkbox != null)
 				_checkbox.toggle();
 		}

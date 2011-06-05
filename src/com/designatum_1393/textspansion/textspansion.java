@@ -65,7 +65,7 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
-public class subsList extends ListActivity implements OnSharedPreferenceChangeListener
+public class textspansion extends ListActivity implements OnSharedPreferenceChangeListener
 {
 	public static final int INSERT_ID = Menu.FIRST;
 	public static final int EXPORT_ID = Menu.NONE;
@@ -245,7 +245,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 
 	public void addItem()
 	{
-		final Dialog dialog = new Dialog(subsList.this);
+		final Dialog dialog = new Dialog(textspansion.this);
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Adding a thingy");
 		dialog.setCancelable(true);
@@ -282,7 +282,7 @@ public class subsList extends ListActivity implements OnSharedPreferenceChangeLi
 	public void editItem(int item)
 	{
 		final int theItem = item+1; // SQL starts counting from 1
-		final Dialog dialog = new Dialog(subsList.this);
+		final Dialog dialog = new Dialog(textspansion.this);
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Editing a thingy");
 		dialog.setCancelable(true);

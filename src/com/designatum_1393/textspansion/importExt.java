@@ -42,7 +42,7 @@ public class importExt extends Activity
 		mDbHelper.open();
 		importSubs(intent);
 		mDbHelper.close();
-		startActivity(new Intent(this, subsList.class));
+		startActivity(new Intent(this, textspansion.class));
 		finish();
 	}
 	

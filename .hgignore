@@ -4,3 +4,4 @@ gen/*
 lib/*
 build.xml
 *.properties
+*.keystore
