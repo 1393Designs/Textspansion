@@ -11,7 +11,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckedTextView;
-
+import android.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.content.DialogInterface;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -65,6 +67,8 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
+import android.util.Log;
+
 public class textspansion extends ListActivity implements OnSharedPreferenceChangeListener
 {
 	public static final int INSERT_ID = Menu.FIRST;
@@ -98,28 +102,59 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
+		
+		if(!sharedPrefs.getBoolean("EULA", false))
+			presentEULA();
+			
 		mDbHelper = new subsDbAdapter(this);
-        if(!dbFile.exists()) 
-        { 
-             SharedPreferences.Editor editor = sharedPrefs.edit(); 
-             editor.putString("sortie", "short"); 
-             editor.commit(); 
-             addTut = true; 
-        } 
+			if(!dbFile.exists()) 
+			{ 
+				 SharedPreferences.Editor editor = sharedPrefs.edit(); 
+				 editor.putString("sortie", "short"); 
+				 editor.commit(); 
+				 addTut = true; 
+			} 
 
-		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
-			sortByShort = true;
-		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
-			sortByShort = false;
+			if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
+				sortByShort = true;
+			else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
+				sortByShort = false;
 
-		mDbHelper.open();
-		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-		if(addTut)
-			mDbHelper.addTutorial();
-		fillData();
-		registerForContextMenu(getListView()); 
-		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+			mDbHelper.open();
+			mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
+			if(addTut)
+				mDbHelper.addTutorial();
+			fillData();
+			registerForContextMenu(getListView()); 
+			cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+	}
+	
+	public void presentEULA()
+	{
+		AlertDialog.Builder ed = new AlertDialog.Builder(this);
+		ed.setIcon(R.drawable.icon);
+		ed.setTitle("End-User License Agreement");
+		ed.setView(LayoutInflater.from(this).inflate(R.layout.eula_dialog,null));
+
+		ed.setPositiveButton("Agree", 
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			SharedPreferences.Editor editor = sharedPrefs.edit(); 
+			editor.putBoolean("EULA", true); 
+			editor.commit(); 
+			}
+		});
+		
+		ed.setNegativeButton("Disagree (You will be kicked out)", 
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			SharedPreferences.Editor editor = sharedPrefs.edit(); 
+			editor.putBoolean("EULA", false);
+			editor.commit(); 
+			finish();
+			}
+		});
+		ed.show();
 	}
 	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
@@ -155,8 +190,9 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 	protected void onResume()
 	{
 		super.onResume();
+	
 		mDbHelper.open();
-		
+			
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))

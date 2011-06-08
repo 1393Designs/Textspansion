@@ -99,13 +99,11 @@ public class multiDelete extends ListActivity
 
 		if ( aSelected.contains(abbr) && fSelected.contains(full) )
 		{
-			Log.i("multidelete", "You already chose this, loser!");
 			aSelected.remove(abbr);
 			fSelected.remove(full);
 		}
 		else
 		{
-			Log.i("multidelete", "Adding: " +abbr +" || " +full);
 			aSelected.add(abbr);
 			fSelected.add(full);
 		}
@@ -186,10 +184,7 @@ public class multiDelete extends ListActivity
 		mDbHelper.open();
 		for(int i = 0; i < aSelected.size(); i++ )
 		{
-			Log.i("multidelete", "--- D abbr: " +fSelected.get(i));
-			Log.i("multidelete",  "--- D full: " +aSelected.get(i));
 			val = mDbHelper.deleteSub(fSelected.get(i), aSelected.get(i));
-			Log.i("multidelete", "did it akshually delete?" +val);
 		}
 		fillData();
 	}

@@ -6,12 +6,15 @@
 	android:scrollbars="vertical" 
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<TextView	android:id="@+id/aboutDialog" 
+	<TextView android:id="@+id/deleteDialog" 
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
 		android:paddingLeft="10px"
 		android:paddingRight="10px"
 		android:paddingTop="5px"
-		android:autoLink="all" />
+		android:text=
+		"By clicking Accept, you agree to the following condition: \n\nWe are not liable for stolen passwords, identities, credit cards, etc.
+		This app is not meant to store that important information in. Everything is practically stored in plain-text.
+		\n\nWith that said, we hope you enjoy using Textspansion!" />
 
 </LinearLayout>

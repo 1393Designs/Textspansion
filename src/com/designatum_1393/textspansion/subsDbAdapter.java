@@ -71,7 +71,7 @@ public class subsDbAdapter
 		String shortName, longName;
 		
 		shortName = "1) Welcome!";
-		longName = "Welcome to Textspansion, the first rapid text-insertion app for Android!";
+		longName = "- Welcome to Textspansion, the first rapid text-insertion app for Android!";
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
@@ -80,16 +80,9 @@ public class subsDbAdapter
 			mDb.insert(DATABASE_TABLE, null, steps);
 		
 		shortName = "2) How To Use";
-		longName = "Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.";
-		
-		steps.put(KEY_ABBR, shortName);
-		steps.put(KEY_FULL, longName);
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
-			mDb.insert(DATABASE_TABLE, null, steps);
-			
-		shortName = "2b) How To Use";
-		longName = "Simply paste it where ever you want it!";
+		longName = "- You can access the app by long-pressing the device's Search button\n\n" + 
+			"- Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.\n\n" +
+			"- Simply paste it where ever you want it!";
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
@@ -98,7 +91,9 @@ public class subsDbAdapter
 			mDb.insert(DATABASE_TABLE, null, steps);
 		
 		shortName = "3) Adding";
-		longName = "Click your device's menu key, then \"Add!\"";
+		longName = "- Click your device's menu key, then \"Add!\"\n" + 
+			"- Long-pressing on an item to edit or delete it.\n\n" + 
+			"- You can delete multiple items at the same time by clicking the device's menu button and select multi-delete.";
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
@@ -106,8 +101,9 @@ public class subsDbAdapter
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
 			
-		shortName = "3b) Editing entries";
-		longName = "Long-pressing on an item to edit or delete it.";
+		shortName = "4) Data Management";
+		longName = "- You can export all of your substitutions by selecting \"Export\" in the menu. The exported file will be located in '/sdcard/Textspansion/' \n\n" +
+			"- To import that data you can either email that file to yourself and open the file that way or locate the file from your phone and open it directly.";
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
@@ -115,8 +111,8 @@ public class subsDbAdapter
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
 			
-		shortName = "4) Get Started!";
-		longName = "The tutorial is accessible via the settings panel. Happy Textspanding!";
+		shortName = "5) Get Started!";
+		longName = "- The tutorial is accessible via the settings panel. Happy Textspanding!";
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
