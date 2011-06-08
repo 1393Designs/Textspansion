@@ -35,8 +35,6 @@ import android.util.Log;
 
 public class multiDelete extends ListActivity
 {
-	private static ArrayList<String[]> selected = new ArrayList<String[]>(0);
-	
 	static class deleteListItem extends LinearLayout implements Checkable
 	{
 		private String _short;
@@ -58,32 +56,6 @@ public class multiDelete extends ListActivity
 
 			final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
 			_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
-			
-
-
-			_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-			{
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-				{
-					if (isChecked)
-					{
-						_short = ((TextView) ll.getChildAt(0)).getText().toString();
-						_long  = ((TextView) ll.getChildAt(1)).getText().toString();
-						arr = new String[]{_short, _long};
-						selected.add(arr);
-						Log.i("multidelete", "Added: " +_short +", " +_long);
-					}
-					else
-					{
-						selected.remove(arr);
-						Log.i("multidelete", "Removed: " +_short +", " +_long);
-					}
-					
-				}
-			});
-			int childCount = getChildCount();
-
 		}
 	
 		@Override
@@ -95,26 +67,16 @@ public class multiDelete extends ListActivity
 		@Override
 		public void setChecked(boolean checked)
 		{
-			if ( selected.contains(arr) )
-			{
-				Log.i("multidelete", "should be true: " +_short);
-				_checkbox.setChecked(true);
-			}
-			else
-			{
-				Log.i("multidelete", "should be false: " +_short);
-				_checkbox.setChecked(false);
-			}
+			_checkbox.setChecked(checked);
 		}
 	
 		@Override
 		public void toggle()
 		{
-			Log.i("multidelete", "toggled");
-			if (_checkbox != null)
+			if (_checkbox != null) // necessary?
 				_checkbox.toggle();
 		}
-	}
+	} // deleteListItem
 
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
 	private SharedPreferences prefs;
@@ -122,6 +84,32 @@ public class multiDelete extends ListActivity
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
 	private SimpleCursorAdapter subsAdapter; 
+	private String full, abbr;
+	private ArrayList<String> aSelected = new ArrayList<String>(0);
+	private ArrayList<String> fSelected = new ArrayList<String>(0);
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id)
+	{
+		super.onListItemClick(l, v, position, id);
+		Cursor c = mSubsCursor;
+		c.moveToPosition(position);
+		abbr = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+		full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+
+		if ( aSelected.contains(abbr) && fSelected.contains(full) )
+		{
+			Log.i("multidelete", "You already chose this, loser!");
+			aSelected.remove(abbr);
+			fSelected.remove(full);
+		}
+		else
+		{
+			Log.i("multidelete", "Adding: " +abbr +" || " +full);
+			aSelected.add(abbr);
+			fSelected.add(full);
+		}
+	}
 
 	
 	@Override
@@ -194,10 +182,14 @@ public class multiDelete extends ListActivity
 
 	public void deleteSelected()
 	{
+		boolean val = true;
 		mDbHelper.open();
-		for(int i = 0; i < selected.size(); i++ )
+		for(int i = 0; i < aSelected.size(); i++ )
 		{
-			mDbHelper.deleteSub(selected.get(i)[1], selected.get(i)[0]);
+			Log.i("multidelete", "--- D abbr: " +fSelected.get(i));
+			Log.i("multidelete",  "--- D full: " +aSelected.get(i));
+			val = mDbHelper.deleteSub(fSelected.get(i), aSelected.get(i));
+			Log.i("multidelete", "did it akshually delete?" +val);
 		}
 		fillData();
 	}

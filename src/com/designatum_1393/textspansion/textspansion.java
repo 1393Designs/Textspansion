@@ -139,7 +139,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		
 		//Intent psIntent = new Intent(getApplicationContext(), paste_service.class);
 		//getApplicationContext().startService(psIntent);
-		
+
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
 	}
