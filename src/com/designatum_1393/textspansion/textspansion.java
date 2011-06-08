@@ -67,8 +67,6 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
-import android.util.Log;
-
 public class textspansion extends ListActivity implements OnSharedPreferenceChangeListener
 {
 	public static final int INSERT_ID = Menu.FIRST;

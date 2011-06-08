@@ -31,7 +31,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.util.AttributeSet;
 
-import android.util.Log;
 
 public class multiDelete extends ListActivity
 {
@@ -52,8 +51,6 @@ public class multiDelete extends ListActivity
 		protected void onFinishInflate()
 		{
 			super.onFinishInflate();
-			Log.i("multidelete", "Inflate finished");
-
 			final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
 			_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
 		}
