@@ -95,7 +95,7 @@ public class settings extends PreferenceActivity
 
 	
 	public void aboutDialog(){
-		final TextView message = new TextView(getApplicationContext());
+		final TextView message = new TextView(this);
 		
 		try{
 			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
