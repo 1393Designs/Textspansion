@@ -5,3 +5,4 @@ lib/*
 build.xml
 *.properties
 *.keystore
+*.orig
