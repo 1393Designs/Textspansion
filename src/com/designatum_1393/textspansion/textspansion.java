@@ -10,7 +10,7 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.CheckedTextView;
+import android.widget.CheckBox;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.content.DialogInterface;
@@ -28,6 +28,11 @@ import android.view.View.OnClickListener;
 
 import android.text.ClipboardManager;
 import android.view.ViewManager;
+
+//private subs
+import android.text.method.PasswordTransformationMethod;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 //menu
 import android.view.Menu;
@@ -288,7 +293,18 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
 		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
-		
+	
+		final CheckBox pvt_box = (CheckBox) dialog.findViewById(R.id.pvt_box);
+		pvt_box.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if ( isChecked )
+					long_input.setTransformationMethod(new PasswordTransformationMethod());
+				else
+					long_input.setTransformationMethod(null);
+			}
+		});
+
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -303,7 +319,11 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 				String long_name = long_input.getText().toString();
 				if(short_name.compareTo("") == 0)
 					short_name = long_name;
-				if (mDbHelper.createSub(short_name, long_name) == -1)
+				if( pvt_box.isChecked() )
+					Toast.makeText(getApplicationContext(),
+					"This will be private!", Toast.LENGTH_SHORT).show();
+				if (mDbHelper.createSub(short_name, long_name, pvt_box.isChecked()) == -1)
+//				if (mDbHelper.createSub(short_name, long_name) == -1)
 					Toast.makeText(getApplicationContext(),
 					"That item already exists.", Toast.LENGTH_SHORT).show();
 				fillData();
@@ -325,14 +345,27 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
 		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
+		
+		final CheckBox pvt_box = (CheckBox) dialog.findViewById(R.id.pvt_box);
+		pvt_box.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if ( isChecked )
+					long_input.setTransformationMethod(new PasswordTransformationMethod());
+				else
+					long_input.setTransformationMethod(null);
+			}
+		});
 				
 			// set previous values as defaults
 			Cursor c = mSubsCursor;
 			c.moveToPosition(item);
-			final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-			final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+			final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+			final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+			final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)) == "1" ); // active high
 			short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
 			long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+			pvt_box.setChecked(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).compareTo("1") == 0);
 		
 		
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
@@ -347,7 +380,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				if ( short_name.equals(old_short) && long_name.equals(old_full) )
+				if ( short_name.equals(old_short) && long_name.equals(old_full) && old_pvt == pvt_box.isChecked() )
 				{
 					dialog.dismiss();
 				}
@@ -355,7 +388,8 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 				{
 					if(short_name.compareTo("") == 0)
 						short_name = long_name;
-					if( !mDbHelper.updateSub(old_full, old_short, short_name, long_name))
+					 if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()))
+					//if( !mDbHelper.updateSub(old_full, old_short, short_name, long_name))
 						Toast.makeText(getApplicationContext(),
 						"That item already exists.", Toast.LENGTH_SHORT).show();
 					fillData();

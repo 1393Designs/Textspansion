@@ -23,6 +23,8 @@ public class subsDbAdapter
 	public static final String KEY_ABBR = "abbr"; // short name of the sub
 	public static final String KEY_FULL = "full"; // full sub
 	public static final String KEY_ROWID = "_id"; // row's id
+	public static final String KEY_PRIVATE = "_pvt"; // private status of the sub
+		// uses binary logic (active high) in an int for this
 
 	private static final String TAG = "Textspansion: subsDbAdapter";
 	private DatabaseHelper mDbHelper;
@@ -33,7 +35,7 @@ public class subsDbAdapter
 	 */
 	private static final String DATABASE_CREATE =
 		"create table subs (_id integer primary key autoincrement, "
-		+ "abbr text not null, full text not null);";
+		+ "abbr text not null, full text not null, _pvt text not null);";
 
 	private static final String DATABASE_NAME = "data";
 	private static final String DATABASE_TABLE = "subs";
@@ -75,6 +77,7 @@ public class subsDbAdapter
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
+		steps.put(KEY_PRIVATE, 0);
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
@@ -86,6 +89,7 @@ public class subsDbAdapter
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
+		steps.put(KEY_PRIVATE, 0);
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
@@ -97,6 +101,7 @@ public class subsDbAdapter
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
+		steps.put(KEY_PRIVATE, 0);
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
@@ -107,6 +112,7 @@ public class subsDbAdapter
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
+		steps.put(KEY_PRIVATE, 0);
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
@@ -116,6 +122,7 @@ public class subsDbAdapter
 		
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
+		steps.put(KEY_PRIVATE, 0);
 		
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(DATABASE_TABLE, null, steps);
@@ -162,13 +169,18 @@ public class subsDbAdapter
 	 * 
 	 * @param abbr the abbreviated version of the substitution
 	 * @param full the full version of the substitution
+	 * @param pvt  the private status of the substitution
 	 * @return rowId or -1 if failed
 	 */
-	public long createSub(String abbr, String full)
+	public long createSub(String abbr, String full, boolean pvt)
 	{
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_ABBR, abbr);
 		initialValues.put(KEY_FULL, full);
+		if ( pvt )
+			initialValues.put(KEY_PRIVATE, "1");
+		else
+			initialValues.put(KEY_PRIVATE, "0");
 		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
 		{
 			return -1;
@@ -204,10 +216,10 @@ public class subsDbAdapter
 	{
 		if(sortByShort)
 			return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
-				KEY_FULL}, null, null, null, null, KEY_ABBR);
+				KEY_FULL, KEY_PRIVATE}, null, null, null, null, KEY_ABBR);
 		else
 			return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
-				KEY_FULL}, null, null, null, null, KEY_FULL);
+				KEY_FULL, KEY_PRIVATE}, null, null, null, null, KEY_FULL);
 	}
 
 	/**
@@ -223,7 +235,7 @@ public class subsDbAdapter
 		Cursor mCursor =
 
 			mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-					KEY_ABBR, KEY_FULL}, KEY_ROWID + "=" + rowId, null,
+					KEY_ABBR, KEY_FULL, KEY_PRIVATE}, KEY_ROWID + "=" + rowId, null,
 					null, null, null, null);
 		if (mCursor != null)
 		{
@@ -241,9 +253,10 @@ public class subsDbAdapter
 	 * @param rowId id of sub to update
 	 * @param abbr value to which the sub's abbreviation will be set
 	 * @param full value to which the sub's full text will be set
+	 * @param pvt  the private status of the substitution; 0=false, 1=true
 	 * @return true if the sub was successfully updated, false otherwise
 	 */
-	public boolean updateSub(String oldFull, String oldAbbr, String abbr, String full)
+	public boolean updateSub(String oldFull, String oldAbbr, boolean oldPvt, String abbr, String full, boolean pvt)
 	{
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
 					+KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
@@ -252,7 +265,11 @@ public class subsDbAdapter
 		//deleteSub(rowId);
 		args.put(KEY_ABBR, abbr);
 		args.put(KEY_FULL, full);
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
+		if ( pvt )
+			args.put(KEY_PRIVATE, "1");
+		else
+			args.put(KEY_PRIVATE, "0");
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and " +KEY_PRIVATE +"=?", new String[] {abbr, full, pvt?"1":"0"}, null, null, KEY_ABBR).getCount() != 0)
 		{
 			return false;
 		}

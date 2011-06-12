@@ -72,7 +72,7 @@ public class importExt extends Activity
 					
 					if(shortNameStr.compareTo("") == 0)
 						shortNameStr = longNameStr;
-					if (mDbHelper.createSub(shortNameStr, longNameStr) == -1)
+					if (mDbHelper.createSub(shortNameStr, longNameStr, false) == -1)
 						Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
 				}
 			}

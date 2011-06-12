@@ -28,13 +28,26 @@
 		android:inputType="text|textCapSentences|textMultiLine"
 		android:background="@android:drawable/editbox_background"
 		android:layout_below="@id/long_label" />
+
+	<CheckBox android:id="@+id/pvt_box"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/long_entry" />
+
+	<TextView android:id="@+id/pvt_text"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical"
+		android:layout_toRightOf="@id/pvt_box"
+		android:layout_below="@id/long_entry"
+		android:text="Private" />
 	 
-	<Button android:id="@+id/okayButton" android:layout_below="@id/long_entry"
+	<Button android:id="@+id/okayButton" android:layout_below="@id/pvt_box"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="Okay!" />
 	 
 	<Button android:id="@+id/cancelButton" 
-		android:layout_below="@id/long_entry" android:layout_toRightOf="@id/okayButton"
+		android:layout_below="@id/pvt_box" android:layout_toRightOf="@id/okayButton"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="Cancel" />
 </RelativeLayout>
