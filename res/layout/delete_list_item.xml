@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view class="com.designatum_1393.textspansion.multiDelete$deleteListItem"
+<view class="com.designatum_1393.textspansion.delete_list_item"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"

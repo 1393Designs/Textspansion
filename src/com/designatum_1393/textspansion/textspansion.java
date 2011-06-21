@@ -72,6 +72,11 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
+import android.view.ViewGroup;
+import android.content.Context;
+
+import android.util.Log;
+
 public class textspansion extends ListActivity implements OnSharedPreferenceChangeListener
 {
 	public static final int INSERT_ID = Menu.FIRST;
@@ -267,6 +272,9 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		}
 	}
 
+
+		
+
 // -------------------- Database Manipulation --------------------
 	private void fillData()
 	{
@@ -280,6 +288,17 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
 			R.layout.subs_row, mSubsCursor, from, to);
 		setListAdapter(subsAdapter);
+
+		/*Cursor c = mSubsCursor;
+		c.moveToStart();
+			final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+		for (int i = 0; i < c.getCount(); c++)
+		{
+			c.moveToPosition(i);
+			String shortText = c.getString(c.getColumnIndexOrThrow(c.KEY_ABBR);
+			String longText  = c.getString(c.getColumnIndexOrThrow(c.KEY_FULL);
+			boolean pvt = (c.getString(c.getColumnIndexOrThrow(c.KEY_PRIVATE)) == "1");
+		}*/
 	}
 
 	public void addItem()

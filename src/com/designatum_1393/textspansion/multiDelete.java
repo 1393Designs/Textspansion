@@ -30,52 +30,16 @@ import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.util.AttributeSet;
+import android.text.method.PasswordTransformationMethod;
 
 
 public class multiDelete extends ListActivity
 {
-	static class deleteListItem extends LinearLayout implements Checkable
-	{
-		private String _short;
-		private String _long;
- 
-		private CheckBox _checkbox;
-		private String[] arr;
-	
-		public deleteListItem(Context context, AttributeSet attrs)
-		{
-			super(context, attrs);
-		}
-	
-		@Override
-		protected void onFinishInflate()
-		{
-			super.onFinishInflate();
-			final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout
-			_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
-		}
-	
-		@Override
-		public boolean isChecked()
-		{
-			return _checkbox != null ? _checkbox.isChecked() : false;
-		}
-	
-		@Override
-		public void setChecked(boolean checked)
-		{
-			_checkbox.setChecked(checked);
-		}
-	
-		@Override
-		public void toggle()
-		{
-			if (_checkbox != null) // necessary?
-				_checkbox.toggle();
-		}
-	} // deleteListItem
+
 
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
+	private subsDbAdapter helper = new subsDbAdapter(this);
+	//private static subsDbAdapter helper = new subsDbAdapter(getApplicationContext());
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
