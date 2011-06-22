@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.content.DialogInterface;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -107,7 +108,6 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		
 		//Setup preferences
 		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
-		prefs.registerOnSharedPreferenceChangeListener(this);
 		
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
@@ -137,38 +137,6 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 			cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 	}
 	
-	public void presentEULA()
-	{
-		AlertDialog.Builder ed = new AlertDialog.Builder(this);
-		ed.setIcon(R.drawable.icon);
-		ed.setTitle("End-User License Agreement");
-		ed.setView(LayoutInflater.from(this).inflate(R.layout.eula_dialog,null));
-
-		ed.setPositiveButton("Agree", 
-		new android.content.DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int arg1) {
-			SharedPreferences.Editor editor = sharedPrefs.edit(); 
-			editor.putBoolean("EULA", true); 
-			editor.commit(); 
-			}
-		});
-		
-		ed.setNegativeButton("Disagree (You will be kicked out)", 
-		new android.content.DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int arg1) {
-			SharedPreferences.Editor editor = sharedPrefs.edit(); 
-			editor.putBoolean("EULA", false);
-			editor.commit(); 
-			finish();
-			}
-		});
-		ed.show();
-	}
-	
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key){
-		//if(key.equals("tutorial"))
-	}
-
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
@@ -233,11 +201,14 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 				addItem();
 				return true;
 			case R.id.menu_export:
-				exportSubs();
+				if(mSubsCursor.getCount() < 1)
+					Toast.makeText(getApplicationContext(), "You have nothing to write out.",Toast.LENGTH_SHORT).show();
+				else
+					chooseExport();
 				return true;
 			case R.id.multi_delete:
 				startActivity(new Intent(this, multiDelete.class));
-								fillData();
+				fillData();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));
@@ -271,6 +242,59 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 				return super.onContextItemSelected(item);
 		}
 	}
+	
+// ---------------------------------- Dialogs ---------------------------------------
+	public void presentEULA()
+	{
+		AlertDialog.Builder ed = new AlertDialog.Builder(this);
+		ed.setIcon(R.drawable.icon);
+		ed.setTitle("End-User License Agreement");
+		ed.setView(LayoutInflater.from(this).inflate(R.layout.eula_dialog,null));
+
+		ed.setPositiveButton("Agree", 
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			SharedPreferences.Editor editor = sharedPrefs.edit(); 
+			editor.putBoolean("EULA", true); 
+			editor.commit(); 
+			}
+		});
+		
+		ed.setNegativeButton("Disagree (You will be kicked out)", 
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			SharedPreferences.Editor editor = sharedPrefs.edit(); 
+			editor.putBoolean("EULA", false);
+			editor.commit(); 
+			finish();
+			}
+		});
+		ed.show();
+	}
+
+	public void chooseExport()
+	{
+		final CharSequence[] choices = {"Email", "SD card"};
+		
+		AlertDialog.Builder exporter = new AlertDialog.Builder(this);
+		exporter.setIcon(R.drawable.icon);
+		exporter.setTitle("Choose where to export to:");
+		exporter.setItems(choices, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				switch(item){
+					case 0:
+						exportSubs();
+						sendXml();
+						break;
+					case 1:
+						exportSubs();
+						break;
+				}
+			}
+		});
+
+		exporter.show();
+	}
 
 
 		
@@ -291,7 +315,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 	{
 		final Dialog dialog = new Dialog(textspansion.this);
 		dialog.setContentView(R.menu.maindialog);
-		dialog.setTitle("Adding a thingy");
+		dialog.setTitle("Adding an Entry");
 		dialog.setCancelable(true);
 		
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
@@ -343,7 +367,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		final int theItem = item+1; // SQL starts counting from 1
 		final Dialog dialog = new Dialog(textspansion.this);
 		dialog.setContentView(R.menu.maindialog);
-		dialog.setTitle("Editing a thingy");
+		dialog.setTitle("Editing an Entry");
 		dialog.setCancelable(true);
 		
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
@@ -368,9 +392,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 			final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 			final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
 			final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") ); // active high
-//			short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
-//			long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
-//			pvt_box.setChecked(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1"));
+			
 			short_input.setText(old_short);
 			long_input.setText(old_full);
 			pvt_box.setChecked(old_pvt);
@@ -414,11 +436,21 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		c.moveToPosition(item);
 		final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 		final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-		mDbHelper.deleteSub(old_full, old_short);
+		final String old_pvt  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE));
+		mDbHelper.deleteSub(old_full, old_short, old_pvt);
 		fillData();
 	}
 
 // ---------------------------------- FILE I/O -----------------------------------------	
+	
+	public void sendXml()
+	{
+		Intent send = new Intent(Intent.ACTION_SEND);
+		send.setType("text/xml");
+		send.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/Textspansion/subs.xml"));
+		send.putExtra(Intent.EXTRA_SUBJECT, "[Textspansion] Database Export");
+		startActivity(Intent.createChooser(send, "Send email using..."));
+	}
 	
 	public void exportSubs()
 	{
@@ -427,10 +459,9 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 			Cursor c = mSubsCursor;
 			if(!root.exists())
 				root.mkdirs();
-			if(c.getCount() < 1)
-				Toast.makeText(getApplicationContext(), "You have nothing to write out.",Toast.LENGTH_SHORT).show();
-			else if(root.canWrite()){
-				String subs_short = null, subs_full  = null;
+
+			if(root.canWrite()){
+				String subs_short = null, subs_full = null, subs_pvt = null;
 				int i = 0;
 				c.moveToPosition(i);
 				
@@ -446,6 +477,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 					{
 						subs_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 						subs_full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+						subs_pvt = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE));
 						
 						serializer.startTag("", "Subs");
 						serializer.startTag("", "Short");
@@ -454,6 +486,9 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 						serializer.startTag("", "Long");
 						serializer.text(subs_full);
 						serializer.endTag("", "Long");
+						serializer.startTag("", "Private");
+						serializer.text(subs_pvt);
+						serializer.endTag("", "Private");
 						serializer.endTag("", "Subs");
 						
 						c.move(1);

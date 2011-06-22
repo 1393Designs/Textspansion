@@ -177,11 +177,20 @@ public class subsDbAdapter
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_ABBR, abbr);
 		initialValues.put(KEY_FULL, full);
-		if ( pvt )
+		String pvtS;
+		
+		if (pvt)
+		{
+			pvtS = "1";
 			initialValues.put(KEY_PRIVATE, "1");
+		}
 		else
+		{
+			pvtS = "0";
 			initialValues.put(KEY_PRIVATE, "0");
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {abbr, full}, null, null, KEY_ABBR).getCount() != 0)
+		}
+		
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)	
 		{
 			return -1;
 		}
@@ -195,10 +204,11 @@ public class subsDbAdapter
 	 * @param rowId id of sub to delete
 	 * @return true if deleted, false otherwise
 	 */
-	public boolean deleteSub(String oldFull, String oldAbbr)
+	public boolean deleteSub(String oldFull, String oldAbbr, String oldPvt)
 	{
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
-					+KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'";
+					+KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'" + " AND " + KEY_PRIVATE + "='" + oldPvt.replace("'", "''") +"'";
+	
 		return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
 	}
 	

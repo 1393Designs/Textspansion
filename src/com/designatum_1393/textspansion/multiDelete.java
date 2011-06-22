@@ -49,6 +49,7 @@ public class multiDelete extends ListActivity
 	private String full, abbr;
 	private ArrayList<String> aSelected = new ArrayList<String>(0);
 	private ArrayList<String> fSelected = new ArrayList<String>(0);
+	private ArrayList<String> pSelected = new ArrayList<String>(0);
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
@@ -58,16 +59,19 @@ public class multiDelete extends ListActivity
 		c.moveToPosition(position);
 		abbr = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 		full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+		pvt = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE));
 
-		if ( aSelected.contains(abbr) && fSelected.contains(full) )
+		if ( aSelected.contains(abbr) && fSelected.contains(full) && pSelected.contains(pvt))
 		{
 			aSelected.remove(abbr);
 			fSelected.remove(full);
+			pSelected.remove(pvt);
 		}
 		else
 		{
 			aSelected.add(abbr);
 			fSelected.add(full);
+			pSelected.add(pvt);
 		}
 	}
 
@@ -143,7 +147,7 @@ public class multiDelete extends ListActivity
 		mDbHelper.open();
 		for(int i = 0; i < aSelected.size(); i++ )
 		{
-			val = mDbHelper.deleteSub(fSelected.get(i), aSelected.get(i));
+			val = mDbHelper.deleteSub(fSelected.get(i), aSelected.get(i), pSelected.get(i));
 		}
 		fillData();
 	}

@@ -58,23 +58,48 @@ public class importExt extends Activity
 			Element textspansion = doc.getDocumentElement();
 			NodeList shortName = textspansion.getElementsByTagName("Short");
 			NodeList longName = textspansion.getElementsByTagName("Long");
+			NodeList pvts = textspansion.getElementsByTagName("Private");
 			NodeList textie = textspansion.getElementsByTagName("Textspansion");
 			
 			if (textie.getLength() == 0 || (shortName.getLength() <= 0 || longName.getLength() <= 0) || (shortName.getLength() != longName.getLength())) {
 				Toast.makeText(this, "The xml is malformed and can't be imported.", Toast.LENGTH_LONG).show();
 			}
 			else{
-				String shortNameStr, longNameStr;
-				for (int i =0; i<shortName.getLength(); i++)
+				String shortNameStr, longNameStr, pvt;
+				boolean pvtPassIn;
+				if(pvts.getLength() > 0)
 				{
-					shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
-					longNameStr = longName.item(i).getFirstChild().getNodeValue();
-					
-					if(shortNameStr.compareTo("") == 0)
-						shortNameStr = longNameStr;
-					if (mDbHelper.createSub(shortNameStr, longNameStr, false) == -1)
-						Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
+					for (int i =0; i<shortName.getLength(); i++)
+					{
+						shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
+						longNameStr = longName.item(i).getFirstChild().getNodeValue();
+						pvt = pvts.item(i).getFirstChild().getNodeValue();
+						
+						if(pvt.compareTo("1") == 0)
+							pvtPassIn = true;
+						else
+							pvtPassIn = false;
+						
+						if(shortNameStr.compareTo("") == 0)
+							shortNameStr = longNameStr;
+						if (mDbHelper.createSub(shortNameStr, longNameStr, pvtPassIn) == -1)
+							Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
+					}
 				}
+				else
+				{
+					for (int i =0; i<shortName.getLength(); i++)
+					{
+						shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
+						longNameStr = longName.item(i).getFirstChild().getNodeValue();
+						
+						if(shortNameStr.compareTo("") == 0)
+							shortNameStr = longNameStr;
+						if (mDbHelper.createSub(shortNameStr, longNameStr, false) == -1)
+							Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
+					}
+				}
+					
 			}
 		}catch(Exception e){
 			Toast.makeText(this, "Unable to import this file.", Toast.LENGTH_LONG).show();
