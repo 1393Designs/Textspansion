@@ -20,27 +20,17 @@ class delete_list_item extends LinearLayout implements Checkable
 	private CheckBox _checkbox;
 	private String[] arr;
 	private int count = 1;
-	private subsDbAdapter helper = new subsDbAdapter(getContext());
-	private TextView longView;
 
 	public delete_list_item(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
 
+
 	@Override
 	protected void onFinishInflate()
 	{
 		super.onFinishInflate();
-		Log.i("delete_list_item", "finished inflating!");
-		count++;
-		final LinearLayout ll = (LinearLayout)getChildAt(1); // get the inner linearLayout	
-		longView = (TextView) findViewById(R.id.LongText);
-		//Cursor c = helper.fetchAllSubs(false);
-		/*Cursor c = helper.fetchSub((long)count);
-		if ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") )*/
-		longView.setTransformationMethod(new PasswordTransformationMethod());
-
 
 		_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
 	}

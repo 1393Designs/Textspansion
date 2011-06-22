@@ -31,20 +31,21 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.util.AttributeSet;
 import android.text.method.PasswordTransformationMethod;
+import android.view.ViewGroup;
 
+import android.util.Log;
 
 public class multiDelete extends ListActivity
 {
 
 
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
-	private subsDbAdapter helper = new subsDbAdapter(this);
-	//private static subsDbAdapter helper = new subsDbAdapter(getApplicationContext());
+	//private subsDbAdapter helper = new subsDbAdapter(getApplicationContext());
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
-	private SimpleCursorAdapter subsAdapter; 
+	private privitized_adapter subsAdapter; 
 	private String full, abbr;
 	private ArrayList<String> aSelected = new ArrayList<String>(0);
 	private ArrayList<String> fSelected = new ArrayList<String>(0);
@@ -70,6 +71,7 @@ public class multiDelete extends ListActivity
 		}
 	}
 
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -89,10 +91,10 @@ public class multiDelete extends ListActivity
 		
 		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
 		int[] to = new int[]{R.id.ShortText, R.id.LongText};
+
+		final Cursor c = mDbHelper.fetchAllSubs(sortByShort);
 		
-		// Now create an array adapter and set it to display using the stock android row
-		subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-			R.layout.delete_list_item, mSubsCursor, from, to);
+		subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "multidelete");
 
 		setListAdapter(subsAdapter);
 		
@@ -122,11 +124,7 @@ public class multiDelete extends ListActivity
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
 		
-		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-		int[] to = new int[]{R.id.ShortText, R.id.LongText};
-		
-		subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-		R.layout.delete_list_item, mSubsCursor, from, to);
+		subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "multidelete");
 
 		setListAdapter(subsAdapter);
 	}

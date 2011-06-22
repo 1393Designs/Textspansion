@@ -281,24 +281,10 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
 		
-		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
-		int[] to = new int[]{R.id.ShortTextMain, R.id.LongTextMain};
 		
 		// Now create an array adapter and set it to display using the stock android row
-		SimpleCursorAdapter subsAdapter = new SimpleCursorAdapter(getApplicationContext(),
-			R.layout.subs_row, mSubsCursor, from, to);
+		privitized_adapter subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "main");	
 		setListAdapter(subsAdapter);
-
-		/*Cursor c = mSubsCursor;
-		c.moveToStart();
-			final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-		for (int i = 0; i < c.getCount(); c++)
-		{
-			c.moveToPosition(i);
-			String shortText = c.getString(c.getColumnIndexOrThrow(c.KEY_ABBR);
-			String longText  = c.getString(c.getColumnIndexOrThrow(c.KEY_FULL);
-			boolean pvt = (c.getString(c.getColumnIndexOrThrow(c.KEY_PRIVATE)) == "1");
-		}*/
 	}
 
 	public void addItem()
@@ -381,10 +367,13 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 			c.moveToPosition(item);
 			final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 			final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-			final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)) == "1" ); // active high
-			short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
-			long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
-			pvt_box.setChecked(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).compareTo("1") == 0);
+			final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") ); // active high
+//			short_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)));
+//			long_input.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+//			pvt_box.setChecked(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1"));
+			short_input.setText(old_short);
+			long_input.setText(old_full);
+			pvt_box.setChecked(old_pvt);
 		
 		
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
@@ -399,7 +388,7 @@ public class textspansion extends ListActivity implements OnSharedPreferenceChan
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				if ( short_name.equals(old_short) && long_name.equals(old_full) && old_pvt == pvt_box.isChecked() )
+				if ( short_name.equals(old_short) && long_name.equals(old_full) && pvt_box.isChecked() == old_pvt )
 				{
 					dialog.dismiss();
 				}
