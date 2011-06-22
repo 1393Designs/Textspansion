@@ -13,8 +13,8 @@
 		android:paddingRight="10px"
 		android:paddingTop="5px"
 		android:text=
-		"By clicking Accept, you agree to the following condition: \n\nWe are not liable for stolen passwords, identities, credit cards, etc.
-\		This app is not meant to store that important information. Everything is practically stored in plain-text.
+		"By clicking 'Agree', you agree to the following condition: \n\nWe are not liable for stolen passwords, identities, credit cards, etc.
+		\n\nThis app is not meant to store that important information. Everything is practically stored in plain-text.
 		\n\nWith that said, we hope you enjoy using Textspansion!" />
 
 </LinearLayout>

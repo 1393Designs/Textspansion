@@ -2,14 +2,14 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="Settings">
-		<ListPreference android:title="Sort by..." android:summary="Choose how to sort the substitutions list."
+		<ListPreference android:title="Sort by..." android:summary="Choose how to sort the list."
 			android:key="sortie" android:entries="@array/sortBy" android:entryValues="@array/listValues" android:defaultValue="short" />
-		<CheckBoxPreference android:title="End on copy" android:defaultValue="true" android:summary="If checked, the app will close immediately after a substitution is selected." android:key="endOnCopy" />
-		<Preference android:title="Wipe all data" android:summary="This will delete *all* of your substitutions." android:key="deleteAll" />	
+		<CheckBoxPreference android:title="End on copy" android:defaultValue="true" android:summary="If checked, the app will close immediately after an entry is selected." android:key="endOnCopy" />
+		<Preference android:title="Wipe all data" android:summary="This will delete your *entire* database." android:key="deleteAll" />	
 	</PreferenceCategory>
 	
 	<PreferenceCategory android:title="Misc.">
-		<Preference android:title="Tutorial" android:summary="Will add the Tutorial again in the substitutions list." android:key="tutorial" />
+		<Preference android:title="Tutorial" android:summary="Will add the Tutorial again to your database." android:key="tutorial" />
 		<Preference android:title="About" android:key="aboutizzle" />
 	</PreferenceCategory>
 </PreferenceScreen>

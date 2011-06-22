@@ -13,6 +13,6 @@
 		android:paddingRight="10px"
 		android:paddingTop="5px"
 		android:text=
-		"WARNING: There is no undo. This will delete the entire database losing all of your substitutions!" />
+		"WARNING: There is no undo. This will delete the entire database losing all of your entries!" />
 
 </LinearLayout>
