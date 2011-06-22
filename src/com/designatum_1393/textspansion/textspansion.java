@@ -78,7 +78,7 @@ import android.content.Context;
 
 import android.util.Log;
 
-public class textspansion extends ListActivity implements OnSharedPreferenceChangeListener
+public class textspansion extends ListActivity
 {
 	public static final int INSERT_ID = Menu.FIRST;
 	public static final int EXPORT_ID = Menu.NONE;

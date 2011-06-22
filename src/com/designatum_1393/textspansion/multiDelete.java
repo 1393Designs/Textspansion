@@ -46,7 +46,7 @@ public class multiDelete extends ListActivity
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
 	private privitized_adapter subsAdapter; 
-	private String full, abbr;
+	private String full, abbr, pvt;
 	private ArrayList<String> aSelected = new ArrayList<String>(0);
 	private ArrayList<String> fSelected = new ArrayList<String>(0);
 	private ArrayList<String> pSelected = new ArrayList<String>(0);
