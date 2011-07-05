@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.TextView;
 import android.database.Cursor;
-import android.util.Log;
 
 class delete_list_item extends LinearLayout implements Checkable
 {
@@ -50,7 +49,7 @@ class delete_list_item extends LinearLayout implements Checkable
 	@Override
 	public void toggle()
 	{
-		if (_checkbox != null) // necessary?
+		if (_checkbox != null)
 			_checkbox.toggle();
 	}
-} // deleteListItem
+} 

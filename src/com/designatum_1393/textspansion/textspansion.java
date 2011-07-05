@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.content.DialogInterface;
 import java.io.IOException;
+import java.lang.String;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -73,10 +74,10 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
-import android.view.ViewGroup;
 import android.content.Context;
 
 import android.util.Log;
+
 
 public class textspansion extends ListActivity
 {
@@ -115,26 +116,26 @@ public class textspansion extends ListActivity
 			presentEULA();
 			
 		mDbHelper = new subsDbAdapter(this);
-			if(!dbFile.exists()) 
-			{ 
-				 SharedPreferences.Editor editor = sharedPrefs.edit(); 
-				 editor.putString("sortie", "short"); 
-				 editor.commit(); 
-				 addTut = true; 
-			} 
+		if(!dbFile.exists()) 
+		{ 
+			 SharedPreferences.Editor editor = sharedPrefs.edit(); 
+			 editor.putString("sortie", "short"); 
+			 editor.commit(); 
+			 addTut = true; 
+		} 
 
-			if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
-				sortByShort = true;
-			else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
-				sortByShort = false;
+		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
+			sortByShort = true;
+		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
+			sortByShort = false;
 
-			mDbHelper.open();
-			mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-			if(addTut)
-				mDbHelper.addTutorial();
-			fillData();
-			registerForContextMenu(getListView()); 
-			cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+		mDbHelper.open();
+		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
+		if(addTut)
+			mDbHelper.addTutorial();
+		fillData();
+		registerForContextMenu(getListView()); 
+		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 	}
 	
 	@Override
@@ -147,10 +148,6 @@ public class textspansion extends ListActivity
 			, Toast.LENGTH_SHORT).show();
 			
 		cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
-		
-		//Intent psIntent = new Intent(getApplicationContext(), paste_service.class);
-		//getApplicationContext().startService(psIntent);
-
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
 	}
@@ -243,7 +240,9 @@ public class textspansion extends ListActivity
 		}
 	}
 	
-// ---------------------------------- Dialogs ---------------------------------------
+/*-------------------------------------------------------------
+--------------------------- Dialogs ---------------------------
+-------------------------------------------------------------*/
 	public void presentEULA()
 	{
 		AlertDialog.Builder ed = new AlertDialog.Builder(this);
@@ -296,17 +295,15 @@ public class textspansion extends ListActivity
 		exporter.show();
 	}
 
+/*-------------------------------------------------------------
+-------------------- Database Manipulation --------------------
+-------------------------------------------------------------*/
 
-		
-
-// -------------------- Database Manipulation --------------------
 	private void fillData()
 	{
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
 		
-		
-		// Now create an array adapter and set it to display using the stock android row
 		privitized_adapter subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "main");	
 		setListAdapter(subsAdapter);
 	}
@@ -346,13 +343,14 @@ public class textspansion extends ListActivity
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				if(short_name.compareTo("") == 0)
+				if(short_name.compareTo("") == 0 && (long_name.length() > 51))
+					short_name = long_name.substring(0,49);
+				else if (short_name.compareTo("") == 0)
 					short_name = long_name;
 				if( pvt_box.isChecked() )
 					Toast.makeText(getApplicationContext(),
 					"This will be private!", Toast.LENGTH_SHORT).show();
 				if (mDbHelper.createSub(short_name, long_name, pvt_box.isChecked()) == -1)
-//				if (mDbHelper.createSub(short_name, long_name) == -1)
 					Toast.makeText(getApplicationContext(),
 					"That item already exists.", Toast.LENGTH_SHORT).show();
 				fillData();
@@ -385,18 +383,16 @@ public class textspansion extends ListActivity
 					long_input.setTransformationMethod(null);
 			}
 		});
-				
-			// set previous values as defaults
-			Cursor c = mSubsCursor;
-			c.moveToPosition(item);
-			final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-			final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-			final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") ); // active high
-			
-			short_input.setText(old_short);
-			long_input.setText(old_full);
-			pvt_box.setChecked(old_pvt);
 		
+		Cursor c = mSubsCursor;
+		c.moveToPosition(item);
+		final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
+		final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+		final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") ); // active high
+		
+		short_input.setText(old_short);
+		long_input.setText(old_full);
+		pvt_box.setChecked(old_pvt);
 		
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
@@ -416,10 +412,13 @@ public class textspansion extends ListActivity
 				}
 				else
 				{
-					if(short_name.compareTo("") == 0)
+					if(short_name.compareTo("") == 0 && (long_name.length() > 51))
+					{
+						short_name = long_name.substring(0,49);
+					}
+					else if (short_name.compareTo("") == 0)
 						short_name = long_name;
-					 if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()))
-					//if( !mDbHelper.updateSub(old_full, old_short, short_name, long_name))
+					if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()))
 						Toast.makeText(getApplicationContext(),
 						"That item already exists.", Toast.LENGTH_SHORT).show();
 					fillData();
@@ -441,7 +440,9 @@ public class textspansion extends ListActivity
 		fillData();
 	}
 
-// ---------------------------------- FILE I/O -----------------------------------------	
+/*-------------------------------------------------------------
+----------------------- File I/O ------------------------------
+-------------------------------------------------------------*/	
 	
 	public void sendXml()
 	{

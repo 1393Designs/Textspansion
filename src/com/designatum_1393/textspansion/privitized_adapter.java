@@ -1,4 +1,5 @@
 package com.designatum_1393.textspansion;
+
 import android.database.Cursor;
 import android.widget.TextView;
 import android.content.Context;
@@ -43,7 +44,6 @@ public class privitized_adapter extends CursorAdapter
 	@Override
 	public void bindView(View v, Context context, Cursor c)
 	{
-		//LinearLayout ll = (LinearLayout) v.findViewById(R.id.innerLayout);
 		TextView shortView = (TextView) v.findViewById(shortID);
 		TextView longView = (TextView) v.findViewById(longID);
 

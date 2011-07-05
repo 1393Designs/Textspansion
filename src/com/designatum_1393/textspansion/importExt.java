@@ -79,7 +79,7 @@ public class importExt extends Activity
 							pvtPassIn = true;
 						else
 							pvtPassIn = false;
-						
+													
 						if(shortNameStr.compareTo("") == 0)
 							shortNameStr = longNameStr;
 						if (mDbHelper.createSub(shortNameStr, longNameStr, pvtPassIn) == -1)
@@ -92,7 +92,7 @@ public class importExt extends Activity
 					{
 						shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
 						longNameStr = longName.item(i).getFirstChild().getNodeValue();
-						
+												
 						if(shortNameStr.compareTo("") == 0)
 							shortNameStr = longNameStr;
 						if (mDbHelper.createSub(shortNameStr, longNameStr, false) == -1)
