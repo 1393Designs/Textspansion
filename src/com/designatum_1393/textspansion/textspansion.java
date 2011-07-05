@@ -343,7 +343,9 @@ public class textspansion extends ListActivity
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				if(short_name.compareTo("") == 0 && (long_name.length() > 51))
+				if(pvt_box.isChecked() && short_name.compareTo("") == 0)
+						short_name = "Private Entry";
+				else if(short_name.compareTo("") == 0 && (long_name.length() > 51))
 					short_name = long_name.substring(0,49);
 				else if (short_name.compareTo("") == 0)
 					short_name = long_name;
@@ -412,12 +414,15 @@ public class textspansion extends ListActivity
 				}
 				else
 				{
-					if(short_name.compareTo("") == 0 && (long_name.length() > 51))
+					if(pvt_box.isChecked() && short_name.compareTo("") == 0)
+						short_name = "Private Entry";
+					else if(short_name.compareTo("") == 0 && (long_name.length() > 51))
 					{
 						short_name = long_name.substring(0,49);
 					}
 					else if (short_name.compareTo("") == 0)
 						short_name = long_name;
+					
 					if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()))
 						Toast.makeText(getApplicationContext(),
 						"That item already exists.", Toast.LENGTH_SHORT).show();
