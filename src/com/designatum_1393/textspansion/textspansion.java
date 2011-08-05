@@ -243,6 +243,11 @@ public class textspansion extends ListActivity
 /*-------------------------------------------------------------
 --------------------------- Dialogs ---------------------------
 -------------------------------------------------------------*/
+	/** 
+	 * Presents the End User License Agreement (EULA) dialog.  This does not
+	 * check if Textspansion has been launched previously -- that occurs in
+	 * {@link OnCreate}.
+	 */
 	public void presentEULA()
 	{
 		AlertDialog.Builder ed = new AlertDialog.Builder(this);
@@ -271,6 +276,11 @@ public class textspansion extends ListActivity
 		ed.show();
 	}
 
+	/**
+	 * Presents a dialog with export methods.  Currently only supporting email
+	 * and SD card exporting.  This method is called when the user selects
+	 * "Export" from the menu.
+	 */
 	public void chooseExport()
 	{
 		final CharSequence[] choices = {"Email", "SD card"};
