@@ -481,7 +481,12 @@ public class textspansion extends ListActivity
 /*-------------------------------------------------------------
 ----------------------- File I/O ------------------------------
 -------------------------------------------------------------*/	
-	
+
+	/**
+	 * Sends the exported XML representation of the database via email.  Reads
+	 * the previously exported XML file at /sdcard/Textspansion/subs.xml and
+	 * sends it with the email application of the user's choice (or default).
+	 */	
 	public void sendXml()
 	{
 		Intent send = new Intent(Intent.ACTION_SEND);
@@ -490,7 +495,13 @@ public class textspansion extends ListActivity
 		send.putExtra(Intent.EXTRA_SUBJECT, "[Textspansion] Database Export");
 		startActivity(Intent.createChooser(send, "Send email using..."));
 	}
-	
+
+	/**
+	 * Exports the database as an XML file to the SD card.  The .xml file is
+	 * created at /sdcard/Textspansion/subs.xml.  This method is called when
+	 * the user chooses "Export" from the menu.  The output of this method is
+	 * used in the {@link sendXml()} method.
+	 */
 	public void exportSubs()
 	{
 		try{
