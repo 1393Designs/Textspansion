@@ -308,7 +308,11 @@ public class textspansion extends ListActivity
 /*-------------------------------------------------------------
 -------------------- Database Manipulation --------------------
 -------------------------------------------------------------*/
-
+	/**
+	 * Updates the contents of the ListView.  Technically, requerys the
+	 * database, uses that cursor in a new {@link privitized_adapter}, and then
+	 * sets the List Adapter to said adapter.
+	 */
 	private void fillData()
 	{
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
@@ -318,6 +322,13 @@ public class textspansion extends ListActivity
 		setListAdapter(subsAdapter);
 	}
 
+	/**
+	 * Adds an item to the database.  Shows a dialog that allows the user to
+	 * enter a short name, long name, and to choose whether the new item's long
+	 * name should be private.
+	 * 
+	 * This method is called when the user chooses "Add" from the menu.
+	 */  
 	public void addItem()
 	{
 		final Dialog dialog = new Dialog(textspansion.this);
@@ -372,6 +383,12 @@ public class textspansion extends ListActivity
 		dialog.show();
 	}
 	
+	/**
+	 * Edits an item in the database.  Shows a dialog that allows the user to
+	 * edit the selected item's short name, long name, and private state.
+	 * 
+	 * This method is called when the user chooses "Edit" from the context menu.
+	 */  
 	public void editItem(int item)
 	{
 		final int theItem = item+1; // SQL starts counting from 1
@@ -443,7 +460,13 @@ public class textspansion extends ListActivity
 		});
 		dialog.show();
 	}
-	
+
+	/**
+	 * Deletes the selected item from the database.  Note that this does not display a
+	 * confirmation dialog.
+	 *
+	 * This method is called when a user selects "Delete" from the context menu.
+	 */
 	public void deleteItem(int item)
 	{
 		Cursor c = mSubsCursor;
