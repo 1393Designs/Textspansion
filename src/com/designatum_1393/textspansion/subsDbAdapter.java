@@ -29,17 +29,26 @@ public class subsDbAdapter
 	private static final String DATABASE_TABLE = "subs";
 	private static final int DATABASE_VERSION = 3;
 	//Version 1.0 was Database_version 2
-	//Version 1.1 is Database_version 3
+	//Version 1.1+ is Database_version 3
 	private final Context mCtx;
-	
+
+	/**
+	 * Class constructor.  Retains calling application's context, so that it
+	 * can be used in additional functions.
+	 * 
+	 * @param ctx	Calling application's context
+	 */
 	public subsDbAdapter(Context ctx)
 	{
 		this.mCtx = ctx;
 		
 	}
 
+	/**
+	 * Inner class providing a database upgrade process.
+	 */	
 	private static class DatabaseHelper extends SQLiteOpenHelper
-	{		
+	{
 		DatabaseHelper(Context context) 
 		{
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,7 +74,12 @@ public class subsDbAdapter
 			db.update(DATABASE_TABLE, args, null, null);
 		}
 	}
-	
+
+	/**
+	 * Injects the tutorial substitions into the list of items.  This is called
+	 * on first launch, or when the user clicks "Tutorial" from the settings
+	 * menu.
+	 */
 	public void addTutorial()
 	{
 		ContentValues steps = new ContentValues();
@@ -128,6 +142,11 @@ public class subsDbAdapter
 		
 	}
 
+	/**
+	 * Opens the database helper for writing and returns the database adapter.
+	 *
+	 * @return	Database adapter associated with the database.
+	 */
 	public subsDbAdapter open() throws SQLException
 	{
 		mDbHelper = new DatabaseHelper(mCtx);
@@ -135,11 +154,23 @@ public class subsDbAdapter
 		return this;
 	}
 
+	/**
+	 * Closes the database helper.
+	 */
 	public void close()
 	{
 		mDbHelper.close();
 	}
 
+	/**
+	 * Creates a new entry in the database.
+	 *
+	 * @param abbr	Short name of the substitution
+	 * @param full	Long name of the substitution
+	 * @param pvt	String representation of the substitution's private state.
+	 * 				"1" represents true; "0" represents false.
+	 * @return		The row ID of the newly inserted row, or -1 if an error occurred
+	 */
 	public long createSub(String abbr, String full, boolean pvt)
 	{
 		ContentValues initialValues = new ContentValues();
@@ -166,6 +197,15 @@ public class subsDbAdapter
 			return mDb.insert(DATABASE_TABLE, null, initialValues);
 	}
 
+	/**
+	 * Deletes a specific element in the database.
+	 *
+	 * @param oldFull	Long name of the substitution being deleted
+	 * @param oldAbbr	Short name of the substitution being deleted
+	 * @param oldPvt	String representation of the private state for the
+	 * 					substitution being deleted
+	 * @return			True if any items are deleted, false otherwise
+	 */
 	public boolean deleteSub(String oldFull, String oldAbbr, String oldPvt)
 	{
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
@@ -173,12 +213,26 @@ public class subsDbAdapter
 	
 		return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
 	}
-	
+
+	/**
+	 * Deletes all elements in the database, but does not delete the database itself.
+	 *
+	 * @return	True if any items are deleted, false otherwise.
+	 */	
 	public boolean abandonShip()
 	{
 		return mDb.delete(DATABASE_TABLE, null, null) > 0;
 	}
 
+	/**
+	 * Returns a cursor containing every element of the database.  
+	 *
+	 * @param sortByShort	whether to sort by sort or not
+	 *
+	 * @return				Cursor containing the row ID, short name, long
+	 *						name, and private state for each substitution in
+	 *						the database.
+	 */
 	public Cursor fetchAllSubs(boolean sortByShort)
 	{
 		if(sortByShort)
@@ -189,6 +243,11 @@ public class subsDbAdapter
 				KEY_FULL, KEY_PRIVATE}, null, null, null, null, KEY_FULL);
 	}
 
+	/**
+	 * Gets a cursor contaning the element at a certain row ID.
+	 *
+	 * @param rowId		Row in the database containing the desired element.
+	 */
 	public Cursor fetchSub(long rowId) throws SQLException
 	{
 
@@ -205,6 +264,21 @@ public class subsDbAdapter
 
 	}
 
+	/**
+	 * Updates updates an alement in the database.
+	 *
+	 * @param oldFull	Previous long name
+	 * @param oldAbbr	Previous short name
+	 * @param oldPvt	Previous private state (boolean representation)
+	 * @param abbr		New short name
+	 * @param full		New long name
+	 * @param pvt		New private state (boolean representation)
+	 *
+	 * @return 			True if at least one element was modified,
+	 * 					false if none were changed, and false no element
+	 * 					containing oldFull, oldAbbr, and oldPvt exists in the
+	 * 					database.
+	 */
 	public boolean updateSub(String oldFull, String oldAbbr, boolean oldPvt, String abbr, String full, boolean pvt)
 	{
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
