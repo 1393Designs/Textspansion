@@ -41,7 +41,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
 
-//Export 
+//Export
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -78,6 +78,11 @@ import android.content.Context;
 
 import android.util.Log;
 
+// actionbar
+import com.markupartist.android.widget.ActionBar;
+import com.markupartist.android.widget.ActionBar.Action;
+import com.markupartist.android.widget.ActionBar.IntentAction;
+
 
 public class textspansion extends ListActivity
 {
@@ -90,54 +95,61 @@ public class textspansion extends ListActivity
 	private Cursor mSubsCursor;
 
 	private ClipboardManager cb;
-	
+
 	private String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
 	private static final String TAG = "Textspansion: SubsList";
 
 	private File dbFile = new File("/data/data/com.designatum_1393.textspansion/databases/", "data");
 	private boolean addTut = false;
-	
+
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort = true;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subs_list); // TODO: change to a real list
-		
+
 		//Setup preferences
 		prefs = this.getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
-		
+
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		if(!sharedPrefs.getBoolean("EULA", false))
 			presentEULA();
-			
+
 		mDbHelper = new subsDbAdapter(this);
-		if(!dbFile.exists()) 
-		{ 
-			 SharedPreferences.Editor editor = sharedPrefs.edit(); 
-			 editor.putString("sortie", "short"); 
-			 editor.commit(); 
-			 addTut = true; 
-		} 
+		if(!dbFile.exists())
+		{
+			 SharedPreferences.Editor editor = sharedPrefs.edit();
+			 editor.putString("sortie", "short");
+			 editor.commit();
+			 addTut = true;
+		}
 
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
 
+		// ----- actionbar -----
+		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+		// you can also assign the title programmatically bu passing a
+		// CharSequence or resource id.
+		actionBar.setTitle("Substitution List");
+		//actionbar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
+
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		if(addTut)
 			mDbHelper.addTutorial();
 		fillData();
-		registerForContextMenu(getListView()); 
+		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 	}
-	
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
 	{
@@ -146,7 +158,7 @@ public class textspansion extends ListActivity
 		c.moveToPosition(position);
 		Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
 			, Toast.LENGTH_SHORT).show();
-			
+
 		cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
@@ -158,19 +170,19 @@ public class textspansion extends ListActivity
 		super.onStop();
 		mDbHelper.close();
 	}
-	
+
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-	
+
 		mDbHelper.open();
-			
+
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
-		
+
 		if(prefs.contains("tutorial"))
 		{
 			mDbHelper.addTutorial();
@@ -180,7 +192,7 @@ public class textspansion extends ListActivity
 		}
 		fillData();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -213,7 +225,7 @@ public class textspansion extends ListActivity
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
@@ -239,11 +251,11 @@ public class textspansion extends ListActivity
 				return super.onContextItemSelected(item);
 		}
 	}
-	
+
 /*-------------------------------------------------------------
 --------------------------- Dialogs ---------------------------
 -------------------------------------------------------------*/
-	/** 
+	/**
 	 * Presents the End User License Agreement (EULA) dialog.  This does not
 	 * check if Textspansion has been launched previously -- that occurs in
 	 * {@link OnCreate}.
@@ -255,21 +267,21 @@ public class textspansion extends ListActivity
 		ed.setTitle("End-User License Agreement");
 		ed.setView(LayoutInflater.from(this).inflate(R.layout.eula_dialog,null));
 
-		ed.setPositiveButton("Agree", 
+		ed.setPositiveButton("Agree",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
-			SharedPreferences.Editor editor = sharedPrefs.edit(); 
-			editor.putBoolean("EULA", true); 
-			editor.commit(); 
+			SharedPreferences.Editor editor = sharedPrefs.edit();
+			editor.putBoolean("EULA", true);
+			editor.commit();
 			}
 		});
-		
-		ed.setNegativeButton("Disagree (You will be kicked out)", 
+
+		ed.setNegativeButton("Disagree (You will be kicked out)",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
-			SharedPreferences.Editor editor = sharedPrefs.edit(); 
+			SharedPreferences.Editor editor = sharedPrefs.edit();
 			editor.putBoolean("EULA", false);
-			editor.commit(); 
+			editor.commit();
 			finish();
 			}
 		});
@@ -284,7 +296,7 @@ public class textspansion extends ListActivity
 	public void chooseExport()
 	{
 		final CharSequence[] choices = {"Email", "SD card"};
-		
+
 		AlertDialog.Builder exporter = new AlertDialog.Builder(this);
 		exporter.setIcon(R.drawable.icon);
 		exporter.setTitle("Choose where to export to:");
@@ -317,8 +329,8 @@ public class textspansion extends ListActivity
 	{
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
-		
-		privitized_adapter subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "main");	
+
+		privitized_adapter subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "main");
 		setListAdapter(subsAdapter);
 	}
 
@@ -326,21 +338,21 @@ public class textspansion extends ListActivity
 	 * Adds an item to the database.  Shows a dialog that allows the user to
 	 * enter a short name, long name, and to choose whether the new item's long
 	 * name should be private.
-	 * 
+	 *
 	 * This method is called when the user chooses "Add" from the menu.
-	 */  
+	 */
 	public void addItem()
 	{
 		final Dialog dialog = new Dialog(textspansion.this);
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Adding an Entry");
 		dialog.setCancelable(true);
-		
+
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
 		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
 		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
-	
+
 		final CheckBox pvt_box = (CheckBox) dialog.findViewById(R.id.pvt_box);
 		pvt_box.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -358,7 +370,7 @@ public class textspansion extends ListActivity
 				dialog.dismiss();
 			}
 		});
-		
+
 		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 		okay_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -382,13 +394,13 @@ public class textspansion extends ListActivity
 		});
 		dialog.show();
 	}
-	
+
 	/**
 	 * Edits an item in the database.  Shows a dialog that allows the user to
 	 * edit the selected item's short name, long name, and private state.
-	 * 
+	 *
 	 * This method is called when the user chooses "Edit" from the context menu.
-	 */  
+	 */
 	public void editItem(int item)
 	{
 		final int theItem = item+1; // SQL starts counting from 1
@@ -396,12 +408,12 @@ public class textspansion extends ListActivity
 		dialog.setContentView(R.menu.maindialog);
 		dialog.setTitle("Editing an Entry");
 		dialog.setCancelable(true);
-		
+
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
 		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
 		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
 		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
-		
+
 		final CheckBox pvt_box = (CheckBox) dialog.findViewById(R.id.pvt_box);
 		pvt_box.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -412,24 +424,24 @@ public class textspansion extends ListActivity
 					long_input.setTransformationMethod(null);
 			}
 		});
-		
+
 		Cursor c = mSubsCursor;
 		c.moveToPosition(item);
 		final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 		final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
 		final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") ); // active high
-		
+
 		short_input.setText(old_short);
 		long_input.setText(old_full);
 		pvt_box.setChecked(old_pvt);
-		
+
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				dialog.dismiss();
 			}
 		});
-		
+
 		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 		okay_button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -449,7 +461,7 @@ public class textspansion extends ListActivity
 					}
 					else if (short_name.compareTo("") == 0)
 						short_name = long_name;
-					
+
 					if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()))
 						Toast.makeText(getApplicationContext(),
 						"That item already exists.", Toast.LENGTH_SHORT).show();
@@ -480,13 +492,13 @@ public class textspansion extends ListActivity
 
 /*-------------------------------------------------------------
 ----------------------- File I/O ------------------------------
--------------------------------------------------------------*/	
+-------------------------------------------------------------*/
 
 	/**
 	 * Sends the exported XML representation of the database via email.  Reads
 	 * the previously exported XML file at /sdcard/Textspansion/subs.xml and
 	 * sends it with the email application of the user's choice (or default).
-	 */	
+	 */
 	public void sendXml()
 	{
 		Intent send = new Intent(Intent.ACTION_SEND);
@@ -514,7 +526,7 @@ public class textspansion extends ListActivity
 				String subs_short = null, subs_full = null, subs_pvt = null;
 				int i = 0;
 				c.moveToPosition(i);
-				
+
 				File outTXT = new File(extStoDir, "subs.xml");
 				XmlSerializer serializer = Xml.newSerializer();
 				FileOutputStream fio = new FileOutputStream(outTXT);
@@ -522,13 +534,13 @@ public class textspansion extends ListActivity
 					serializer.setOutput(fio, null);
 					serializer.startDocument("UTF-8", true);
 					serializer.startTag("", "Textspansion");
-					
+
 					do
 					{
 						subs_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
 						subs_full = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
 						subs_pvt = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE));
-						
+
 						serializer.startTag("", "Subs");
 						serializer.startTag("", "Short");
 						serializer.text(subs_short);
@@ -540,16 +552,16 @@ public class textspansion extends ListActivity
 						serializer.text(subs_pvt);
 						serializer.endTag("", "Private");
 						serializer.endTag("", "Subs");
-						
+
 						c.move(1);
 					}while(!c.isAfterLast());
-					
+
 					serializer.endTag("", "Textspansion");
 					serializer.endDocument();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
-				} 
-				
+				}
+
 				Toast.makeText(getApplicationContext(), "Substitutions saved to SD!",Toast.LENGTH_SHORT).show();
 			}
 			else
