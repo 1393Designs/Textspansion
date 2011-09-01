@@ -1,0 +1,5 @@
+build.xml
+proguard.cfg
+bin/*
+gen/*
+*.*.swp

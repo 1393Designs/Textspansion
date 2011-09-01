@@ -106,6 +106,21 @@ public class textspansion extends ListActivity
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort = true;
 
+	private class AddAction implements Action
+	{
+		@Override
+		public int getDrawable()
+		{
+			return android.R.drawable.ic_menu_add;
+		}
+
+		@Override
+		public void performAction(View view)
+		{
+			addItem();
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -139,6 +154,7 @@ public class textspansion extends ListActivity
 		// you can also assign the title programmatically bu passing a
 		// CharSequence or resource id.
 		actionBar.setTitle("Substitution List");
+		actionBar.addAction(new AddAction());
 		//actionbar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
 
 		mDbHelper.open();
