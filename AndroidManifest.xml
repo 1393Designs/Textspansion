@@ -36,7 +36,8 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name="importExt" android:label="Import data to Textspansion">
+		<activity android:name="importExt"
+		  android:label="Import data to Textspansion">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -44,11 +45,14 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name="settings" android:label="@string/tab_title_settings" android:configChanges="orientation|keyboardHidden"/>
+		<activity android:name="settings"
+		  android:label="@string/tab_title_settings"
+		  android:configChanges="orientation|keyboardHidden"
+		  android:theme="@android:style/Theme.NoTitleBar"/>
 
-		<activity android:name="multiDelete" android:label="Multi-Delete" android:configChanges="orientation|keyboardHidden"/>
-
-		<service android:name=".UpdaterService" />
-
+		<activity android:name="multiDelete"
+		  android:label="Multi-Delete"
+		  android:configChanges="orientation|keyboardHidden"
+		  android:theme="@android:style/Theme.NoTitleBar"/>
 	</application>
 </manifest>
