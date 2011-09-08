@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-public class subsDbAdapter 
+public class subsDbAdapter
 {
 
 	public static final String KEY_ABBR = "abbr"; // short name of the sub
@@ -28,28 +28,30 @@ public class subsDbAdapter
 	private static final String DATABASE_NAME = "data";
 	private static final String DATABASE_TABLE = "subs";
 	private static final int DATABASE_VERSION = 3;
+	//private static final int DATABASE_VERSION = 4;
 	//Version 1.0 was Database_version 2
-	//Version 1.1+ is Database_version 3
+	//Version 1.1 is Database_version 3
+	//Version 1.2 is Database_version 4
 	private final Context mCtx;
 
 	/**
 	 * Class constructor.  Retains calling application's context, so that it
 	 * can be used in additional functions.
-	 * 
+	 *
 	 * @param ctx	Calling application's context
 	 */
 	public subsDbAdapter(Context ctx)
 	{
 		this.mCtx = ctx;
-		
+
 	}
 
 	/**
 	 * Inner class providing a database upgrade process.
-	 */	
+	 */
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
-		DatabaseHelper(Context context) 
+		DatabaseHelper(Context context)
 		{
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
@@ -67,11 +69,17 @@ public class subsDbAdapter
 		{
 			//db.execSQL("DROP TABLE IF EXISTS subs");
 			//onCreate(db);
-			
-			db.execSQL("ALTER TABLE subs ADD COLUMN _pvt text null");
-			ContentValues args = new ContentValues();
-			args.put(KEY_PRIVATE, "0");
-			db.update(DATABASE_TABLE, args, null, null);
+			if (oldVersion == 2)
+			{
+				db.execSQL("ALTER TABLE subs ADD COLUMN _pvt text null");
+				ContentValues args = new ContentValues();
+				args.put(KEY_PRIVATE, "0");
+				db.update(DATABASE_TABLE, args, null, null);
+			}
+			else if (oldVersion == 3)
+			{
+				// add new table
+			}
 		}
 	}
 
@@ -84,62 +92,62 @@ public class subsDbAdapter
 	{
 		ContentValues steps = new ContentValues();
 		String shortName, longName;
-		
+
 		shortName = "1) Welcome!";
 		longName = "- Welcome to Textspansion, the first rapid text-insertion app for Android!";
-		
+
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
+
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
 			mDb.insert(DATABASE_TABLE, null, steps);
-		
+
 		shortName = "2) How To Use";
-		longName = "- You can access the app by long-pressing the device's Search button\n\n" + 
+		longName = "- You can access the app by long-pressing the device's Search button\n\n" +
 			"- Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.\n\n" +
 			"- Simply paste it where ever you want it!";
-		
+
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
+
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
 			mDb.insert(DATABASE_TABLE, null, steps);
-		
+
 		shortName = "3) Adding";
-		longName = "- Click your device's menu key, then \"Add!\"\n" + 
-			"- Long-pressing on an item to edit or delete it.\n\n" + 
+		longName = "- Click your device's menu key, then \"Add!\"\n" +
+			"- Long-pressing on an item to edit or delete it.\n\n" +
 			"- You can delete multiple items at the same time by clicking the device's menu button and select multi-delete.";
-		
+
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
+
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
 			mDb.insert(DATABASE_TABLE, null, steps);
-			
+
 		shortName = "4) Data Management";
 		longName = "- You can export all of your substitutions by selecting \"Export\" in the menu. The exported file will be located in '/sdcard/Textspansion/' \n\n" +
 			"- To import that data you can either email that file to yourself and open the file that way or locate the file from your phone and open it directly.";
-		
+
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
+
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
 			mDb.insert(DATABASE_TABLE, null, steps);
-			
+
 		shortName = "5) Get Started!";
 		longName = "- The tutorial is accessible via the settings panel. Happy Textspanding!";
-		
+
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
+
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
 			mDb.insert(DATABASE_TABLE, null, steps);
-		
+
 	}
 
 	/**
@@ -177,7 +185,7 @@ public class subsDbAdapter
 		initialValues.put(KEY_ABBR, abbr);
 		initialValues.put(KEY_FULL, full);
 		String pvtS;
-		
+
 		if (pvt)
 		{
 			pvtS = "1";
@@ -188,8 +196,8 @@ public class subsDbAdapter
 			pvtS = "0";
 			initialValues.put(KEY_PRIVATE, "0");
 		}
-		
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)	
+
+		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)
 		{
 			return -1;
 		}
@@ -210,7 +218,7 @@ public class subsDbAdapter
 	{
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
 					+KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'" + " AND " + KEY_PRIVATE + "='" + oldPvt.replace("'", "''") +"'";
-	
+
 		return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
 	}
 
@@ -218,14 +226,14 @@ public class subsDbAdapter
 	 * Deletes all elements in the database, but does not delete the database itself.
 	 *
 	 * @return	True if any items are deleted, false otherwise.
-	 */	
+	 */
 	public boolean abandonShip()
 	{
 		return mDb.delete(DATABASE_TABLE, null, null) > 0;
 	}
 
 	/**
-	 * Returns a cursor containing every element of the database.  
+	 * Returns a cursor containing every element of the database.
 	 *
 	 * @param sortByShort	whether to sort by sort or not
 	 *
