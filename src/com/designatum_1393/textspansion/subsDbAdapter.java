@@ -27,8 +27,7 @@ public class subsDbAdapter
 
 	private static final String DATABASE_NAME = "data";
 	private static final String DATABASE_TABLE = "subs";
-	private static final int DATABASE_VERSION = 3;
-	//private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 4;
 	//Version 1.0 was Database_version 2
 	//Version 1.1 is Database_version 3
 	//Version 1.2 is Database_version 4
@@ -78,7 +77,8 @@ public class subsDbAdapter
 			}
 			else if (oldVersion == 3)
 			{
-				// add new table
+				db.execSQL("create table clips (_id integer primary key autoincrement, "
+					+ "date text not null, string text not null);");
 			}
 		}
 	}
