@@ -83,6 +83,10 @@ import com.markupartist.android.widget.ActionBar;
 import com.markupartist.android.widget.ActionBar.Action;
 import com.markupartist.android.widget.ActionBar.IntentAction;
 
+// clipboard date/time
+import java.text.DateFormat;
+import java.util.Date;
+
 
 public class textspansion extends ListActivity
 {
@@ -106,6 +110,10 @@ public class textspansion extends ListActivity
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort = true;
 
+
+	// using default locale here.  This may not be safe for machine reading
+	private DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+
 	private class AddAction implements Action
 	{
 		@Override
@@ -120,6 +128,13 @@ public class textspansion extends ListActivity
 			addItem();
 		}
 	}
+
+	public String makeDateTime()
+	{
+		return formatter.format(new Date());
+		//return formatter.format("MMM dd, yyyy h:mmaa", Calendar.getInstance());
+	}
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -164,6 +179,15 @@ public class textspansion extends ListActivity
 		fillData();
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+
+
+		// add the current clipboard text if it exists.
+		// duplicate protection is handled by the database add function
+		if ( !cb.getText().toString().isEmpty() )
+		{
+			mDbHelper.createSub(makeDateTime(), cb.getText().toString(), false);
+		}
+
 	}
 
 	@Override
