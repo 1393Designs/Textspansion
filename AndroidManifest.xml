@@ -54,5 +54,10 @@
 		  android:label="Multi-Delete"
 		  android:configChanges="orientation|keyboardHidden"
 		  android:theme="@android:style/Theme.NoTitleBar"/>
+
+		<activity android:name="clipsList"
+		  android:label="Clipboard History"
+		  android:configChanges="orientation|keyboardHidden"
+		  android:theme="@android:style/Theme.NoTitleBar"/>
 	</application>
 </manifest>
