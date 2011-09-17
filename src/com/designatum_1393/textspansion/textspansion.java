@@ -185,7 +185,7 @@ public class textspansion extends ListActivity
 		// duplicate protection is handled by the database add function
 		if ( !cb.getText().toString().isEmpty() )
 		{
-			mDbHelper.createSub(makeDateTime(), cb.getText().toString(), false);
+			mDbHelper.createClip(makeDateTime(), cb.getText().toString());
 		}
 
 	}
