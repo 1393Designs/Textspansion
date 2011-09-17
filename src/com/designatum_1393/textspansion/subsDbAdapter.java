@@ -66,20 +66,15 @@ public class subsDbAdapter
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			//db.execSQL("DROP TABLE IF EXISTS subs");
-			//onCreate(db);
 			if (oldVersion == 2)
 			{
 				db.execSQL("ALTER TABLE subs ADD COLUMN _pvt text null");
 				ContentValues args = new ContentValues();
 				args.put(KEY_PRIVATE, "0");
-				db.update(DATABASE_TABLE, args, null, null);
+				db.update(SUBS_TABLE, args, null, null);
 			}
-			else if (oldVersion == 3)
-			{
-				db.execSQL("create table clips (_id integer primary key autoincrement, "
-					+ "date text not null, string text not null);");
-			}
+			db.execSQL("CREATE TABLE clips (_id integer primary key autoincrement, "
+				+ "date text not null, clip text not null);");
 		}
 	}
 
