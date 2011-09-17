@@ -15,6 +15,8 @@ public class subsDbAdapter
 	public static final String KEY_FULL = "full"; // full sub
 	public static final String KEY_ROWID = "_id"; // row's id
 	public static final String KEY_PRIVATE = "_pvt"; // private status of the sub
+	public static final String KEY_CLIP = "clip";
+	public static final String KEY_DATE = "date";
 		// uses binary logic (active high) in an int for this
 
 	private static final String TAG = "Textspansion: subsDbAdapter";
@@ -26,7 +28,8 @@ public class subsDbAdapter
 		+ "abbr text not null, full text not null, _pvt text not null);";
 
 	private static final String DATABASE_NAME = "data";
-	private static final String DATABASE_TABLE = "subs";
+	private static final String SUBS_TABLE = "subs";
+	private static final String CLIPS_TABLE = "clips";
 	private static final int DATABASE_VERSION = 4;
 	//Version 1.0 was Database_version 2
 	//Version 1.1 is Database_version 3
@@ -95,8 +98,8 @@ public class subsDbAdapter
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
 
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
-			mDb.insert(DATABASE_TABLE, null, steps);
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
+			mDb.insert(SUBS_TABLE, null, steps);
 
 		shortName = "2) How To Use";
 		longName = "- You can access the app by long-pressing the device's Search button\n\n" +
@@ -107,8 +110,8 @@ public class subsDbAdapter
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
 
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
-			mDb.insert(DATABASE_TABLE, null, steps);
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
+			mDb.insert(SUBS_TABLE, null, steps);
 
 		shortName = "3) Adding";
 		longName = "- Click your device's menu key, then \"Add!\"\n" +
@@ -119,8 +122,8 @@ public class subsDbAdapter
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
 
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
-			mDb.insert(DATABASE_TABLE, null, steps);
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
+			mDb.insert(SUBS_TABLE, null, steps);
 
 		shortName = "4) Data Management";
 		longName = "- You can export all of your substitutions by selecting \"Export\" in the menu. The exported file will be located in '/sdcard/Textspansion/' \n\n" +
@@ -130,8 +133,8 @@ public class subsDbAdapter
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
 
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
-			mDb.insert(DATABASE_TABLE, null, steps);
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
+			mDb.insert(SUBS_TABLE, null, steps);
 
 		shortName = "5) Get Started!";
 		longName = "- The tutorial is accessible via the settings panel. Happy Textspanding!";
@@ -140,8 +143,8 @@ public class subsDbAdapter
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
 
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
-			mDb.insert(DATABASE_TABLE, null, steps);
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)
+			mDb.insert(SUBS_TABLE, null, steps);
 
 	}
 
@@ -192,12 +195,12 @@ public class subsDbAdapter
 			initialValues.put(KEY_PRIVATE, "0");
 		}
 
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)
 		{
 			return -1;
 		}
 		else
-			return mDb.insert(DATABASE_TABLE, null, initialValues);
+			return mDb.insert(SUBS_TABLE, null, initialValues);
 	}
 
 	/**
@@ -214,7 +217,7 @@ public class subsDbAdapter
 		String whereClause = KEY_FULL +"='" +oldFull.replace("'", "''") +"'" +" AND "
 					+KEY_ABBR +"='" +oldAbbr.replace("'", "''") +"'" + " AND " + KEY_PRIVATE + "='" + oldPvt.replace("'", "''") +"'";
 
-		return mDb.delete(DATABASE_TABLE, whereClause, null) > 0;
+		return mDb.delete(SUBS_TABLE, whereClause, null) > 0;
 	}
 
 	/**
@@ -224,7 +227,7 @@ public class subsDbAdapter
 	 */
 	public boolean abandonShip()
 	{
-		return mDb.delete(DATABASE_TABLE, null, null) > 0;
+		return mDb.delete(SUBS_TABLE, null, null) > 0;
 	}
 
 	/**
@@ -239,10 +242,10 @@ public class subsDbAdapter
 	public Cursor fetchAllSubs(boolean sortByShort)
 	{
 		if(sortByShort)
-			return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
+			return mDb.query(SUBS_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
 				KEY_FULL, KEY_PRIVATE}, null, null, null, null, KEY_ABBR);
 		else
-			return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
+			return mDb.query(SUBS_TABLE, new String[] {KEY_ROWID, KEY_ABBR,
 				KEY_FULL, KEY_PRIVATE}, null, null, null, null, KEY_FULL);
 	}
 
@@ -256,7 +259,7 @@ public class subsDbAdapter
 
 		Cursor mCursor =
 
-			mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
+			mDb.query(true, SUBS_TABLE, new String[] {KEY_ROWID,
 					KEY_ABBR, KEY_FULL, KEY_PRIVATE}, KEY_ROWID + "=" + rowId, null,
 					null, null, null, null);
 		if (mCursor != null)
@@ -294,11 +297,53 @@ public class subsDbAdapter
 			args.put(KEY_PRIVATE, "1");
 		else
 			args.put(KEY_PRIVATE, "0");
-		if (mDb.query(DATABASE_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and " +KEY_PRIVATE +"=?", new String[] {abbr, full, pvt?"1":"0"}, null, null, KEY_ABBR).getCount() != 0)
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and " +KEY_PRIVATE +"=?", new String[] {abbr, full, pvt?"1":"0"}, null, null, KEY_ABBR).getCount() != 0)
 		{
 			return false;
 		}
 		else
-			return mDb.update(DATABASE_TABLE, args, whereClause, null) > 0;
+			return mDb.update(SUBS_TABLE, args, whereClause, null) > 0;
 	}
+
+	/* ###############################################################################################
+	 * ####################################### clipboard stuff #######################################
+	 * ###############################################################################################
+	 */
+
+	public Cursor fetchAllClips(boolean sortByDate)
+	{
+		return mDb.query(CLIPS_TABLE, new String[] {KEY_ROWID, KEY_DATE,
+			KEY_CLIP}, null, null, null, null, KEY_DATE);
+/*		if(sortByDate)
+			return mDb.query(CLIPS_TABLE, new String[] {KEY_DATE, KEY_CLIP},
+				null, null, null, null, KEY_DATE);
+		else
+			return mDb.query(SUBS_TABLE, new String[] {KEY_DATE, KEY_CLIP},
+				null, null, null, null, KEY_CLIP);*/
+	}
+
+
+
+	/**
+	 * Creates a new clipboard entry in the appropriate table.
+	 *
+	 * @param date	Time to associate with this clip, in the form
+	 * 				TODO: Determine format
+	 * @param clip	Text taken from the clipboard
+	 * @return		The row ID of the newly inserted row, or -1 if an error occurred
+	 */
+/*	public long createClip(String date, String clip)
+	{
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_DATE, date);
+		initialValues.put(KEY_CLIP, clip);
+
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)
+		{
+			return -1;
+		}
+		else
+			return mDb.insert(SUBS_TABLE, null, initialValues);
+	}*/
+
 }
