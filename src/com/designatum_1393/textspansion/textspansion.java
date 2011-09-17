@@ -238,6 +238,9 @@ public class textspansion extends ListActivity
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));
 				return true;
+			case R.id.clips:
+				startActivity(new Intent(this, clipsList.class));
+				return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
