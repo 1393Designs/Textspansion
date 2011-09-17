@@ -332,18 +332,18 @@ public class subsDbAdapter
 	 * @param clip	Text taken from the clipboard
 	 * @return		The row ID of the newly inserted row, or -1 if an error occurred
 	 */
-/*	public long createClip(String date, String clip)
+	public long createClip(String date, String clip)
 	{
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_DATE, date);
 		initialValues.put(KEY_CLIP, clip);
 
-		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)
+		if (mDb.query(CLIPS_TABLE, new String[] {KEY_CLIP}, KEY_DATE +"=? and " +KEY_CLIP +"=?", new String[] {date, clip}, null, null, KEY_DATE).getCount() != 0)
 		{
 			return -1;
 		}
 		else
-			return mDb.insert(SUBS_TABLE, null, initialValues);
-	}*/
+			return mDb.insert(CLIPS_TABLE, null, initialValues);
+	}
 
 }
