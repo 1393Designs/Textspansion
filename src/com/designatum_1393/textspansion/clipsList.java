@@ -298,67 +298,6 @@ public class clipsList extends ListActivity
 	}
 
 	/**
-	 * Adds an item to the database.  Shows a dialog that allows the user to
-	 * enter a short name, long name, and to choose whether the new item's long
-	 * name should be private.
-	 *
-	 * This method is called when the user chooses "Add" from the menu.
-	 */
-	public void addItem()
-	{
-		final Dialog dialog = new Dialog(clipsList.this);
-		dialog.setContentView(R.menu.maindialog);
-		dialog.setTitle("Adding an Entry");
-		dialog.setCancelable(true);
-
-		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
-		final EditText short_input = (EditText) dialog.findViewById(R.id.short_entry);
-		TextView long_text = (TextView) dialog.findViewById(R.id.long_label);
-		final EditText long_input = (EditText) dialog.findViewById(R.id.long_entry);
-
-		final CheckBox pvt_box = (CheckBox) dialog.findViewById(R.id.pvt_box);
-		pvt_box.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-			{
-				if ( isChecked )
-					long_input.setTransformationMethod(new PasswordTransformationMethod());
-				else
-					long_input.setTransformationMethod(null);
-			}
-		});
-
-		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
-		cancel_button.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				dialog.dismiss();
-			}
-		});
-
-		Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
-		okay_button.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				String short_name = short_input.getText().toString();
-				String long_name = long_input.getText().toString();
-				if(pvt_box.isChecked() && short_name.compareTo("") == 0)
-						short_name = "Private Entry";
-				else if(short_name.compareTo("") == 0 && (long_name.length() > 51))
-					short_name = long_name.substring(0,49);
-				else if (short_name.compareTo("") == 0)
-					short_name = long_name;
-				if( pvt_box.isChecked() )
-					Toast.makeText(getApplicationContext(),
-					"This will be private!", Toast.LENGTH_SHORT).show();
-				if (mDbHelper.createSub(short_name, long_name, pvt_box.isChecked()) == -1)
-					Toast.makeText(getApplicationContext(),
-					"That item already exists.", Toast.LENGTH_SHORT).show();
-				fillData();
-				dialog.dismiss();
-			}
-		});
-		dialog.show();
-	}
-
-	/**
 	 * Saves an item to the persistent list.  Shows a dialog that allows the user to
 	 * edit the selected item's short name, long name, and private state.
 	 *
