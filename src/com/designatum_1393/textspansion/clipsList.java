@@ -226,7 +226,7 @@ public class clipsList extends ListActivity
 	{
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.sub_context_menu, menu);
+		inflater.inflate(R.menu.clips_context_menu, menu);
 	}
 
 	@Override
@@ -236,8 +236,8 @@ public class clipsList extends ListActivity
 
 		switch (item.getItemId()) // can get replaced by android:onClick="method name" in sub_context_menu.xml?
 		{
-			case R.id.edit_item:
-				editItem(info.position);
+			case R.id.save_item:
+				saveItem(info.position);
 				return true;
 			case R.id.delete_item:
 				deleteItem(info.position);
