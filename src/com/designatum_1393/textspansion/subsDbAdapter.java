@@ -338,7 +338,7 @@ public class subsDbAdapter
 		initialValues.put(KEY_DATE, date);
 		initialValues.put(KEY_CLIP, clip);
 
-		if (mDb.query(CLIPS_TABLE, new String[] {KEY_CLIP}, KEY_DATE +"=? and " +KEY_CLIP +"=?", new String[] {date, clip}, null, null, KEY_DATE).getCount() != 0)
+		if (mDb.query(CLIPS_TABLE, new String[] {KEY_CLIP}, KEY_CLIP +"=?", new String[] {clip}, null, null, KEY_DATE).getCount() != 0)
 		{
 			return -1;
 		}
