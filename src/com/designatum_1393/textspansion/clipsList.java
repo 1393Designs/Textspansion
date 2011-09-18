@@ -445,10 +445,8 @@ public class clipsList extends ListActivity
 	{
 		Cursor c = mClipsCursor;
 		c.moveToPosition(item);
-		final String old_short = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-		final String old_full  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-		final String old_pvt  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE));
-		mDbHelper.deleteSub(old_full, old_short, old_pvt);
+		final String old_clip  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_CLIP));
+		mDbHelper.deleteClip(old_clip);
 		fillData();
 	}
 
