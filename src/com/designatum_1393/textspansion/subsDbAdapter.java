@@ -310,8 +310,17 @@ public class subsDbAdapter
 	 * ###############################################################################################
 	 */
 
+	/**
+	 * Returns a cursor containing every element of the database.
+	 *
+	 * @param sortByDate	whether to sort by date or text
+	 *
+	 * @return				Cursor containing the row ID, date, and clipped text
+	 *						for each item in the clipboard history's table.
+	 */
 	public Cursor fetchAllClips(boolean sortByDate)
 	{
+		// NOTE: statically defined to sort by date for now.
 		return mDb.query(CLIPS_TABLE, new String[] {KEY_ROWID, KEY_DATE,
 			KEY_CLIP}, null, null, null, null, KEY_DATE);
 /*		if(sortByDate)
