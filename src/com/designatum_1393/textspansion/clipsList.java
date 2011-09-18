@@ -365,17 +365,17 @@ public class clipsList extends ListActivity
 	}
 
 	/**
-	 * Edits an item in the database.  Shows a dialog that allows the user to
+	 * Saves an item to the persistent list.  Shows a dialog that allows the user to
 	 * edit the selected item's short name, long name, and private state.
 	 *
 	 * This method is called when the user chooses "Edit" from the context menu.
 	 */
-	public void editItem(int item)
+	public void saveItem(int item)
 	{
 		final int theItem = item+1; // SQL starts counting from 1
 		final Dialog dialog = new Dialog(clipsList.this);
 		dialog.setContentView(R.menu.maindialog);
-		dialog.setTitle("Editing an Entry");
+		dialog.setTitle("Saving an Entry");
 		dialog.setCancelable(true);
 
 		TextView short_text = (TextView) dialog.findViewById(R.id.short_label);
@@ -396,13 +396,12 @@ public class clipsList extends ListActivity
 
 		Cursor c = mClipsCursor;
 		c.moveToPosition(item);
-		final String old_short  = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR));
-		final String old_full   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
-		final boolean old_pvt = ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") ); // active high
+		final String clip_data   = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_CLIP));
 
-		short_input.setText(old_short);
-		long_input.setText(old_full);
-		pvt_box.setChecked(old_pvt);
+//		short_input.setText(old_short);
+//		add a default message here, i.e. "Put a description here!"
+		long_input.setText(clip_data);
+		pvt_box.setChecked(false);
 
 		Button cancel_button = (Button) dialog.findViewById(R.id.cancelButton);
 		cancel_button.setOnClickListener(new OnClickListener() {
@@ -416,27 +415,21 @@ public class clipsList extends ListActivity
 			public void onClick(View v) {
 				String short_name = short_input.getText().toString();
 				String long_name = long_input.getText().toString();
-				if ( short_name.equals(old_short) && long_name.equals(old_full) && pvt_box.isChecked() == old_pvt )
+				if(pvt_box.isChecked() && short_name.compareTo("") == 0)
+					short_name = "Private Entry";
+				else if(short_name.compareTo("") == 0 && (long_name.length() > 51))
 				{
-					dialog.dismiss();
+					short_name = long_name.substring(0,49);
 				}
-				else
-				{
-					if(pvt_box.isChecked() && short_name.compareTo("") == 0)
-						short_name = "Private Entry";
-					else if(short_name.compareTo("") == 0 && (long_name.length() > 51))
-					{
-						short_name = long_name.substring(0,49);
-					}
-					else if (short_name.compareTo("") == 0)
-						short_name = long_name;
+				else if (short_name.compareTo("") == 0)
+					short_name = long_name;
 
-					if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()))
-						Toast.makeText(getApplicationContext(),
-						"That item already exists.", Toast.LENGTH_SHORT).show();
-					fillData();
-					dialog.dismiss();
-				}
+//				if( !mDbHelper.updateSub(old_full, old_short, old_pvt, short_name, long_name, pvt_box.isChecked()) )
+				if (mDbHelper.createSub(short_name, long_name, pvt_box.isChecked()) == -1)
+					Toast.makeText(getApplicationContext(),
+					"That item already exists.", Toast.LENGTH_SHORT).show();
+				fillData();
+				dialog.dismiss();
 			}
 		});
 		dialog.show();
