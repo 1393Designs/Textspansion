@@ -192,7 +192,7 @@ public class clipsList extends ListActivity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.sub_list_menu, menu);
+		inflater.inflate(R.menu.clips_list_menu, menu);
 		return true;
 	}
 
@@ -201,21 +201,15 @@ public class clipsList extends ListActivity
 	{
 		switch (item.getItemId())
 		{
-			case R.id.add_item:
-				addItem();
-				return true;
-			case R.id.menu_export:
-				if(mClipsCursor.getCount() < 1)
-					Toast.makeText(getApplicationContext(), "You have nothing to write out.",Toast.LENGTH_SHORT).show();
-				else
-					chooseExport();
-				return true;
-			case R.id.multi_delete:
+			/*case R.id.multi_delete:
 				startActivity(new Intent(this, multiDelete.class));
 				fillData();
-				return true;
+				return true;*/
 			case R.id.menu_settings:
 				startActivity(new Intent(this, settings.class));
+				return true;
+			case R.id.menu_saved:
+				finish();
 				return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
