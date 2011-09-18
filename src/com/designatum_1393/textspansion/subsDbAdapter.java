@@ -346,4 +346,17 @@ public class subsDbAdapter
 			return mDb.insert(CLIPS_TABLE, null, initialValues);
 	}
 
+	/**
+	 * Deletes a specific element from the clipboard table.
+	 *
+	 * @param oldClip	Clipped text of the item being deleted
+	 * @return			True if any items are deleted, false otherwise
+	 */
+	public boolean deleteClip(String oldClip)
+	{
+		String whereClause = KEY_CLIP +"='" +oldClip.replace("'", "''") +"'";
+
+		return mDb.delete(CLIPS_TABLE, whereClause, null) > 0;
+	}
+
 }
