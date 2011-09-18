@@ -332,7 +332,6 @@ public class subsDbAdapter
 	}
 
 
-
 	/**
 	 * Creates a new clipboard entry in the appropriate table.
 	 *
@@ -347,13 +346,16 @@ public class subsDbAdapter
 		initialValues.put(KEY_DATE, date);
 		initialValues.put(KEY_CLIP, clip);
 
-		if (mDb.query(CLIPS_TABLE, new String[] {KEY_CLIP}, KEY_CLIP +"=?", new String[] {clip}, null, null, KEY_DATE).getCount() != 0)
+		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_FULL +"=?", new String[] {clip}, null, null, KEY_FULL).getCount() == 0)
 		{
-			return -1;
+			if (mDb.query(CLIPS_TABLE, new String[] {KEY_CLIP}, KEY_CLIP +"=?", new String[] {clip}, null, null, KEY_DATE).getCount() == 0)
+			{
+				return mDb.insert(CLIPS_TABLE, null, initialValues);
+			}
 		}
-		else
-			return mDb.insert(CLIPS_TABLE, null, initialValues);
+		return -1;
 	}
+
 
 	/**
 	 * Deletes a specific element from the clipboard table.
