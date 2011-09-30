@@ -5,6 +5,8 @@
 		<ListPreference android:title="Sort by..." android:summary="Choose how to sort the list."
 			android:key="sortie" android:entries="@array/sortBy" android:entryValues="@array/listValues" android:defaultValue="short" />
 		<CheckBoxPreference android:title="End on copy" android:defaultValue="true" android:summary="If checked, the app will close immediately after an entry is selected." android:key="endOnCopy" />
+		<CheckBoxPreference android:title="Encrypt on Export" android:defaultValue="false" android:summary="The exported XML file will be encrypted based on a key of your choosing." android:key="encrypt" />
+		<CheckBoxPreference android:title="Access from Status Bar" android:defaultValue="false" android:summary="Check to access the app from the Status bar." android:key="notification" />
 		<Preference android:title="Wipe all data" android:summary="This will delete your *entire* database." android:key="deleteAll" />	
 	</PreferenceCategory>
 	

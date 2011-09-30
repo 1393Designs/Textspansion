@@ -37,10 +37,7 @@ import android.util.Log;
 
 public class multiDelete extends ListActivity
 {
-
-
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
-	//private subsDbAdapter helper = new subsDbAdapter(getApplicationContext());
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
@@ -74,8 +71,6 @@ public class multiDelete extends ListActivity
 			pSelected.add(pvt);
 		}
 	}
-
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

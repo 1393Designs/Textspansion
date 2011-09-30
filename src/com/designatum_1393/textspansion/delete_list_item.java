@@ -25,12 +25,10 @@ class delete_list_item extends LinearLayout implements Checkable
 		super(context, attrs);
 	}
 
-
 	@Override
 	protected void onFinishInflate()
 	{
 		super.onFinishInflate();
-
 		_checkbox = (CheckBox) findViewById(R.id.listCheckBox);
 	}
 

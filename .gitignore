@@ -3,3 +3,4 @@ proguard.cfg
 bin/*
 gen/*
 *.*.swp
+Thumbs.db
