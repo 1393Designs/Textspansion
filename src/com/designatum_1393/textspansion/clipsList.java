@@ -106,6 +106,21 @@ public class clipsList extends ListActivity
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort = true;
 
+	private class SavedAction implements Action
+	{
+		@Override
+		public int getDrawable()
+		{
+			return R.drawable.ic_actionbar_savedlist;
+		}
+
+		@Override
+		public void performAction(View view)
+		{
+			finish();
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -136,6 +151,7 @@ public class clipsList extends ListActivity
 		// you can also assign the title programmatically bu passing a
 		// CharSequence or resource id.
 		actionBar.setTitle("Clipboard History");
+		actionBar.addAction(new SavedAction());
 		//actionbar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
 
 		mDbHelper.open();
