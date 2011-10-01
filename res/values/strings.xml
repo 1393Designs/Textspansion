@@ -8,8 +8,10 @@
 	<string name="menu_add_item">Add</string>
 	<string name="menu_delete">Delete</string>
 	<string name="menu_export">Export</string>
+	<string name="menu_history">Clipboard History</string>
 	<string name="menu_import">Import</string>
 	<string name="menu_settings">Settings</string>
+	<string name="menu_saved">Saved Items</string>
 	<string name="menu_cancel">Done</string>
 	<string name="context_edit">Edit</string>
 	<string name="context_clip_save">Save</string>

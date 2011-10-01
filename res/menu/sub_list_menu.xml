@@ -13,5 +13,6 @@
 		android:title="@string/menu_settings"
 		android:icon="@android:drawable/ic_menu_preferences" />
 	<item android:id="@+id/clips"
-		android:title="Clipboard History" />
+		android:title="@string/menu_history"
+		android:icon="@android:drawable/ic_menu_recent_history" />
 </menu>
