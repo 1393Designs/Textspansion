@@ -104,7 +104,7 @@ public class settings extends PreferenceActivity
 			String versionString = String.format("Version: %s", versionInfo);
 			String authors = "Authors: Sean Barag and Vincent Tran";
 			String testers = "QA Tester: Nee Taylor";
-			String website = "Visit our website: http://1393Designatum.com";
+			String website = "Visit our website: http://1393Designs.com";
 			String cp = "\u00A92011 1393 Designatum, All Rights Reserved.";
 
 			message.setPadding(10, 10, 10, 10);
