@@ -96,14 +96,14 @@ public class subsDbAdapter
 			"-If you have a device that doesn't have a 'Search' button (like a tablet or a Samsung Galaxy II) you can add a setting to launch Textspansion from your status bar.\n"+
 			"Just head over to the options to set it!\n\n"+
 			"- Added the ability to save whatever is in your clipboard to a 'Clipboard History' tab which can be accessed through the menu button.";
-
+			
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
 		steps.put(KEY_PRIVATE, 0);
-
+		
 		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=?", new String[] {shortName, longName}, null, null, KEY_ABBR).getCount() == 0)			  
 			mDb.insert(SUBS_TABLE, null, steps);
-
+		
 		shortName = "1) Welcome!";
 		longName = "- Welcome to Textspansion, the first rapid text-insertion app for Android!";
 
@@ -317,7 +317,7 @@ public class subsDbAdapter
 		else
 			return mDb.update(SUBS_TABLE, args, whereClause, null) > 0;
 	}
-
+	
 	/* ###############################################################################################
 	 * ####################################### clipboard stuff #######################################
 	 * ###############################################################################################

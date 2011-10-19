@@ -46,17 +46,17 @@ public class importExt extends Activity
 	private Cursor mSubsCursor;
 	private Element textspansion;
 	private NodeList shortName, longName, pvts, textie, encryptCheck;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_view);
-
+		
 		final Intent intent = getIntent();
 		mDbHelper = new subsDbAdapter(this);
 		mDbHelper.open();
-
+		
 		//Gets data from the xml file
 		try{
 			InputStream attachment = getContentResolver().openInputStream(intent.getData());
@@ -71,29 +71,29 @@ public class importExt extends Activity
 			textie = textspansion.getElementsByTagName("Textspansion");
 			encryptCheck = textspansion.getElementsByTagName("Encrypt");
 		}catch(Exception e){}
-
+		
 		//Will detect if the xml file is encrypted. If so, prompts user for the key.
 		if(encryptCheck.getLength() == 1){
 			final Dialog dialog = new Dialog(importExt.this);
 			dialog.setContentView(R.menu.decryptdialog);
 			dialog.setTitle("Decrypting...");
-
+			
 			TextView key_text = (TextView) dialog.findViewById(R.id.key_label);
 			final EditText key_input = (EditText) dialog.findViewById(R.id.key_entry);
-
+			
 			Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 			okay_button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					String key_name = key_input.getText().toString();
 					if(key_name.compareTo("") == 0)
 						key_name = "textspansion";
-
+					
 					importSubs(intent, key_name);
 					mDbHelper.close();
 					startActivity(new Intent(getApplicationContext(), textspansion.class));
 					finish();
 					dialog.dismiss();
-
+					
 				}
 			});
 			dialog.show();
@@ -101,7 +101,7 @@ public class importExt extends Activity
 		else
 			importSubs(intent, "textspansion");
 	}
-
+	
 	public void importSubs(Intent intent, String key) 
 	{
 		String userKey = key;			
@@ -111,10 +111,10 @@ public class importExt extends Activity
 		}
 		else{
 			boolean decryptText = false;
-
+			
 			if(encryptCheck.getLength() == 1)
 				decryptText = true;
-
+				
 			String shortNameStr, longNameStr, pvt;
 			boolean pvtPassIn;
 			if(pvts.getLength() > 0)
@@ -124,15 +124,15 @@ public class importExt extends Activity
 					shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
 					longNameStr = longName.item(i).getFirstChild().getNodeValue();
 					pvt = pvts.item(i).getFirstChild().getNodeValue();
-
+					
 					if(pvt.compareTo("1") == 0)
 						pvtPassIn = true;
 					else
 						pvtPassIn = false;
-
+												
 					if(shortNameStr.compareTo("") == 0)
 						shortNameStr = longNameStr;
-
+					
 					if(decryptText)
 					{
 						try{
@@ -152,10 +152,10 @@ public class importExt extends Activity
 				{
 					shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
 					longNameStr = longName.item(i).getFirstChild().getNodeValue();
-
+											
 					if(shortNameStr.compareTo("") == 0)
 						shortNameStr = longNameStr;
-
+						
 					if(decryptText)
 					{
 						try{
@@ -165,18 +165,18 @@ public class importExt extends Activity
 						catch(Exception e)
 						{}
 					}
-
+					
 					if (mDbHelper.createSub(shortNameStr, longNameStr, false) == -1)
 						Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
 				}
 			}
-
+				
 		}
 		mDbHelper.close();
 		startActivity(new Intent(this, textspansion.class));
 		finish();
 	}
-
+	
 	// Following code taken from: http://www.androidsnippets.com/encryptdecrypt-strings	
 	public static String decrypt(String seed, String encrypted) throws Exception 
 	{
@@ -185,7 +185,7 @@ public class importExt extends Activity
 		byte[] result = decrypt(rawKey, enc);
 		return new String(result);
 	}
-
+	
 	private static byte[] getRawKey(byte[] seed) throws Exception 
 	{
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -196,7 +196,7 @@ public class importExt extends Activity
 		byte[] raw = skey.getEncoded();
 		return raw;
 	}
-
+	
 	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
 		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
@@ -204,16 +204,16 @@ public class importExt extends Activity
 		byte[] decrypted = cipher.doFinal(encrypted);
 		return decrypted;
 	}
-
+	
 	public static String toHex(String txt) 
 	{
 		return toHex(txt.getBytes());
 	}
-
+	
 	public static String fromHex(String hex) {
 		return new String(toByte(hex));
 	}
-
+	
 	public static String toHex(byte[] buf) 
 	{
 		if (buf == null)
@@ -224,7 +224,7 @@ public class importExt extends Activity
 		}
 		return result.toString();
 	}
-
+	
 	public static byte[] toByte(String hexString) {
 		int len = hexString.length()/2;
 		byte[] result = new byte[len];
@@ -232,13 +232,13 @@ public class importExt extends Activity
 			result[i] = Integer.valueOf(hexString.substring(2*i, 2*i+2), 16).byteValue();
 		return result;
 	}
-
+	
 	private final static String HEX = "0123456789ABCDEF";
-
+	
 	private static void appendHex(StringBuffer sb, byte b) 
 	{
 		sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
 	}
-
+	
 	//End code snippet
 }

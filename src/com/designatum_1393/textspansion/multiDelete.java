@@ -71,7 +71,7 @@ public class multiDelete extends ListActivity
 			pSelected.add(pvt);
 		}
 	}
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
