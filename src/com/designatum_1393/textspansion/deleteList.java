@@ -26,4 +26,3 @@ public class deleteList extends LinearLayout
 		super.onFinishInflate();
 	}
 }
-

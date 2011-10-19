@@ -24,7 +24,7 @@ public class settings extends PreferenceActivity
 	{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
-		
+
 		Preference deletePref = (Preference) findPreference("deleteAll");
 		deletePref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -36,7 +36,7 @@ public class settings extends PreferenceActivity
 				return true;
 			}
 		});
-		
+
 		Preference tutPref = (Preference) findPreference("tutorial");
 		tutPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -48,7 +48,7 @@ public class settings extends PreferenceActivity
 				return true;
 			}
 		});
-		
+
 		Preference aboutPref = (Preference) findPreference("aboutizzle");
 		aboutPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -61,7 +61,7 @@ public class settings extends PreferenceActivity
 			}
 		});
 	}
-	
+
 	public void deleteDialog(){
 		AlertDialog.Builder dd = new AlertDialog.Builder(this);
 		dd.setIcon(R.drawable.icon);
@@ -74,43 +74,44 @@ public class settings extends PreferenceActivity
 			goAndDeleteEverything();
 			}
 		});
-		
+
 		dd.setNegativeButton("NO NO NO", 
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
 			}
 		});
-		
+
 		dd.show();
 	}
-	
+
 	public void goAndDeleteEverything()
 	{
 		subsDbAdapter mDbHelper = new subsDbAdapter(this);
 		mDbHelper.open();
 		mDbHelper.abandonShip();
 		mDbHelper.close();
-	
+
 	}
 
-	
+
 	public void aboutDialog(){
 		final TextView message = new TextView(this);
-		
+
 		try{
 			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
 			String versionInfo = pInfo.versionName;
 
 			String versionString = String.format("Version: %s", versionInfo);
 			String authors = "Authors: Sean Barag and Vincent Tran";
-			String website = "Visit our website: http://1393Designatum.com";
-			String cp = "\u00A92011 1393 Designatum, All Rights Reserved.";
+			String testers = "QA Tester: Nee Taylor";
+			String website = "Visit our website: http://1393Designs.com";
+			String cp = "\u00A92011 1393 Designs, All Rights Reserved.";
 
 			message.setPadding(10, 10, 10, 10);
-			message.setText(versionString + "\n\n" + authors + "\n\n" + website + "\n\n" +	cp);
+			message.setText(versionString + "\n\n" + authors + "\n\n" + testers + "\n\n" + website + "\n\n" +	cp);
 			Linkify.addLinks(message, Linkify.EMAIL_ADDRESSES);
 			Linkify.addLinks(message, Linkify.WEB_URLS);
-			
+
 			AlertDialog.Builder ad = new AlertDialog.Builder(this);
 			ad.setIcon(R.drawable.icon);
 			ad.setTitle("About");
@@ -122,7 +123,7 @@ public class settings extends PreferenceActivity
 				}
 			});
 			ad.show();
-			
+
 		}catch(Exception e){}
 
 	}

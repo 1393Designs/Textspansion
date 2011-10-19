@@ -49,7 +49,7 @@ public class privitized_adapter extends CursorAdapter
 
 		shortView.setText(c.getString(c.getColumnIndexOrThrow(KEY_ABBR)));
 		longView.setText(c.getString(c.getColumnIndexOrThrow(KEY_FULL)));
-		
+
 		if ( c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_PRIVATE)).equals("1") )
 			longView.setTransformationMethod(new PasswordTransformationMethod());
 		else

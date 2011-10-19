@@ -37,10 +37,7 @@ import android.util.Log;
 
 public class multiDelete extends ListActivity
 {
-
-
 	private subsDbAdapter mDbHelper = new subsDbAdapter(this);
-	//private subsDbAdapter helper = new subsDbAdapter(getApplicationContext());
 	private SharedPreferences prefs;
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
@@ -75,8 +72,6 @@ public class multiDelete extends ListActivity
 		}
 	}
 
-
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -88,31 +83,31 @@ public class multiDelete extends ListActivity
 			sortByShort = true;
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
-		
+
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
-		
+
 		String[] from = new String[]{subsDbAdapter.KEY_ABBR, subsDbAdapter.KEY_FULL};
 		int[] to = new int[]{R.id.ShortText, R.id.LongText};
 
 		final Cursor c = mDbHelper.fetchAllSubs(sortByShort);
-		
+
 		subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "multidelete");
 
 		setListAdapter(subsAdapter);
-		
+
 		ListView list=getListView();
 		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		list.setItemsCanFocus(false);
-		
+
 		final Button confirm = (Button) findViewById(R.id.multi_confirm);
 		confirm.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v){
 				deleteDialog();
 			}
 		});
-		
+
 		final Button cancel = (Button) findViewById(R.id.multi_cancel);
 		cancel.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v){
@@ -122,12 +117,12 @@ public class multiDelete extends ListActivity
 
 		mDbHelper.close();
 	}
-	
+
 	private void fillData()
 	{
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
-		
+
 		subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "multidelete");
 
 		setListAdapter(subsAdapter);
@@ -151,7 +146,7 @@ public class multiDelete extends ListActivity
 		}
 		fillData();
 	}
-	
+
 	public void deleteDialog(){
 		AlertDialog.Builder dd = new AlertDialog.Builder(this);
 		dd.setIcon(R.drawable.icon);
@@ -164,13 +159,13 @@ public class multiDelete extends ListActivity
 			deleteSelected();
 			}
 		});
-		
+
 		dd.setNegativeButton("NO", 
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
 			}
 		});
-		
+
 		dd.show();
 	}
 }
