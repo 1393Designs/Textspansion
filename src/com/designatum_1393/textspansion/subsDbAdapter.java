@@ -116,6 +116,7 @@ public class subsDbAdapter
 
 		shortName = "2) How To Use";
 		longName = "- You can access the app by long-pressing the device's Search button\n\n" + 
+			"- This list is where your snippet entries will be located when you add them (you can delete this tutorial).\n\n"
 			"- Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.\n\n" +
 			"- Simply paste it where ever you want it!";
 
@@ -127,7 +128,7 @@ public class subsDbAdapter
 			mDb.insert(SUBS_TABLE, null, steps);
 
 		shortName = "3) Adding";
-		longName = "- Click your device's menu key, then \"Add!\"\n" + 
+		longName = "- Click your device's menu key, then \"Add!\"\n\n" + 
 			"- Long-pressing on an item to edit or delete it.\n\n" + 
 			"- You can delete multiple items at the same time by clicking the device's menu button and select multi-delete.";
 
@@ -150,7 +151,8 @@ public class subsDbAdapter
 			mDb.insert(SUBS_TABLE, null, steps);
 
 		shortName = "5) Get Started!";
-		longName = "- The tutorial is accessible via the settings panel. Happy Textspanding!";
+		longName = "- You can delete this tutorial by wiping the database before adding your snippets or manually using multi-delete.\n\n" + 
+			"- The tutorial is accessible via the settings panel. Happy Textspanding!";
 
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);
