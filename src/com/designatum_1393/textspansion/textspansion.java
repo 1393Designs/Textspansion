@@ -178,10 +178,10 @@ public class textspansion extends ListActivity
 		mDbHelper = new subsDbAdapter(this);
 		if(!dbFile.exists())
 		{
-			 SharedPreferences.Editor editor = sharedPrefs.edit();
-			 editor.putString("sortie", "short");
-			 editor.commit();
-			 addTut = true;
+			SharedPreferences.Editor editor = sharedPrefs.edit();
+			editor.putString("sortie", "short");
+			editor.commit();
+			addTut = true;
 		}
 
 		if(sharedPrefs.getString("sortie", "HERPADERP").equals("short"))

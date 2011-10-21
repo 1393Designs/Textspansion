@@ -116,7 +116,7 @@ public class subsDbAdapter
 
 		shortName = "2) How To Use";
 		longName = "- You can access the app by long-pressing the device's Search button\n\n" + 
-			"- This list is where your snippet entries will be located when you add them (you can delete this tutorial).\n\n"
+			"- This list is where your snippet entries will be located when you add them (you can delete this tutorial).\n\n" +
 			"- Simply click on any of these entries - the text in the bottom half of the box will be copied to your clipboard.\n\n" +
 			"- Simply paste it where ever you want it!";
 
