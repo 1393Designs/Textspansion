@@ -93,9 +93,9 @@ public class subsDbAdapter
 
 		shortName = "* Updates from previous versions *";
 		longName = "-We added the action bar! Now adding snippets is even easier!\n\n"+
-			"-If you have a device that doesn't have a 'Search' button (like a tablet or a Samsung Galaxy II) you can add a setting to launch Textspansion from your status bar.\n"+
+			"-If you have a device that doesn't have a 'Search' button you can add a setting to launch Textspansion from your status bar.\n"+
 			"Just head over to the options to set it!\n\n"+
-			"- Added the ability to save whatever is in your clipboard to a 'Clipboard History' tab which can be accessed through the menu button.";
+			"- Added the ability to save whatever is in your clipboard to a 'Clipboard History' tab which can be accessed from the ActionBar next to the \"Add\" button. \nHead on over to the options to set it!";
 			
 		steps.put(KEY_ABBR, shortName);
 		steps.put(KEY_FULL, longName);

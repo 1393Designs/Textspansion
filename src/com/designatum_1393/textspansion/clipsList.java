@@ -148,17 +148,29 @@ public class clipsList extends ListActivity
 
 		// ----- actionbar -----
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		// you can also assign the title programmatically bu passing a
-		// CharSequence or resource id.
 		actionBar.setTitle("Clipboard History");
-		actionBar.addAction(new SavedAction());
-		//actionbar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
+		actionBar.setHomeAction(new homeAction());
 
 		mDbHelper.open();
 		mClipsCursor = mDbHelper.fetchAllClips(sortByShort);
 		fillData();
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+	}
+	
+	private class homeAction implements Action
+	{
+		@Override
+		public int getDrawable()
+		{
+			return R.drawable.ic_title_home_default;
+		}
+
+		@Override
+		public void performAction(View view)
+		{
+			finish();
+		}
 	}
 
 	@Override

@@ -160,7 +160,6 @@ public class textspansion extends ListActivity
 	public String makeDateTime()
 	{
 		return formatter.format(new Date());
-		//return formatter.format("MMM dd, yyyy h:mmaa", Calendar.getInstance());
 	}
 
 	@Override
@@ -191,13 +190,11 @@ public class textspansion extends ListActivity
 
 		// ----- actionbar -----
 		ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-		// you can also assign the title programmatically bu passing a
-		// CharSequence or resource id.
 		actionBar.setTitle("Substitution List");
 		actionBar.addAction(new AddAction());
 		actionBar.addAction(new ClipsAction());
-		//actionbar.setHomeAction(new IntentAction(this, HomeActivity.createIntent(this), R.drawable.ic_title_home_default));
 
+		// ----- Opens database -----
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		if(addTut)
@@ -205,14 +202,18 @@ public class textspansion extends ListActivity
 		fillData();
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-
-		// add the current clipboard text if it exists.
-		// duplicate protection is handled by the database add function
-		if ( !cb.getText().toString().isEmpty() )
+		
+		if ( (cb.getText() != null) && sharedPrefs.getBoolean("clipLaunch", false))
 		{
 			mDbHelper.createClip(makeDateTime(), cb.getText().toString());
 		}
 	}
+	
+	public static Intent createIntent(Context context) {
+        Intent i = new Intent(context, textspansion.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return i;
+    }
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
@@ -293,9 +294,6 @@ public class textspansion extends ListActivity
 	{
 		switch (item.getItemId())
 		{
-			case R.id.add_item:
-				addItem();
-				return true;
 			case R.id.menu_export:
 				if(mSubsCursor.getCount() < 1)
 					Toast.makeText(getApplicationContext(), "You have nothing to write out.",Toast.LENGTH_SHORT).show();
