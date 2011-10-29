@@ -157,7 +157,7 @@ public class clipsList extends ListActivity
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 	}
-	
+
 	private class homeAction implements Action
 	{
 		@Override
@@ -179,10 +179,10 @@ public class clipsList extends ListActivity
 		super.onListItemClick(l, v, position, id);
 		Cursor c = mClipsCursor;
 		c.moveToPosition(position);
-		Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
+		Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_CLIP)) + " has been copied."
 			, Toast.LENGTH_SHORT).show();
 
-		cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+		cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_CLIP)));
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
 	}
