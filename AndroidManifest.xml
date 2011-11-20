@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.designatum_1393.textspansion"
-	android:versionCode="14"
-	android:versionName="2.0.1">
+	android:versionCode="17"
+	android:versionName="2.0.4">
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-sdk android:minSdkVersion="7" />
@@ -36,6 +36,14 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name="importTxt" android:label="Import data to Textspansion">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="text/plain" android:pathPattern=".*txt" />
+			</intent-filter>
+		</activity>
+		
 		<activity android:name="settings" android:label="@string/tab_title_settings" android:configChanges="orientation|keyboardHidden"/>
 
 		<activity android:name="multiDelete" android:label="Multi-Delete" android:configChanges="orientation|keyboardHidden"/>
