@@ -202,18 +202,43 @@ public class textspansion extends ListActivity
 		fillData();
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-		
+
 		if ( (cb.getText() != null) && sharedPrefs.getBoolean("clipLaunch", false))
 		{
 			mDbHelper.createClip(makeDateTime(), cb.getText().toString());
 		}
 	}
-	
+
 	public static Intent createIntent(Context context) {
         Intent i = new Intent(context, textspansion.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return i;
     }
+
+	protected String replaceTokens(String in)
+	{
+		String buffer = in;
+
+		/* currently using tokens from Python:
+		 * http://docs.python.org/library/datetime.html#strftime-and-strptime-behavior
+		 */
+		/* date and time */
+		buffer = buffer.replace("%cccc",  android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%ccc",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%c",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+
+
+
+		/* date only */
+		buffer = buffer.replace("%xxxx", android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()));
+		buffer = buffer.replace("%xxx",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()));
+		buffer = buffer.replace("%x",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()));
+
+		/* time only */
+		buffer = buffer.replace("%X",     android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()));
+
+		return buffer;
+	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id)
@@ -224,7 +249,8 @@ public class textspansion extends ListActivity
 		Toast.makeText(getApplicationContext(), c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_ABBR)) + " has been copied."
 			, Toast.LENGTH_SHORT).show();
 
-		cb.setText(c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL)));
+		String copied = c.getString(c.getColumnIndexOrThrow(subsDbAdapter.KEY_FULL));
+		cb.setText( replaceTokens(copied) );
 		if(sharedPrefs.getBoolean("endOnCopy", true))
 			finish();
 	}
