@@ -97,6 +97,7 @@ import com.markupartist.android.widget.ActionBar.IntentAction;
 
 // clipboard date/time
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -219,16 +220,11 @@ public class textspansion extends ListActivity
 	{
 		String buffer = in;
 
-		/* currently using tokens from Python:
-		 * http://docs.python.org/library/datetime.html#strftime-and-strptime-behavior
-		 */
 		/* date and time */
-		buffer = buffer.replace("%cccc",  android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
-		buffer = buffer.replace("%ccc",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
-		buffer = buffer.replace("%c",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
-
-
-
+		buffer = buffer.replace("%tttt",  android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%ttt",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%t",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+	
 		/* date only */
 		buffer = buffer.replace("%xxxx", android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()));
 		buffer = buffer.replace("%xxx",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()));
@@ -237,6 +233,67 @@ public class textspansion extends ListActivity
 		/* time only */
 		buffer = buffer.replace("%X",     android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()));
 
+		/* For custom date formatting */
+		if(buffer.contains("%MMMM")) // Month as long text (January)
+		{
+			DateFormat newDF = new SimpleDateFormat("MMMM");
+			buffer = buffer.replace("%MMMM", newDF.format(new Date()));
+		}
+		if(buffer.contains("%MMM")) // Month as text (Jan)
+		{
+			DateFormat newDF = new SimpleDateFormat("MMM");
+			buffer = buffer.replace("%MMM", newDF.format(new Date()));
+		}
+		if(buffer.contains("%M")) // Month as int
+		{
+			DateFormat newDF = new SimpleDateFormat("M");
+			buffer = buffer.replace("%M", newDF.format(new Date()));
+		}
+		if(buffer.contains("%cccc")) // Day of the week as a long string (Saturday)
+		{
+			DateFormat newDF = new SimpleDateFormat("cccc");
+			buffer = buffer.replace("%cccc", newDF.format(new Date()));
+		}
+		if(buffer.contains("%ccc")) // Day of the week as a string (Sat)
+		{
+			DateFormat newDF = new SimpleDateFormat("ccc");
+			buffer = buffer.replace("%ccc", newDF.format(new Date()));
+		}
+		if(buffer.contains("%d")) // Date of the month
+		{
+			DateFormat newDF = new SimpleDateFormat("d");
+			buffer = buffer.replace("%d", newDF.format(new Date()));
+		}
+		if(buffer.contains("%yy")) //Truncated year '11'
+		{
+			DateFormat newDF = new SimpleDateFormat("yy");
+			buffer = buffer.replace("%yy", newDF.format(new Date()));
+		}
+		if(buffer.contains("%y")) //Full year '2011'
+		{
+			DateFormat newDF = new SimpleDateFormat("y");
+			buffer = buffer.replace("%y", newDF.format(new Date()));
+		}
+		if(buffer.contains("%h")) // Hour of the day using AM/PM
+		{
+			DateFormat newDF = new SimpleDateFormat("h");
+			buffer = buffer.replace("%h", newDF.format(new Date()));
+		}
+		if(buffer.contains("%k")) // Hour of the day using 1-24
+		{
+			DateFormat newDF = new SimpleDateFormat("k");
+			buffer = buffer.replace("%k", newDF.format(new Date()));
+		}
+		if(buffer.contains("%mm")) //Minute in the hour
+		{
+			DateFormat newDF = new SimpleDateFormat("mm");
+			buffer = buffer.replace("%mm", newDF.format(new Date()));
+		}
+		if(buffer.contains("%ss")) // Second in the minute
+		{
+			DateFormat newDF = new SimpleDateFormat("ss");
+			buffer = buffer.replace("%ss", newDF.format(new Date()));
+		}
 		return buffer;
 	}
 
