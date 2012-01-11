@@ -221,17 +221,17 @@ public class textspansion extends ListActivity
 		String buffer = in;
 
 		/* date and time */
-		buffer = buffer.replace("%tttt",  android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
-		buffer = buffer.replace("%ttt",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
-		buffer = buffer.replace("%t",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()) + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%tttt",  android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()) + " " + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%ttt",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()) + " " + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
+		buffer = buffer.replace("%t",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()) + " " + android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()) );
 	
 		/* date only */
 		buffer = buffer.replace("%xxxx", android.text.format.DateFormat.getLongDateFormat(getApplicationContext()).format(new Date()));
-		buffer = buffer.replace("%xxx",   android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()));
-		buffer = buffer.replace("%x",     android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()));
+		buffer = buffer.replace("%xxx",  android.text.format.DateFormat.getMediumDateFormat(getApplicationContext()).format(new Date()));
+		buffer = buffer.replace("%x",    android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(new Date()));
 
 		/* time only */
-		buffer = buffer.replace("%X",     android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()));
+		buffer = buffer.replace("%X",    android.text.format.DateFormat.getTimeFormat(getApplicationContext()).format(new Date()));
 
 		/* For custom date formatting */
 		if(buffer.contains("%MMMM")) // Month as long text (January)
