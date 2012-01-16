@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:orientation="vertical"
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<RelativeLayout 
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <Button android:id="@+id/skip_button"
+    	android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Skip Tutorial"
+		android:onClick="skip"/>
+
+    <TextView
+    	android:id="@+id/debug"
+    	android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:layout_below="@id/skip_button"/>
+
+    <ImageView
+    	android:id="@+id/tut_image"
+    	android:src="@drawable/tut_0"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		/>
+
+	<Button android:id="@+id/back_button"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Back" 
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:layout_below="@id/tut_image"/>
+
+	<Button android:id="@+id/next_button"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Next" 
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:layout_below="@id/tut_image"
+		android:layout_toRightOf="@id/back_button"/>
+	
+
+</RelativeLayout>
+</ScrollView>
+

@@ -12,7 +12,7 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="Misc.">
-		<Preference android:title="Tutorial" android:summary="Will add the Tutorial again to your database." android:key="tutorial" />
+		<Preference android:title="Tutorial" android:summary="View the Tutorial again" android:key="tutorial" />
 		<Preference android:title="About" android:key="aboutizzle" />
 	</PreferenceCategory>
 </PreferenceScreen>

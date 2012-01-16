@@ -173,7 +173,9 @@ public class textspansion extends ListActivity
 		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		if(!sharedPrefs.getBoolean("EULA", false))
+		{
 			presentEULA();
+		}
 
 		mDbHelper = new subsDbAdapter(this);
 		if(!dbFile.exists())
@@ -198,8 +200,8 @@ public class textspansion extends ListActivity
 		// ----- Opens database -----
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-		if(addTut)
-			mDbHelper.addTutorial();
+		//if(addTut)
+			//mDbHelper.addTutorial();
 		fillData();
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
@@ -356,7 +358,7 @@ public class textspansion extends ListActivity
 
 		if(prefs.contains("tutorial"))
 		{
-			mDbHelper.addTutorial();
+			//mDbHelper.addTutorial();
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.remove("tutorial");
 			editor.commit();
@@ -443,18 +445,13 @@ public class textspansion extends ListActivity
 		ed.setPositiveButton("Agree",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
-			SharedPreferences.Editor editor = sharedPrefs.edit();
-			editor.putBoolean("EULA", true);
-			editor.commit();
+			startActivity(new Intent(getApplicationContext(), tutorial.class));
 			}
 		});
 
 		ed.setNegativeButton("Disagree (You will be kicked out)",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
-			SharedPreferences.Editor editor = sharedPrefs.edit();
-			editor.putBoolean("EULA", false);
-			editor.commit();
 			finish();
 			}
 		});

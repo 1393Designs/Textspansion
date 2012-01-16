@@ -15,6 +15,7 @@ import android.text.util.Linkify;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.widget.TextView;
+import android.content.Intent;
 
 
 public class settings extends PreferenceActivity
@@ -44,7 +45,8 @@ public class settings extends PreferenceActivity
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putString("tutorial", "tutPref has been clicked");
 				editor.commit();
-				finish();
+				startActivity(new Intent(getApplicationContext(), tutorial.class));
+				//finish();
 				return true;
 			}
 		});
