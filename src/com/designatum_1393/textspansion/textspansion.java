@@ -446,12 +446,18 @@ public class textspansion extends ListActivity
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
 			startActivity(new Intent(getApplicationContext(), tutorial.class));
+			SharedPreferences.Editor editor = sharedPrefs.edit();
+			editor.putBoolean("EULA", true);
+			editor.commit();
 			}
 		});
 
 		ed.setNegativeButton("Disagree (You will be kicked out)",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
+			SharedPreferences.Editor editor = sharedPrefs.edit();
+			editor.putBoolean("EULA", false);
+			editor.commit();
 			finish();
 			}
 		});

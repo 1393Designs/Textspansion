@@ -28,7 +28,7 @@ public class tutorial extends Activity
 
 		tutImage = (ImageView) findViewById(R.id.tut_image);
 		debug = (TextView) findViewById(R.id.debug);
-		debug.setText("Counter at " + counter);
+		debug.setText("Image Bottom Padding: " + tutImage.getPaddingBottom());
 
 
 		btnNext = (Button) findViewById(R.id.next_button);
