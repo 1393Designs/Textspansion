@@ -16,4 +16,27 @@
 	<string name="menu_cancel">Done</string>
 	<string name="context_edit">Edit</string>
 	<string name="context_clip_save">Save</string>
+	<string name="tokens_text">Date and Time:
+\n%tttt\t\t- January 10, 2012 9:19 PM
+\n%ttt\t\t\t- Jan 10, 2012 9:19 PM
+\n%t\t\t\t- 1/10/2012 9:19 PM
+\nOnly the date:
+\n%xxxx\t\t- January 10, 2012
+\n%xxx\t\t- Jan 10, 2012
+\n%x\t\t\t- 1/10/2012
+\nTime (Full time):
+\n%X\t\t\t- 9:19 PM
+\n\nCustom:
+\n%MMMM\t- Month\t\t- January
+\n%MMM\t\t- Month\t\t- Jan
+\n%M\t\t\t\t- Month\t\t- 1
+\n%cccc\t\t\t- Day\t\t\t- Tuesday
+\n%ccc\t\t\t- Day\t\t\t- Tues
+\n%d\t\t\t\t- Day\t\t\t- 10
+\n%yy\t\t\t\t- Year\t\t\t- 12
+\n%y\t\t\t\t- Year\t\t\t- 2012
+\n%h\t\t\t\t- Hour (12)\t- 9
+\n%k\t\t\t\t- Hour (24\t\t- 21
+\n%mm\t\t\t- Minute\t\t\t- 19
+\n%ss\t\t\t\t- Second\t- 39</string>
 </resources>

@@ -15,8 +15,8 @@ public class tutorial extends Activity
     /** Called when the activity is first created. */
 
     private ImageView tutImage;
+    private TextView tokensTut;
     private Button btnNext, btnBack;
-    private TextView debug;
     private int counter = 0;
     private String path;
 
@@ -27,8 +27,7 @@ public class tutorial extends Activity
         setContentView(R.layout.tutorial);
 
 		tutImage = (ImageView) findViewById(R.id.tut_image);
-		debug = (TextView) findViewById(R.id.debug);
-		debug.setText("Image Bottom Padding: " + tutImage.getPaddingBottom());
+		tokensTut = (TextView) findViewById(R.id.tokens_tut);
 
 
 		btnNext = (Button) findViewById(R.id.next_button);
@@ -36,9 +35,8 @@ public class tutorial extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				if(counter < 6)
+				if(counter < 7)
 					counter++;
-				debug.setText("Counter at " + counter);
 				switch (counter){
 					case 1:
 						tutImage.setImageResource(R.drawable.tut_1);
@@ -54,9 +52,13 @@ public class tutorial extends Activity
 						break;
 					case 5:
 						tutImage.setImageResource(R.drawable.tut_5);
-						btnNext.setText("Finish");
 						break;
 					case 6:
+						tutImage.setVisibility(4);
+						tokensTut.setVisibility(0);
+						btnNext.setText("Finish");
+						break;
+					case 7:
 						finish();
 					default:
 						break;
@@ -72,7 +74,6 @@ public class tutorial extends Activity
 			{
 				if(counter > 0)
 					counter--;
-				debug.setText("Counter at " + counter);
 				switch (counter){
 					case 0:
 						tutImage.setImageResource(R.drawable.tut_0);
@@ -88,8 +89,12 @@ public class tutorial extends Activity
 						break;
 					case 4:
 						tutImage.setImageResource(R.drawable.tut_4);
-						btnNext.setText("Next");
 						break;
+					case 5:
+						tokensTut.setVisibility(4);
+						tutImage.setVisibility(0);
+						tutImage.setImageResource(R.drawable.tut_5);
+						btnNext.setText("Next");
 					default:
 						break;
 				}

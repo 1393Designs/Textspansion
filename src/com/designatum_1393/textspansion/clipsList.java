@@ -206,13 +206,6 @@ public class clipsList extends ListActivity
 		else if(sharedPrefs.getString("sortie", "HERPADERP").equals("long"))
 			sortByShort = false;
 
-		if(prefs.contains("tutorial"))
-		{
-			mDbHelper.addTutorial();
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.remove("tutorial");
-			editor.commit();
-		}
 		fillData();
 	}
 

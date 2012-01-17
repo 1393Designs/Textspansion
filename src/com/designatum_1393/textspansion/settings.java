@@ -41,16 +41,10 @@ public class settings extends PreferenceActivity
 		Preference tutPref = (Preference) findPreference("tutorial");
 		tutPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				SharedPreferences prefs = getSharedPreferences("textspansionPrefs", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putString("tutorial", "tutPref has been clicked");
-				editor.commit();
 				startActivity(new Intent(getApplicationContext(), tutorial.class));
-				//finish();
 				return true;
 			}
 		});
-
 		Preference aboutPref = (Preference) findPreference("aboutizzle");
 		aboutPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {

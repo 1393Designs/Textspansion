@@ -175,7 +175,11 @@ public class textspansion extends ListActivity
 		if(!sharedPrefs.getBoolean("EULA", false))
 		{
 			presentEULA();
+			presentUpdate();
 		}
+		else if(!sharedPrefs.getBoolean("update21", false))
+			presentUpdate();
+
 
 		mDbHelper = new subsDbAdapter(this);
 		if(!dbFile.exists())
@@ -200,8 +204,6 @@ public class textspansion extends ListActivity
 		// ----- Opens database -----
 		mDbHelper.open();
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
-		//if(addTut)
-			//mDbHelper.addTutorial();
 		fillData();
 		registerForContextMenu(getListView());
 		cb = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
@@ -355,14 +357,6 @@ public class textspansion extends ListActivity
 		{
 			mNotificationManager.cancelAll();
 		}
-
-		if(prefs.contains("tutorial"))
-		{
-			//mDbHelper.addTutorial();
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.remove("tutorial");
-			editor.commit();
-		}
 		fillData();
 	}
 
@@ -459,6 +453,24 @@ public class textspansion extends ListActivity
 			editor.putBoolean("EULA", false);
 			editor.commit();
 			finish();
+			}
+		});
+		ed.show();
+	}
+
+	public void presentUpdate()
+	{
+		AlertDialog.Builder ed = new AlertDialog.Builder(this);
+		ed.setIcon(R.drawable.icon);
+		ed.setTitle("Update Information");
+		ed.setView(LayoutInflater.from(this).inflate(R.layout.update_dialog,null));
+
+		ed.setPositiveButton("Yeah sure",
+		new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int arg1) {
+			SharedPreferences.Editor editor = sharedPrefs.edit();
+			editor.putBoolean("update21", true);
+			editor.commit();
 			}
 		});
 		ed.show();
