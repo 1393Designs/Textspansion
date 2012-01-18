@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <Button android:id="@+id/skip_button"
     	android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
+		android:layout_gravity="center_horizontal"
 		android:text="Skip Tutorial"
 		android:onClick="skip"
 		android:layout_centerHorizontal="true"/>
@@ -16,38 +17,40 @@
     	android:id="@+id/tut_image"
     	android:src="@drawable/tut_0"
     	android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_below="@id/skip_button"
-		android:adjustViewBounds="true" />
+		android:layout_width="match_parent"
+		android:adjustViewBounds="true"
+		android:layout_below="@id/skip_button"/>
 
 	<TextView
     	android:id="@+id/tokens_tut"
-    	android:layout_height="564px"
-		android:layout_width="480px"
-		android:layout_below="@id/skip_button" 
+    	android:layout_height="match_parent"
+		android:layout_width="match_parent"
 		android:text="@string/tokens_text"
 		android:paddingLeft="10dp"
-		android:visibility="invisible"/>
+		android:visibility="gone"
+		android:layout_below="@id/skip_button"/>
 
-	<Button android:id="@+id/back_button"
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:text="Back" 
-		android:paddingLeft="20px"
-		android:paddingRight="20px"
-		android:layout_below="@id/tut_image"
-		/>
+		android:orientation="horizontal"
+		android:layout_alignParentBottom="true"
+		style="@android:style/ButtonBar">
+		<Button android:id="@+id/back_button"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:text="Back"
+			android:layout_weight="1"
+			android:paddingLeft="20px"
+			android:paddingRight="20px"
+			/>
 
-	<Button android:id="@+id/next_button"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:text="Next" 
-		android:paddingLeft="20px"
-		android:paddingRight="20px"
-		android:layout_below="@id/tut_image"
-		android:layout_toRightOf="@id/back_button"
-		android:layout_alignParentRight="true"
-		/>
-	
-
+		<Button android:id="@+id/next_button"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:text="Next"
+			android:layout_weight="1"
+			android:paddingLeft="20px"
+			android:paddingRight="20px"/>
+	</LinearLayout>
 </RelativeLayout>

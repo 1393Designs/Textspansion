@@ -54,8 +54,8 @@ public class tutorial extends Activity
 						tutImage.setImageResource(R.drawable.tut_5);
 						break;
 					case 6:
-						tutImage.setVisibility(4);
-						tokensTut.setVisibility(0);
+						tutImage.setVisibility(View.GONE);
+						tokensTut.setVisibility(View.VISIBLE);
 						btnNext.setText("Finish");
 						break;
 					case 7:
@@ -63,7 +63,7 @@ public class tutorial extends Activity
 					default:
 						break;
 				}
-				
+
 			}
 		});
 
@@ -91,14 +91,14 @@ public class tutorial extends Activity
 						tutImage.setImageResource(R.drawable.tut_4);
 						break;
 					case 5:
-						tokensTut.setVisibility(4);
-						tutImage.setVisibility(0);
+						tokensTut.setVisibility(View.GONE);
+						tutImage.setVisibility(View.VISIBLE);
 						tutImage.setImageResource(R.drawable.tut_5);
 						btnNext.setText("Next");
 					default:
 						break;
 				}
-				
+
 			}
 		});
 	}
