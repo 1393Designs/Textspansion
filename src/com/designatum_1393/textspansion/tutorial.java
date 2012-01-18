@@ -31,10 +31,15 @@ public class tutorial extends Activity
 
 
 		btnNext = (Button) findViewById(R.id.next_button);
+		btnBack = (Button) findViewById(R.id.back_button);
+		if (counter == 0)
+			btnBack.setEnabled(false);
+
 		btnNext.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v)
 			{
+				btnBack.setEnabled(true);
 				if(counter < 7)
 					counter++;
 				switch (counter){
@@ -67,7 +72,6 @@ public class tutorial extends Activity
 			}
 		});
 
-		btnBack = (Button) findViewById(R.id.back_button);
 		btnBack.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v)
@@ -76,6 +80,7 @@ public class tutorial extends Activity
 					counter--;
 				switch (counter){
 					case 0:
+						btnBack.setEnabled(false);
 						tutImage.setImageResource(R.drawable.tut_0);
 						break;
 					case 1:
@@ -95,6 +100,7 @@ public class tutorial extends Activity
 						tutImage.setVisibility(View.VISIBLE);
 						tutImage.setImageResource(R.drawable.tut_5);
 						btnNext.setText("Next");
+						break;
 					default:
 						break;
 				}
