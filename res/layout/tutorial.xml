@@ -21,14 +21,177 @@
 		android:adjustViewBounds="true"
 		android:layout_below="@id/skip_button"/>
 
-	<TextView
+	<!-- Tokens tutorial
+
+		android:stretchColumns="*"
+	-->
+	<TableLayout
+    	android:id="@+id/tokens_tut"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@id/skip_button"
+		android:stretchColumns="*"
+		android:gravity="center"
+		android:visibility="gone">
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/date_and_time"
+				android:gravity="center"
+				android:layout_span="2"/>
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/ptttt"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vtttt"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/pttt"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vttt"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/pt"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vt"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+
+		<View
+			android:layout_height="2dip"
+			android:background="#FF909090" />
+
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/date_only"
+				android:gravity="center"
+				android:layout_span="2"/>
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/pxxxx"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vxxxx"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/pxxx"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vxxx"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/px"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vx"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+
+		<View
+			android:layout_height="2dip"
+			android:background="#FF909090" />
+
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/time_only"
+				android:gravity="center"
+				android:layout_span="2"/>
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_column="0"
+				android:text="@string/pX"
+				android:gravity="right"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+			<TextView
+				android:layout_column="1"
+				android:text="@string/vX"
+				android:gravity="left"
+				android:paddingLeft="7dip"
+				android:paddingRight="7dip"
+				android:paddingBottom="3dip" />
+		</TableRow>
+
+
+
+		<View
+			android:layout_height="2dip"
+			android:background="#FF909090" />
+	</TableLayout>
+
+<!--	<TextView
     	android:id="@+id/tokens_tut"
     	android:layout_height="match_parent"
 		android:layout_width="match_parent"
 		android:text="@string/tokens_text"
 		android:paddingLeft="10dp"
 		android:visibility="gone"
-		android:layout_below="@id/skip_button"/>
+		android:layout_below="@id/skip_button"/> -->
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="match_parent"

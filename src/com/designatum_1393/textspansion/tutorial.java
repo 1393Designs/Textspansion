@@ -10,12 +10,14 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.content.res.Resources;
 
+import android.widget.TableLayout;
+
 public class tutorial extends Activity
 {
     /** Called when the activity is first created. */
 
     private ImageView tutImage;
-    private TextView tokensTut;
+    private TableLayout tokensTut;
     private Button btnNext, btnBack;
     private int counter = 0;
     private String path;
@@ -27,7 +29,7 @@ public class tutorial extends Activity
         setContentView(R.layout.tutorial);
 
 		tutImage = (ImageView) findViewById(R.id.tut_image);
-		tokensTut = (TextView) findViewById(R.id.tokens_tut);
+		tokensTut = (TableLayout) findViewById(R.id.tokens_tut);
 
 
 		btnNext = (Button) findViewById(R.id.next_button);

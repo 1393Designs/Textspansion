@@ -16,27 +16,62 @@
 	<string name="menu_cancel">Done</string>
 	<string name="context_edit">Edit</string>
 	<string name="context_clip_save">Save</string>
-	<string name="tokens_text">Date and Time:
-\n%tttt\t\t-\tJanuary 10, 2012 9:19 PM
-\n%ttt\t\t\t-\tJan 10, 2012 9:19 PM
-\n%t\t\t\t-\t1/10/2012 9:19 PM
-\nOnly the date:
-\n%xxxx\t\t-\tJanuary 10, 2012
-\n%xxx\t\t-\tJan 10, 2012
-\n%x\t\t\t-\t1/10/2012
-\nTime (Full time):
-\n%X\t\t\t-\t9:19 PM
-\n\nCustom:
-\n%MMMM\t- Month\t\t\t- January
-\n%MMM\t\t- Month\t\t\t- Jan
-\n%M\t\t\t\t- Month\t\t\t- 1
-\n%cccc\t\t\t- Day\t\t\t\t- Tuesday
-\n%ccc\t\t\t- Day\t\t\t\t- Tues
-\n%d\t\t\t\t- Day\t\t\t\t- 10
-\n%yy\t\t\t\t- Year\t\t\t\t- 12
-\n%y\t\t\t\t- Year\t\t\t\t- 2012
-\n%h\t\t\t\t- Hour (12)\t- 9
-\n%k\t\t\t\t- Hour (24\t\t- 21
-\n%mm\t\t\t- Minute\t\t\t- 19
-\n%ss\t\t\t\t- Second\t- 39</string>
+
+	<string name="date_and_time">Date and time</string>
+	<string name="ptttt">%tttt</string>
+	<string name="vtttt">January 10, 2012 9:19 PM</string>
+	<string name="pttt" >%ttt</string>
+	<string name="vttt" >Jan 10, 2012 9:19 PM</string>
+	<string name="pt"   >%t</string>
+	<string name="vt"   >1/10/2012 9:19 PM</string>
+
+	<string name="date_only">Only the date</string>
+	<string name="pxxxx">%xxxx</string>
+	<string name="vxxxx">January 10, 2012</string>
+	<string name="pxxx" >%xxx</string>
+	<string name="vxxx" >Jan 10, 2012</string>
+	<string name="px"   >%x</string>
+	<string name="vx"   >1/10/2012</string>
+
+	<string name="time_only">Time (Full time)</string>
+	<string name="pX"   >%X</string>
+	<string name="vX"   >9:19 PM</string>
+
+	<string name="custom">Custom</string>
+	<string name="month">Month</string>
+	<string name="pMMMM">%MMMM</string>
+	<string name="vMMMM">January</string>
+	<string name="pMMM" >%MMM</string>
+	<string name="vMMM" >Jan</string>
+	<string name="pM"   >%M</string>
+	<string name="vM"   >1</string>
+
+	<string name="day"  >Day</string>
+	<string name="pcccc">%cccc</string>
+	<string name="vcccc">Tuesday</string>
+	<string name="pccc" >%ccc</string>
+	<string name="vccc" >Tues</string>
+	<string name="pd"   >%d</string>
+	<string name="vd"   >10</string>
+
+	<string name="year" >Year</string>
+	<string name="pyy"  >%yy</string>
+	<string name="vyy"  >12</string>
+	<string name="py"   >%y</string>
+	<string name="vy"   >2012</string>
+
+	<string name="hour_12">Hour (12)</string>
+	<string name="ph"   >%h</string>
+	<string name="vh"   >9</string>
+	<string name="hour_24">Hour (24)</string>
+	<string name="pk"   >%k</string>
+	<string name="vk"   >21</string>
+
+	<string name="minute">Minute</string>
+	<string name="pmm"  >%mm</string>
+	<string name="vmm"  >19</string>
+
+	<string name="second">Second</string>
+	<string name="pss"  >%ss</string>
+	<string name="vss"  >39</string>
 </resources>
