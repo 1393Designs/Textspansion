@@ -106,7 +106,7 @@ public class importExt extends Activity
 	{
 		String userKey = key;			
 		//First checks to see if the xml file is malformed
-		if (textie.getLength() == 0 || (shortName.getLength() <= 0 || longName.getLength() <= 0) || (shortName.getLength() != longName.getLength())) {
+		if ((shortName.getLength() <= 0 || longName.getLength() <= 0) || (shortName.getLength() != longName.getLength())) {
 			Toast.makeText(this, "The xml is malformed and can't be imported.", Toast.LENGTH_LONG).show();
 		}
 		else{
