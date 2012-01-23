@@ -17,6 +17,9 @@
 	<string name="context_edit">Edit</string>
 	<string name="context_clip_save">Save</string>
 
+	<string name="tokens_how">How to use:</string>
+	<string name="tokens_desc">A token will expand to the appropriate format whenever you select to copy it.\nFor example, \"Today is %ccc\" will expand to \"Today is Thursday.\"\n</string>
+
 	<string name="date_and_time">Date and time</string>
 	<string name="ptttt">%tttt</string>
 	<string name="vtttt">January 10, 2012 9:19 PM</string>

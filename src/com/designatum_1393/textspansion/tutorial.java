@@ -31,9 +31,6 @@ public class tutorial extends Activity
 		tutImage = (ImageView) findViewById(R.id.tut_image);
 		tokensTut = (ScrollView) findViewById(R.id.tokens);
 
-		tutImage.setVisibility(View.GONE);
-		tokensTut.setVisibility(View.VISIBLE);
-
 		btnNext = (Button) findViewById(R.id.next_button);
 		btnBack = (Button) findViewById(R.id.back_button);
 		if (counter == 0)
