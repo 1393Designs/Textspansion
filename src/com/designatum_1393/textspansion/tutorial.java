@@ -10,14 +10,14 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.content.res.Resources;
 
-import android.widget.TableLayout;
+import android.widget.ScrollView;
 
 public class tutorial extends Activity
 {
     /** Called when the activity is first created. */
 
     private ImageView tutImage;
-    private TableLayout tokensTut;
+    private ScrollView tokensTut;
     private Button btnNext, btnBack;
     private int counter = 0;
     private String path;
@@ -29,8 +29,10 @@ public class tutorial extends Activity
         setContentView(R.layout.tutorial);
 
 		tutImage = (ImageView) findViewById(R.id.tut_image);
-		tokensTut = (TableLayout) findViewById(R.id.tokens_tut);
+		tokensTut = (ScrollView) findViewById(R.id.tokens);
 
+		tutImage.setVisibility(View.GONE);
+		tokensTut.setVisibility(View.VISIBLE);
 
 		btnNext = (Button) findViewById(R.id.next_button);
 		btnBack = (Button) findViewById(R.id.back_button);
