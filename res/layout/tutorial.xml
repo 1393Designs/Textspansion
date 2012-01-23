@@ -24,7 +24,7 @@
 
 	<!-- Tokens tutorial
 		android:stretchColumns="*"
-	-->		
+	-->
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/button_bar"
@@ -60,7 +60,9 @@
 		android:visibility="gone">
 		<LinearLayout
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			>
 			<TableLayout
 				android:id="@+id/tokens_tut"
 				android:layout_width="fill_parent"
@@ -216,7 +218,6 @@
 				android:id="@+id/tokens_tut2"
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
-				android:layout_below="@id/tokens_tut"
 				android:stretchColumns="*"
 				android:gravity="center">
 				<TableRow>
@@ -502,9 +503,6 @@
 						android:paddingRight="7dip"
 						android:paddingBottom="3dip" />
 				</TableRow>
-				<View
-					android:layout_height="2dip"
-					android:background="#FF909090" />
 			</TableLayout>
 		</LinearLayout>
 	</ScrollView>
