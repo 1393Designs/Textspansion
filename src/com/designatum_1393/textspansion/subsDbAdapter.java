@@ -128,12 +128,17 @@ public class subsDbAdapter
 			initialValues.put(KEY_PRIVATE, "0");
 		}
 
-		if (mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR).getCount() != 0)	
+		Cursor c = mDb.query(SUBS_TABLE, new String[] {KEY_FULL}, KEY_ABBR +"=? and " +KEY_FULL +"=? and "+KEY_PRIVATE+"=?", new String[] {abbr, full, pvtS}, null, null, KEY_ABBR);
+		if( c.getCount() != 0)
 		{
+			c.close();
 			return -1;
 		}
 		else
+		{
+			c.close();
 			return mDb.insert(SUBS_TABLE, null, initialValues);
+		}
 	}
 
 	/**
