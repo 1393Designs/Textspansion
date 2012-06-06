@@ -566,6 +566,10 @@ public class textspansion extends ListActivity
 		mSubsCursor = mDbHelper.fetchAllSubs(sortByShort);
 		startManagingCursor(mSubsCursor);
 
+		//Enable the fast thumb scroller for lists > 100 items
+		if( mSubsCursor.getCount() > 100 )
+			getListView().setFastScrollEnabled(true);
+
 		privitized_adapter subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "main");
 		setListAdapter(subsAdapter);
 	}
