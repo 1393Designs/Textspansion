@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.util.SparseBooleanArray;
 import java.lang.Boolean;
 import android.widget.LinearLayout;
-import android.widget.CheckBox;	
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -42,7 +42,7 @@ public class multiDelete extends ListActivity
 	private SharedPreferences sharedPrefs;
 	private boolean sortByShort;
 	private Cursor mSubsCursor;
-	private privitized_adapter subsAdapter; 
+	private privitized_adapter subsAdapter;
 	private String full, abbr, pvt;
 	private ArrayList<String> aSelected = new ArrayList<String>(0);
 	private ArrayList<String> fSelected = new ArrayList<String>(0);
@@ -71,7 +71,7 @@ public class multiDelete extends ListActivity
 			pSelected.add(pvt);
 		}
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -158,14 +158,14 @@ public class multiDelete extends ListActivity
 		dd.setTitle("Are you sure?");
 		dd.setView(LayoutInflater.from(this).inflate(R.layout.delete_selected_dialog,null));
 
-		dd.setPositiveButton("Yes, delete selected", 
+		dd.setPositiveButton("Yes, delete selected",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
 			deleteSelected();
 			}
 		});
 
-		dd.setNegativeButton("NO", 
+		dd.setNegativeButton("NO",
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
 			}
