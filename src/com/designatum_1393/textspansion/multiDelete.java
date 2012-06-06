@@ -101,6 +101,11 @@ public class multiDelete extends ListActivity
 		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		list.setItemsCanFocus(false);
 
+		//Enable the fast thumb scroller for lists > 100 items
+		if( mSubsCursor.getCount() > 100 )
+			list.setFastScrollEnabled(true);
+
+
 		final Button confirm = (Button) findViewById(R.id.multi_confirm);
 		confirm.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v){
