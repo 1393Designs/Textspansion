@@ -1,6 +1,7 @@
 package com.designatum_1393.textspansion;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.app.Activity;
 import java.io.BufferedReader;
@@ -15,6 +16,8 @@ import android.content.Intent;
 import android.net.Uri;
 import java.net.URI;
 import android.widget.Toast;
+import android.util.Log;
+import android.app.ProgressDialog;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -36,27 +39,30 @@ import android.widget.Button;
 import android.app.Dialog;
 import android.view.View.OnClickListener;
 import android.view.View;
-//import android.content.DialogInterface;
+import android.os.AsyncTask;
 
 public class importExt extends Activity
 {
 
 	private File dbFile = new File("/data/data/com.designatum_1393.textspansion/databases/", "data");
 	private subsDbAdapter mDbHelper;
-	private Cursor mSubsCursor;
 	private Element textspansion;
 	private NodeList shortName, longName, pvts, textie, encryptCheck;
-	
+	private ProgressDialog pd;
+	private boolean dup = false;
+	private String userKey;
+
+	private int mProgress = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_view);
-		
+
+		Log.i("Importing", "After layout");
 		final Intent intent = getIntent();
-		mDbHelper = new subsDbAdapter(this);
-		mDbHelper.open();
-		
+
 		//Gets data from the xml file
 		try{
 			InputStream attachment = getContentResolver().openInputStream(intent.getData());
@@ -71,29 +77,26 @@ public class importExt extends Activity
 			textie = textspansion.getElementsByTagName("Textspansion");
 			encryptCheck = textspansion.getElementsByTagName("Encrypt");
 		}catch(Exception e){}
-		
+
 		//Will detect if the xml file is encrypted. If so, prompts user for the key.
 		if(encryptCheck.getLength() == 1){
 			final Dialog dialog = new Dialog(importExt.this);
 			dialog.setContentView(R.menu.decryptdialog);
 			dialog.setTitle("Decrypting...");
-			
+
 			TextView key_text = (TextView) dialog.findViewById(R.id.key_label);
 			final EditText key_input = (EditText) dialog.findViewById(R.id.key_entry);
-			
+
 			Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
 			okay_button.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					String key_name = key_input.getText().toString();
 					if(key_name.compareTo("") == 0)
 						key_name = "textspansion";
-					
+
 					importSubs(intent, key_name);
-					mDbHelper.close();
-					startActivity(new Intent(getApplicationContext(), textspansion.class));
-					finish();
 					dialog.dismiss();
-					
+
 				}
 			});
 			dialog.show();
@@ -101,38 +104,64 @@ public class importExt extends Activity
 		else
 			importSubs(intent, "textspansion");
 	}
-	
-	public void importSubs(Intent intent, String key) 
+
+	public void importSubs(Intent intent, String key)
 	{
-		String userKey = key;			
+		userKey = key;
 		//First checks to see if the xml file is malformed
 		if ((shortName.getLength() <= 0 || longName.getLength() <= 0) || (shortName.getLength() != longName.getLength())) {
 			Toast.makeText(this, "The xml is malformed and can't be imported.", Toast.LENGTH_LONG).show();
 		}
 		else{
+			parseFile pf = new parseFile();
+			pf.execute();
+		}
+	}
+
+	private class parseFile extends AsyncTask<Void, Integer, Void>
+	{
+		protected void onPreExecute(){
+			pd = new ProgressDialog(importExt.this);
+			pd.setMessage("Importing file, please wait...");
+			pd.setMax(shortName.getLength());
+			pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			pd.setCancelable(false);
+			pd.show();
+		}
+
+		protected void onProgressUpdate(Integer... params){
+			pd.setProgress(params[0]);
+		}
+
+		protected Void doInBackground(Void... params)
+		{
+			mDbHelper = new subsDbAdapter(importExt.this);
+			mDbHelper.open();
 			boolean decryptText = false;
-			
+
+			dup = false;
 			if(encryptCheck.getLength() == 1)
 				decryptText = true;
-				
+
 			String shortNameStr, longNameStr, pvt;
 			boolean pvtPassIn;
 			if(pvts.getLength() > 0)
 			{
-				for (int i =0; i<shortName.getLength(); i++)
+				for (int i=0; i<shortName.getLength(); i++)
 				{
+					publishProgress(i);
 					shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
 					longNameStr = longName.item(i).getFirstChild().getNodeValue();
 					pvt = pvts.item(i).getFirstChild().getNodeValue();
-					
+
 					if(pvt.compareTo("1") == 0)
 						pvtPassIn = true;
 					else
 						pvtPassIn = false;
-												
+
 					if(shortNameStr.compareTo("") == 0)
 						shortNameStr = longNameStr;
-					
+
 					if(decryptText)
 					{
 						try{
@@ -143,19 +172,20 @@ public class importExt extends Activity
 						{}
 					}
 					if (mDbHelper.createSub(shortNameStr, longNameStr, pvtPassIn) == -1)
-						Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
+						dup = true;
 				}
 			}
 			else
 			{
-				for (int i =0; i<shortName.getLength(); i++)
+				for (int i=0; i<shortName.getLength(); i++)
 				{
+					publishProgress(i);
 					shortNameStr = shortName.item(i).getFirstChild().getNodeValue();
 					longNameStr = longName.item(i).getFirstChild().getNodeValue();
-											
+
 					if(shortNameStr.compareTo("") == 0)
 						shortNameStr = longNameStr;
-						
+
 					if(decryptText)
 					{
 						try{
@@ -165,38 +195,43 @@ public class importExt extends Activity
 						catch(Exception e)
 						{}
 					}
-					
+
 					if (mDbHelper.createSub(shortNameStr, longNameStr, false) == -1)
-						Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show(); 
+						dup = true;
 				}
 			}
-				
+
+			mDbHelper.close();
+
+			if(dup)
+				Toast.makeText(getApplicationContext(), "There was at least one repeat that was not added", Toast.LENGTH_SHORT).show();
+			pd.dismiss();
+			startActivity(new Intent(importExt.this, textspansion.class));
+			finish();
+			return null;
 		}
-		mDbHelper.close();
-		startActivity(new Intent(this, textspansion.class));
-		finish();
 	}
-	
-	// Following code taken from: http://www.androidsnippets.com/encryptdecrypt-strings	
-	public static String decrypt(String seed, String encrypted) throws Exception 
+
+	// Following code taken from: http://www.androidsnippets.com/encryptdecrypt-strings
+	public static String decrypt(String seed, String encrypted) throws Exception
 	{
 		byte[] rawKey = getRawKey(seed.getBytes());
 		byte[] enc = toByte(encrypted);
 		byte[] result = decrypt(rawKey, enc);
 		return new String(result);
 	}
-	
-	private static byte[] getRawKey(byte[] seed) throws Exception 
+
+	private static byte[] getRawKey(byte[] seed) throws Exception
 	{
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		sr.setSeed(seed);
-		kgen.init(128, sr); 
+		kgen.init(128, sr);
 		SecretKey skey = kgen.generateKey();
 		byte[] raw = skey.getEncoded();
 		return raw;
 	}
-	
+
 	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
 		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
@@ -204,17 +239,17 @@ public class importExt extends Activity
 		byte[] decrypted = cipher.doFinal(encrypted);
 		return decrypted;
 	}
-	
-	public static String toHex(String txt) 
+
+	public static String toHex(String txt)
 	{
 		return toHex(txt.getBytes());
 	}
-	
+
 	public static String fromHex(String hex) {
 		return new String(toByte(hex));
 	}
-	
-	public static String toHex(byte[] buf) 
+
+	public static String toHex(byte[] buf)
 	{
 		if (buf == null)
 			return "";
@@ -224,7 +259,7 @@ public class importExt extends Activity
 		}
 		return result.toString();
 	}
-	
+
 	public static byte[] toByte(String hexString) {
 		int len = hexString.length()/2;
 		byte[] result = new byte[len];
@@ -232,13 +267,13 @@ public class importExt extends Activity
 			result[i] = Integer.valueOf(hexString.substring(2*i, 2*i+2), 16).byteValue();
 		return result;
 	}
-	
+
 	private final static String HEX = "0123456789ABCDEF";
-	
-	private static void appendHex(StringBuffer sb, byte b) 
+
+	private static void appendHex(StringBuffer sb, byte b)
 	{
 		sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
 	}
-	
+
 	//End code snippet
 }
