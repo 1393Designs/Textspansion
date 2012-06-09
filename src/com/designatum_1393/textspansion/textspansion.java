@@ -1,4 +1,4 @@
-//Last updated 8/9/2011
+//Last updated 5/15/2012
 //Authors: Sean Barag, Vincent Tran
 //QA Tester: Nee Taylor
 
@@ -570,7 +570,11 @@ public class textspansion extends ListActivity
 		if( mSubsCursor.getCount() > 100 )
 			getListView().setFastScrollEnabled(true);
 
-		privitized_adapter subsAdapter = new privitized_adapter(getApplicationContext(), mSubsCursor, "main");
+		privitized_adapter subsAdapter = new privitized_adapter(
+			getApplicationContext(),
+			mSubsCursor,
+			"main",
+			sharedPrefs.getBoolean("titleOnly", false));
 		setListAdapter(subsAdapter);
 	}
 	/**
