@@ -21,14 +21,14 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		
-		<receiver android:name="loadOnBoot">  
-			<intent-filter>  
-				<action android:name="android.intent.action.BOOT_COMPLETED" />  
-			</intent-filter>  
+
+		<receiver android:name="loadOnBoot">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
 		</receiver>
 
-		<activity android:name="importExt" android:label="Import data to Textspansion">
+		<activity android:name="importExt" android:label="Import data to Textspansion" android:screenOrientation="portrait">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -43,13 +43,13 @@
 				<data android:mimeType="text/plain" android:pathPattern=".*txt" />
 			</intent-filter>
 		</activity>
-		
+
 		<activity android:name="settings" android:label="@string/tab_title_settings" android:configChanges="orientation|keyboardHidden"/>
 
 		<activity android:name="multiDelete" android:label="Multi-Delete" android:configChanges="orientation|keyboardHidden"/>
 
 		<activity android:name="clipsList" android:label="Clipboard History" android:configChanges="orientation|keyboardHidden" android:theme="@android:style/Theme.NoTitleBar"/>
-		
+
 		<activity android:name="tutorial" android:label="Tutorial" android:theme="@android:style/Theme.NoTitleBar"/>
 
 	</application>
