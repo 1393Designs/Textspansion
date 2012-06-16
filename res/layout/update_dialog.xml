@@ -10,19 +10,13 @@
 		android:layout_height="wrap_content"
 		android:scrollbars="vertical" >
 
-		<TextView android:id="@+id/updateDialog" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
+		<TextView android:id="@+id/updateDialog"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
 			android:paddingLeft="10px"
 			android:paddingRight="10px"
 			android:paddingTop="5px"
-			android:text=
-			"Welcome to version 2.1 of Textspansion! We've done quite a bit since our last version.\n\nFirst, we'll be putting
-all of our update information in these convenient dialogs from now on.\n\nSecond, we've added support for date and time
-tokens. Now a token like %t will expand to 1/10/2012 9:19PM. A list of all tokens can be viewed in the settings.\n\nSpeaking
-of settings, our last update adds a much improved tutorial that can now be viewed in the app settings and
-whenever you launch the app for the first time.\n\nAs always, feel free to email the developers at 1393.Designs@gmail.com
-questions, comments, or feature suggestions. " />
+			android:text="@string/update_message" />
 
 	</LinearLayout>
 </ScrollView>

@@ -77,4 +77,16 @@
 	<string name="second">Second</string>
 	<string name="pss"  >%ss</string>
 	<string name="vss"  >39</string>
+
+	<string name="update_message">
+Welcome to version 2.1.1 of Textspansion!\n\n\
+This update mainly fixes a few bugs that snuck by us, including one that would
+crash the app when a large file was imported into Textspansion.  We also added
+a new feature! Now you can have it so that the list will only show the titles
+and not both the title and snippet text. This can be changed in the
+settings.\n\n\
+Change Log:\n\
+Added "No snippet text" option\n\
+Several bug fixes</string>
+
 </resources>
