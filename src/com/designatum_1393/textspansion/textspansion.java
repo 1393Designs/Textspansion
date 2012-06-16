@@ -177,7 +177,7 @@ public class textspansion extends ListActivity
 			presentEULA();
 			presentUpdate();
 		}
-		else if(!sharedPrefs.getBoolean("update21", false))
+		else if(!sharedPrefs.getBoolean("update22", false))
 			presentUpdate();
 
 
@@ -469,7 +469,7 @@ public class textspansion extends ListActivity
 		new android.content.DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int arg1) {
 			SharedPreferences.Editor editor = sharedPrefs.edit();
-			editor.putBoolean("update21", true);
+			editor.putBoolean("update22", true);
 			editor.commit();
 			}
 		});
