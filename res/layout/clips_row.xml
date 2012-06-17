@@ -7,10 +7,12 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"/>
+		android:layout_alignParentTop="true"
+		android:paddingLeft="5dp"/>
 	<TextView android:id="@+id/ClipText"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/ClipDate"/>
+		android:layout_below="@id/ClipDate"
+		android:paddingLeft="5dp"/>
 </RelativeLayout>
