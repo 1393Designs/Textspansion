@@ -79,20 +79,20 @@
 	<string name="vss"  >39</string>
 
 	<string name="update_message">
-Welcome to version 2.1.1 of Textspansion!\n\n
+Welcome to version 2.1.1 of Textspansion!\n\n\
 This update mainly fixes a few bugs that snuck by us, including one that would
-crash the app when a large file was imported into Textspansion.  We also added
-a new feature! Now you can have it so that the list will only show the titles
-and not both the title and snippet text. This can be changed in the
-settings.\n\n
-Change Log:\n
-\t- Added \"No snippet text\" option\n
+crash the app when a large file was imported into Textspansion.\n\
+We also added a new feature! Now you can have it so that the list will only
+show the titles and not both the title and snippet text. This can be changed in
+the settings.\n\n\
+Change Log:\n\
+\t- Added \"No snippet text\" option\n\
 \t- Fixed bug where a multi-lined snippet text will prevent user from
 selecting \"Okay!\"\n\
 \t- Fixed bug where app will crash when importing a large file. App will also
-display a progress meter when importing\n
+display a progress meter when importing\n\
 V.2.1:\n\
-\t- Added date/time tokens\n
+\t- Added date/time tokens\n\
 \t- Added a tutorial accessible from Settings</string>
 
 </resources>
