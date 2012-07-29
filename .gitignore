@@ -6,3 +6,4 @@ gen/*
 Thumbs.db
 *.keystore
 *.properties
+.gitconfig
