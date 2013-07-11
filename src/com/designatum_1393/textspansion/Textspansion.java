@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 public class Textspansion extends Activity
 {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -13,4 +12,3 @@ public class Textspansion extends Activity
 		setContentView(R.layout.main);
 	}
 }
-

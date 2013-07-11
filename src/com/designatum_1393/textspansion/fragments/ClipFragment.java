@@ -1,22 +1,23 @@
-package com.designatum_1393.textspansion;
+package com.designatum_1393.textspansion.fragments;
 
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+
 
 public class ClipFragment extends ListFragment {
 
-	View mContentView = null;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
-		mContentView = inflater.inflate(R.layout.clips_list,
-			container, false);
-
-		return mContentView;
-	}
-} 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        String[] values = new String[] { "Enterprise", "Star Trek", "Next Generation", "Deep Space 9", "Voyager"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
+        setListAdapter(adapter);
+    }
+}
