@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.designatum_1393.textspansion.Sub;
 
@@ -16,9 +17,10 @@ public class SubsDataSource {
     // Database fields
     private SQLiteDatabase database;
     private DbHelper dbHelper;
-    private String[] allColumns = { DbHelper.KEY_ID,
-        DbHelper.KEY_FULL,
-        DbHelper.KEY_ABBR,
+    private String[] allColumns = {
+        DbHelper.KEY_ID,
+        DbHelper.KEY_TITLE,
+        DbHelper.KEY_PASTE,
         DbHelper.KEY_PRIVATE
     };
 
@@ -34,25 +36,23 @@ public class SubsDataSource {
         dbHelper.close();
     }
 
-    public Sub createSub(String abbrText, String fullText, String privacy) {
+    public long addSub(Sub newSub) {
         ContentValues values = new ContentValues();
-        values.put(DbHelper.KEY_ABBR, abbrText);
-        values.put(DbHelper.KEY_FULL, fullText);
-        values.put(DbHelper.KEY_PRIVATE, privacy);
+        values.put(DbHelper.KEY_TITLE, newSub.getSubTitle());
+        values.put(DbHelper.KEY_PASTE, newSub.getPasteText());
+        values.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
         long insertId = database.insert(DbHelper.SUBS_TABLE, null,
                 values);
         Cursor cursor = database.query(DbHelper.SUBS_TABLE,
                 allColumns, DbHelper.KEY_ID + " = " + insertId, null,
                 null, null, null);
         cursor.moveToFirst();
-        Sub newComment = cursorToComment(cursor);
         cursor.close();
-        return newComment;
+        return insertId;
     }
 
     public void deleteSub(Sub sub) {
         long id = sub.getId();
-        System.out.println("Comment deleted with id: " + id);
         database.delete(DbHelper.SUBS_TABLE, DbHelper.KEY_ID
                 + " = " + id, null);
     }
@@ -69,7 +69,6 @@ public class SubsDataSource {
             subs.add(comment);
             cursor.moveToNext();
         }
-        // Make sure to close the cursor
         cursor.close();
         return subs;
     }
@@ -77,8 +76,8 @@ public class SubsDataSource {
     private Sub cursorToComment(Cursor cursor) {
         Sub comment = new Sub();
         comment.setId(cursor.getLong(0));
-        comment.setAbbrText(cursor.getString(1));
-        comment.setFullText(cursor.getString(2));
+        comment.setSubTitle(cursor.getString(1));
+        comment.setPasteText(cursor.getString(2));
         comment.setPrivacy(cursor.getString(3));
         return comment;
     }

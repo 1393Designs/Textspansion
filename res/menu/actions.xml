@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/add_sub"
+          android:icon="@android:drawable/ic_menu_add"
+          android:title="@string/menu_add_item"
+          android:showAsAction="always" />
+    <item android:id="@+id/settings_menu"
+          android:icon="@android:drawable/ic_menu_preferences"
+          android:title="@string/menu_settings" />
+    <item android:id="@+id/export_menu"
+          android:icon="@android:drawable/ic_menu_share"
+          android:title="@string/menu_export"
+          android:showAsAction="ifRoom" />
+</menu>
