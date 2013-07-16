@@ -2,6 +2,10 @@ package com.designatum_1393.textspansion.fragments;
 
 import android.app.Dialog;
 import android.app.ListFragment;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -13,11 +17,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.designatum_1393.textspansion.R;
 import com.designatum_1393.textspansion.Sub;
-import com.designatum_1393.textspansion.Textspansion;
 import com.designatum_1393.textspansion.utils.SubsArrayAdapter;
 import com.designatum_1393.textspansion.utils.SubsDataSource;
 
@@ -26,7 +30,10 @@ import java.util.List;
 
 public class ClipFragment extends ListFragment {
 
+    private SubsArrayAdapter subsArrayAdapter;
     private SubsDataSource subsDataSource;
+    private ClipboardManager clipboardManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +44,13 @@ public class ClipFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         this.setHasOptionsMenu(true);
 
+        clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+
         subsDataSource = new SubsDataSource(getActivity());
         subsDataSource.open();
         List<Sub> values = subsDataSource.getAllSubs();
-        SubsArrayAdapter adapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)values);
-        setListAdapter(adapter);
+        subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)values);
+        setListAdapter(subsArrayAdapter);
     }
 
     @Override
@@ -67,9 +76,19 @@ public class ClipFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onListItemClick(ListView listView, View view, int position, long id) {
+        super.onListItemClick(listView, view, position, id);
+        Sub clickedSub = subsArrayAdapter.getItem(position);
+        Toast.makeText(getActivity(), clickedSub.getSubTitle() + " has been copied.", Toast.LENGTH_SHORT).show();
+
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("Textspansion Snippet", clickedSub.getPasteText()));
+
+        getActivity().finish();
+    }
+
     public void addSub() {
         final Dialog dialog = new Dialog(getActivity());
-        final SubsArrayAdapter subsArrayAdapter = (SubsArrayAdapter)getListAdapter();
         dialog.setContentView(R.layout.add_dialog);
         dialog.setTitle(R.string.add_title);
         dialog.setCancelable(true);
