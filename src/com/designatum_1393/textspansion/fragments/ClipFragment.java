@@ -89,6 +89,7 @@ public class ClipFragment extends ListFragment {
                     mode.finish();
                     return true;
                 case R.id.delete_sub:
+                    deleteSub();
                     mode.finish();
                     return true;
                 default:
@@ -207,6 +208,14 @@ public class ClipFragment extends ListFragment {
             }
         });
         dialog.show();
+        subsArrayAdapter.notifyDataSetChanged();
+    }
+
+    public void deleteSub()
+    {
+        Sub subToDelete = subsDataSource.getSub(selectedItem);
+        subsDataSource.deleteSub(subToDelete);
+        refreshView();
         subsArrayAdapter.notifyDataSetChanged();
     }
 
