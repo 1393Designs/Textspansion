@@ -8,6 +8,7 @@
     <string name="sub_title">Title:</string>
     <string name="sub_paste">Text to Paste:</string>
     <string name="add_title">Add an entry</string>
+    <string name="edit_title">Edit an entry</string>
 	<string name="menu_add_item">Add</string>
 	<string name="menu_delete">Delete</string>
 	<string name="menu_export">Export</string>

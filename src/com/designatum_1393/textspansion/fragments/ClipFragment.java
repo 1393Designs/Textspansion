@@ -3,16 +3,18 @@ package com.designatum_1393.textspansion.fragments;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -33,6 +35,8 @@ public class ClipFragment extends ListFragment {
     private SubsArrayAdapter subsArrayAdapter;
     private SubsDataSource subsDataSource;
     private ClipboardManager clipboardManager;
+    public int selectedItem = -1;
+    protected Object mActionMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,52 @@ public class ClipFragment extends ListFragment {
         List<Sub> values = subsDataSource.getAllSubs();
         subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)values);
         setListAdapter(subsArrayAdapter);
+
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (mActionMode != null)
+                    return false;
+
+                selectedItem = position;
+
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                view.setSelected(true);
+                return true;
+            }
+        });
     }
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater menuInflater = mode.getMenuInflater();
+            menuInflater.inflate(R.menu.main_context, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.edit_sub:
+                    modifySub("edit");
+                    mode.finish();
+                    return true;
+                case R.id.delete_sub:
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            selectedItem = -1;
+        }
+    };
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
@@ -62,10 +111,9 @@ public class ClipFragment extends ListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_sub:
-                addSub();
+                modifySub("add");
                 return true;
             case R.id.settings_menu:
                 return true;
@@ -87,16 +135,29 @@ public class ClipFragment extends ListFragment {
         getActivity().finish();
     }
 
-    public void addSub() {
+    public void modifySub(final String modifyType) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_dialog);
-        dialog.setTitle(R.string.add_title);
+        if (modifyType.equals("add"))
+            dialog.setTitle(R.string.add_title);
+        else if (modifyType.equals("edit"))
+            dialog.setTitle(R.string.edit_title);
         dialog.setCancelable(true);
 
         final EditText subTitleInput = (EditText) dialog.findViewById(R.id.subTitleEntry);
         final EditText pasteTextInput = (EditText) dialog.findViewById(R.id.pasteTextEntry);
-
         final CheckBox pvtBox = (CheckBox) dialog.findViewById(R.id.pvt_box);
+        final Sub subToEdit = subsDataSource.getSub(selectedItem);
+
+        if (modifyType.equals("edit")) {
+            subTitleInput.setText(subToEdit.getSubTitle());
+            pasteTextInput.setText(subToEdit.getPasteText());
+            if (subToEdit.getPrivacy().equals("1")) {
+                pvtBox.setChecked(true);
+                pasteTextInput.setTransformationMethod(new PasswordTransformationMethod());
+            }
+        }
+
         pvtBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
@@ -117,25 +178,40 @@ public class ClipFragment extends ListFragment {
         Button okay_button = (Button) dialog.findViewById(R.id.okayButton);
         okay_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String subTitle = subTitleInput.getText().toString();
-                String pasteText = pasteTextInput.getText().toString();
-                if(pvtBox.isChecked() && subTitle.compareTo("") == 0)
-                    subTitle = "Private Entry";
-                else if(subTitle.compareTo("") == 0 && (pasteText.length() > 51))
-                    subTitle = pasteText.substring(0,49);
-                else if (subTitle.compareTo("") == 0)
-                    subTitle = pasteText;
+            String subTitle = subTitleInput.getText().toString();
+            String pasteText = pasteTextInput.getText().toString();
+            if(pvtBox.isChecked() && subTitle.compareTo("") == 0)
+                subTitle = "Private Entry";
+            else if(subTitle.compareTo("") == 0 && (pasteText.length() > 51))
+                subTitle = pasteText.substring(0,49);
+            else if (subTitle.compareTo("") == 0)
+                subTitle = pasteText;
 
-                Sub newSub = new Sub(subTitle, pasteText, pvtBox.isChecked());
-                if (subsDataSource.addSub(newSub) == -1)
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            "That item already exists.", Toast.LENGTH_SHORT).show();
-
+            Sub newSub = new Sub(subTitle, pasteText, pvtBox.isChecked());
+            if (modifyType.equals("add")) {
+                if (subsDataSource.addSub(newSub) == -1) {
+                    Toast.makeText(
+                        getActivity().getApplicationContext(),
+                        "That item already exists.",
+                        Toast.LENGTH_SHORT
+                    ).show();
+                }
+            } else if (modifyType.equals("edit")) {
+                subsDataSource.editSub(subToEdit, newSub);
+                refreshView();
+            }
+            if (modifyType.equals("add")) {
                 subsArrayAdapter.add(newSub);
-                dialog.dismiss();
+            }
+            dialog.dismiss();
             }
         });
         dialog.show();
         subsArrayAdapter.notifyDataSetChanged();
+    }
+
+    public void refreshView() {
+        subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)subsDataSource.getAllSubs());
+        setListAdapter(subsArrayAdapter);
     }
 }

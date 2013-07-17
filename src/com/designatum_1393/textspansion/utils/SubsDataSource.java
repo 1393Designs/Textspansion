@@ -43,12 +43,41 @@ public class SubsDataSource {
         values.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
         long insertId = database.insert(DbHelper.SUBS_TABLE, null,
                 values);
+
         Cursor cursor = database.query(DbHelper.SUBS_TABLE,
                 allColumns, DbHelper.KEY_ID + " = " + insertId, null,
                 null, null, null);
         cursor.moveToFirst();
         cursor.close();
         return insertId;
+    }
+
+    public boolean editSub(Sub oldSub, Sub newSub) {
+        String oldTitle = oldSub.getSubTitle();
+        String oldPaste = oldSub.getPasteText();
+        String whereClause = DbHelper.KEY_PASTE + "='" + oldPaste.replace("'", "''") + "'" + " AND "
+                + DbHelper.KEY_TITLE + "='" + oldTitle.replace("'", "''") + "'";
+
+        ContentValues args = new ContentValues();
+        args.put(DbHelper.KEY_TITLE, newSub.getSubTitle());
+        args.put(DbHelper.KEY_PASTE, newSub.getPasteText());
+        args.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
+
+        int count = database.query(
+                DbHelper.SUBS_TABLE,
+                new String[] {DbHelper.KEY_PASTE},
+                DbHelper.KEY_TITLE +"=? and " +DbHelper.KEY_PASTE +"=? and " +DbHelper.KEY_PRIVATE +"=?",
+                new String[] {newSub.getSubTitle(), newSub.getPasteText(), newSub.getPrivacy()},
+                null,
+                null,
+                DbHelper.KEY_TITLE
+        ).getCount();
+
+        if (count != 0)
+            return false;
+        else
+            return database.update(DbHelper.SUBS_TABLE, args, whereClause, null) > 0;
+
     }
 
     public void deleteSub(Sub sub) {
@@ -71,6 +100,15 @@ public class SubsDataSource {
         }
         cursor.close();
         return subs;
+    }
+
+    public Sub getSub(int position) {
+        List<Sub> subs = getAllSubs();
+        try {
+            return subs.get(position);
+        } catch (Exception e) {
+            return new Sub();
+        }
     }
 
     private Sub cursorToComment(Cursor cursor) {
