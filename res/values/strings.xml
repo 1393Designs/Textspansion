@@ -19,6 +19,10 @@
 	<string name="menu_cancel">Done</string>
 	<string name="context_edit">Edit</string>
 	<string name="context_clip_save">Save</string>
+    <string name="notification_running">Textspansion is running</string>
+    <string name="notification_click">Click to access your snippets</string>
+
+    <string name="preferences_notification">Check to access the app from the Status bar (Checking this will start the app automatically when you start your phone).</string>
 
 	<string name="tokens_how">How to use:</string>
 	<string name="tokens_desc">A token will expand to the appropriate format whenever you select to copy it.\nFor example, \"Today is %ccc\" will expand to \"Today is Thursday.\"\n</string>

@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" >
+
+    <fragment
+            class="com.designatum_1393.textspansion.fragments.PreferencesFragment"
+            android:id="@+id/prefs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/preferences">
+    </fragment>
+</LinearLayout>
+
