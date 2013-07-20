@@ -49,8 +49,10 @@ public class Sub {
         this.privacy = privacy;
     }
 
-    // Will be used by the ArrayAdapter in the ListView
-    @Override
+    public boolean isPrivate() {
+        return this.privacy.equals("1");
+    }
+
     public String toString() {
         return subTitle;
     }

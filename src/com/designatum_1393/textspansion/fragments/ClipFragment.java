@@ -193,7 +193,7 @@ public class ClipFragment extends ListFragment {
         if (modifyType.equals("edit")) {
             subTitleInput.setText(subToEdit.getSubTitle());
             pasteTextInput.setText(subToEdit.getPasteText());
-            if (subToEdit.getPrivacy().equals("1")) {
+            if (subToEdit.isPrivate()) {
                 pvtBox.setChecked(true);
                 pasteTextInput.setTransformationMethod(new PasswordTransformationMethod());
             }

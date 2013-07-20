@@ -2,6 +2,7 @@ package com.designatum_1393.textspansion.utils;
 
 
 import android.content.Context;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,12 @@ public class SubsArrayAdapter extends ArrayAdapter<Sub> {
 
         subTitle.setText(subs.get(position).getSubTitle());
         pasteText.setText(subs.get(position).getPasteText());
+
+        if (subs.get(position).isPrivate()) {
+            pasteText.setTransformationMethod(new PasswordTransformationMethod());
+        } else {
+            pasteText.setTransformationMethod(null);
+        }
 
         return row;
     }
