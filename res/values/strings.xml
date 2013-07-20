@@ -22,7 +22,15 @@
     <string name="notification_running">Textspansion is running</string>
     <string name="notification_click">Click to access your snippets</string>
 
+    <string name="preferences_access_notification">Access from Notification Shade</string>
     <string name="preferences_notification">Check to access the app from the Status bar (Checking this will start the app automatically when you start your phone).</string>
+    <string name="preferences_misc">Misc.</string>
+    <string name="preferences_tutorial">Tutorial</string>
+    <string name="preferences_view_tutorial">View the Tutorial again</string>
+    <string name="preferences_about">About</string>
+    <string name="preferences_wipe_data">Wipe all data</string>
+    <string name="preferences_wipe_data_summary">This will delete your *entire* database.</string>
+    <string name="preferences_wipe_data_dialog">WARNING: There is no undo. This will delete the entire database which contains all of your entries!</string>
 
 	<string name="tokens_how">How to use:</string>
 	<string name="tokens_desc">A token will expand to the appropriate format whenever you select to copy it.\nFor example, \"Today is %ccc\" will expand to \"Today is Thursday.\"\n</string>

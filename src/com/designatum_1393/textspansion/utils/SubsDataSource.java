@@ -86,6 +86,10 @@ public class SubsDataSource {
                 + " = " + id, null);
     }
 
+    public boolean abandonShip() {
+        return database.delete(DbHelper.SUBS_TABLE, null, null) > 0;
+    }
+
     public List<Sub> getAllSubs() {
         List<Sub> subs = new ArrayList<Sub>();
 

@@ -61,14 +61,14 @@ public class ClipFragment extends ListFragment {
                         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), 0, notificationIntent, 0);
 
-                        Notification notification = new Notification.Builder(getActivity())
-                                .setContentTitle(getActivity().getString(R.string.app_name))
-                                .setContentText(getActivity().getString(R.string.notification_click))
-                                .setTicker(getActivity().getString(R.string.notification_running))
-                                .setSmallIcon(R.drawable.textspansion_notification)
-                                .setOngoing(true)
-                                .setContentIntent(contentIntent)
-                                .getNotification();
+                        Notification.Builder builder = new Notification.Builder(getActivity());
+                        builder.setContentTitle(getActivity().getString(R.string.app_name));
+                        builder.setContentText(getActivity().getString(R.string.notification_click));
+                        builder.setTicker(getActivity().getString(R.string.notification_running));
+                        builder.setSmallIcon(R.drawable.textspansion_notification);
+                        builder.setOngoing(true);
+                        builder.setContentIntent(contentIntent);
+                        Notification notification = builder.getNotification();
 
 
                         mNotificationManager.notify(1, notification);
