@@ -64,9 +64,8 @@ public class ClipFragment extends ListFragment {
                     return false;
 
                 selectedItem = position;
-
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
                 view.setSelected(true);
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
                 return true;
             }
         });
