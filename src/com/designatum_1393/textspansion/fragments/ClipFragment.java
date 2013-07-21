@@ -41,6 +41,7 @@ public class ClipFragment extends ListFragment {
     private SharedPreferences sharedPreferences;
     public int selectedItem = -1;
     protected Object mActionMode;
+    private View selectedView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,18 +58,27 @@ public class ClipFragment extends ListFragment {
         subsDataSource = new SubsDataSource(getActivity());
         subsDataSource.open();
         fillList();
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        final AdapterView.OnItemLongClickListener listener = new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
                 if (mActionMode != null)
                     return false;
 
                 selectedItem = position;
-                view.setSelected(true);
+                selectedView = view;
+
+                // WHY DON'T THIS WORK?
+                //view.setSelected(true);
+
+                // Until above gets fixed, WORKAROUNDS!
+                selectedView.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
                 mActionMode = getActivity().startActionMode(mActionModeCallback);
                 return true;
             }
-        });
+        };
+
+        getListView().setOnItemLongClickListener(listener);
     }
 
     @Override
@@ -125,6 +135,10 @@ public class ClipFragment extends ListFragment {
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             selectedItem = -1;
+            
+            // Please replace this when we find the correct way to do this
+            selectedView.setBackgroundColor(getResources().getColor(android.R.color.background_dark));
+            selectedView = null;
         }
     };
 
