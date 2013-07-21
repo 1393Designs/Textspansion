@@ -6,7 +6,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.ActionMode;
@@ -36,12 +38,14 @@ public class ClipFragment extends ListFragment {
     private SubsArrayAdapter subsArrayAdapter;
     private SubsDataSource subsDataSource;
     private ClipboardManager clipboardManager;
+    private SharedPreferences sharedPreferences;
     public int selectedItem = -1;
     protected Object mActionMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     @Override
@@ -159,8 +163,11 @@ public class ClipFragment extends ListFragment {
     }
 
     public void fillList() {
-        List<Sub> values = subsDataSource.getAllSubs();
-        subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)values);
+        if (sharedPreferences.getBoolean("hidePasteText", false)) {
+            subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row_hide_paste, (ArrayList) subsDataSource.getAllSubs());
+        } else {
+            subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList) subsDataSource.getAllSubs());
+        }
         setListAdapter(subsArrayAdapter);
     }
     public void modifySub(final String modifyType) {
@@ -226,7 +233,7 @@ public class ClipFragment extends ListFragment {
                 }
             } else if (modifyType.equals("edit")) {
                 subsDataSource.editSub(subToEdit, newSub);
-                refreshView();
+                fillList();
             }
             if (modifyType.equals("add")) {
                 subsArrayAdapter.add(newSub);
@@ -241,12 +248,7 @@ public class ClipFragment extends ListFragment {
     public void deleteSub() {
         Sub subToDelete = subsDataSource.getSub(selectedItem);
         subsDataSource.deleteSub(subToDelete);
-        refreshView();
+        fillList();
         subsArrayAdapter.notifyDataSetChanged();
-    }
-
-    public void refreshView() {
-        subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)subsDataSource.getAllSubs());
-        setListAdapter(subsArrayAdapter);
     }
 }

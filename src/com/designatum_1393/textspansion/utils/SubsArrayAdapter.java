@@ -33,15 +33,17 @@ public class SubsArrayAdapter extends ArrayAdapter<Sub> {
         View row = LayoutInflater.from(context).inflate(layoutResourceId, parent, false);
 
         TextView subTitle = (TextView)row.findViewById(R.id.SubTitleMain);
-        TextView pasteText = (TextView)row.findViewById(R.id.PasteTextMain);
-
         subTitle.setText(subs.get(position).getSubTitle());
-        pasteText.setText(subs.get(position).getPasteText());
 
-        if (subs.get(position).isPrivate()) {
-            pasteText.setTransformationMethod(new PasswordTransformationMethod());
-        } else {
-            pasteText.setTransformationMethod(null);
+        if (layoutResourceId == R.layout.clip_row) {
+            TextView pasteText = (TextView)row.findViewById(R.id.PasteTextMain);
+            pasteText.setText(subs.get(position).getPasteText());
+
+            if (subs.get(position).isPrivate()) {
+                pasteText.setTransformationMethod(new PasswordTransformationMethod());
+            } else {
+                pasteText.setTransformationMethod(null);
+            }
         }
 
         return row;
