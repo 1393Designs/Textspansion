@@ -1,13 +1,16 @@
 package com.designatum_1393.textspansion.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -22,16 +25,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.designatum_1393.textspansion.Preferences;
 import com.designatum_1393.textspansion.R;
 import com.designatum_1393.textspansion.Sub;
+import com.designatum_1393.textspansion.utils.ImportExport;
 import com.designatum_1393.textspansion.utils.SubsArrayAdapter;
 import com.designatum_1393.textspansion.utils.SubsDataSource;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClipFragment extends ListFragment {
 
@@ -135,7 +139,7 @@ public class ClipFragment extends ListFragment {
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
             selectedItem = -1;
-            
+
             // Please replace this when we find the correct way to do this
             selectedView.setBackgroundColor(getResources().getColor(android.R.color.background_dark));
             selectedView = null;
@@ -159,6 +163,7 @@ public class ClipFragment extends ListFragment {
                 startActivity(new Intent(getActivity(), Preferences.class));
                 return true;
             case R.id.export_menu:
+                chooseExport();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -184,7 +189,8 @@ public class ClipFragment extends ListFragment {
         }
         setListAdapter(subsArrayAdapter);
     }
-    public void modifySub(final String modifyType) {
+
+    private void modifySub(final String modifyType) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_dialog);
         if (modifyType.equals("add"))
@@ -259,10 +265,33 @@ public class ClipFragment extends ListFragment {
         subsArrayAdapter.notifyDataSetChanged();
     }
 
-    public void deleteSub() {
+    private void deleteSub() {
         Sub subToDelete = subsDataSource.getSub(selectedItem);
         subsDataSource.deleteSub(subToDelete);
         fillList();
         subsArrayAdapter.notifyDataSetChanged();
+    }
+
+    private void chooseExport() {
+        //Sets up an AlertDialog to allow user to choose where they wish to export the database to
+        final CharSequence[] choices = {"Email", "SD card"};
+
+        AlertDialog.Builder exporter = new AlertDialog.Builder(getActivity());
+        exporter.setIcon(R.drawable.icon);
+        exporter.setTitle("Choose where to export to:");
+        exporter.setItems(choices, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch(item){
+                    case 0:
+                        ImportExport.exportSubs(subsDataSource, getActivity().getApplicationContext());
+                        // emailJson();
+                        break;
+                    case 1:
+                        ImportExport.exportSubs(subsDataSource, getActivity().getApplicationContext());
+                        break;
+                }
+            }
+        });
+        exporter.show();
     }
 }
