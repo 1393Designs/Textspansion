@@ -14,6 +14,10 @@
                             android:defaultValue="false"
                             android:summary="@string/preferences_notification"
                             android:key="notification" />
+        <CheckBoxPreference android:title="@string/preferences_hide_paste"
+                            android:defaultValue="false"
+                            android:summary="@string/preferences_hide_paste_summary"
+                            android:key="hidePasteText" />
         <!-- Commenting out for not so it isn't surfaced but is a planned feature
         <CheckBoxPreference android:title="Copy on Launch"
                             android:defaultValue="false"

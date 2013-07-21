@@ -36,6 +36,10 @@ public class SubsDataSource {
         dbHelper.close();
     }
 
+    public boolean isOpen() {
+        return database.isOpen();
+    }
+
     public long addSub(Sub newSub) {
         ContentValues values = new ContentValues();
         values.put(DbHelper.KEY_TITLE, newSub.getSubTitle());

@@ -31,6 +31,8 @@
     <string name="preferences_wipe_data">Wipe all data</string>
     <string name="preferences_wipe_data_summary">This will delete your *entire* database.</string>
     <string name="preferences_wipe_data_dialog">WARNING: There is no undo. This will delete the entire database which contains all of your entries!</string>
+    <string name="preferences_hide_paste">Show Title Only</string>
+    <string name="preferences_hide_paste_summary">List will only display the title and not the paste text.</string>
 
 	<string name="tokens_how">How to use:</string>
 	<string name="tokens_desc">A token will expand to the appropriate format whenever you select to copy it.\nFor example, \"Today is %ccc\" will expand to \"Today is Thursday.\"\n</string>

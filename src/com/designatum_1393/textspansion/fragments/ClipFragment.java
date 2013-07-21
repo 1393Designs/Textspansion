@@ -50,13 +50,9 @@ public class ClipFragment extends ListFragment {
         this.setHasOptionsMenu(true);
 
         clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-
         subsDataSource = new SubsDataSource(getActivity());
         subsDataSource.open();
-        List<Sub> values = subsDataSource.getAllSubs();
-        subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)values);
-        setListAdapter(subsArrayAdapter);
-
+        fillList();
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -74,6 +70,26 @@ public class ClipFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!subsDataSource.isOpen()) {
+            subsDataSource.open();
+        }
+        fillList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (subsDataSource.isOpen()) {
+            subsDataSource.close();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (subsDataSource.isOpen()) {
+            subsDataSource.close();
+        }
     }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
@@ -142,6 +158,11 @@ public class ClipFragment extends ListFragment {
         getActivity().finish();
     }
 
+    public void fillList() {
+        List<Sub> values = subsDataSource.getAllSubs();
+        subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList)values);
+        setListAdapter(subsArrayAdapter);
+    }
     public void modifySub(final String modifyType) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_dialog);

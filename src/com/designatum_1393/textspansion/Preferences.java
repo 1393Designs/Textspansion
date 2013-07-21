@@ -1,6 +1,5 @@
 package com.designatum_1393.textspansion;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +12,7 @@ import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity {
     public static final String PREF_LOAD_ON_BOOT = "notification";
+    public static final String PREF_HIDE_PASTE_TEXT = "hidePasteText";
     private NotificationManager mNotificationManager;
     private SharedPreferences sharedPreferences;
 
@@ -26,7 +26,7 @@ public class Preferences extends PreferenceActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                if (key.equals(Preferences.PREF_LOAD_ON_BOOT)) {
+                if (key.equals(PREF_LOAD_ON_BOOT)) {
                     if (prefs.getBoolean(key, false)) {
                         Intent notificationIntent = new Intent(getApplicationContext(), Textspansion.class);
                         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
