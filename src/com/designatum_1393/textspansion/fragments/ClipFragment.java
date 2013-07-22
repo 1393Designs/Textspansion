@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -278,13 +279,13 @@ public class ClipFragment extends ListFragment {
 
         AlertDialog.Builder exporter = new AlertDialog.Builder(getActivity());
         exporter.setIcon(R.drawable.icon);
-        exporter.setTitle("Choose where to export to:");
+        exporter.setTitle(getResources().getString(R.string.export_title));
         exporter.setItems(choices, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                switch(item){
+                switch (item) {
                     case 0:
                         ImportExport.exportSubs(subsDataSource, getActivity().getApplicationContext());
-                        // emailJson();
+                        emailJson();
                         break;
                     case 1:
                         ImportExport.exportSubs(subsDataSource, getActivity().getApplicationContext());
@@ -293,5 +294,13 @@ public class ClipFragment extends ListFragment {
             }
         });
         exporter.show();
+    }
+
+    public void emailJson() {
+        Intent send = new Intent(Intent.ACTION_SEND);
+        send.setType("text/xml");
+        send.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/Textspansion/subs.json"));
+        send.putExtra(Intent.EXTRA_SUBJECT, "[Textspansion] Database Export");
+        startActivity(Intent.createChooser(send, "Send email using..."));
     }
 }

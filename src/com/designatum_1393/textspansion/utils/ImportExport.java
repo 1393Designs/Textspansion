@@ -1,10 +1,12 @@
 package com.designatum_1393.textspansion.utils;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
+import com.designatum_1393.textspansion.R;
 import com.designatum_1393.textspansion.Sub;
 
 import org.json.JSONArray;
@@ -40,10 +42,10 @@ public class ImportExport {
                 fileWriter.write(subsJsonArray.toString());
                 fileWriter.flush();
                 fileWriter.close();
-                Toast.makeText(context, "Substitutions saved to SD!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getResources().getString(R.string.subs_saved), Toast.LENGTH_SHORT).show();
             } catch (Exception e) { e.printStackTrace(); }
         } else {
-            Toast.makeText(context, "App isn't allowed to write to storage! :(", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.subs_cant_save), Toast.LENGTH_SHORT).show();
         }
     }
 }

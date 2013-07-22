@@ -5,10 +5,15 @@
 	<string name="tab_title_settings">Settings</string>
 	<string name="no_clips">No substitutions to display here!\n\nTo add one, click on the \'Add\' button on the top bar!</string>
 	<string name="toast_copied"> copied.</string>
+    <string name="export_title">Choose where to export to:</string>
+    <string name="subs_saved">Substitutions saved to SD!</string>
+    <string name="subs_cant_save">App isn\'t allowed to write to storage! :(</string>
+
     <string name="sub_title">Title:</string>
     <string name="sub_paste">Text to Paste:</string>
     <string name="add_title">Add an entry</string>
     <string name="edit_title">Edit an entry</string>
+
 	<string name="menu_add_item">Add</string>
 	<string name="menu_delete">Delete</string>
 	<string name="menu_export">Export</string>
@@ -19,6 +24,7 @@
 	<string name="menu_cancel">Done</string>
 	<string name="context_edit">Edit</string>
 	<string name="context_clip_save">Save</string>
+
     <string name="notification_running">Textspansion is running</string>
     <string name="notification_click">Click to access your snippets</string>
 
@@ -94,22 +100,4 @@
 	<string name="second">Second</string>
 	<string name="pss"  >%ss</string>
 	<string name="vss"  >39</string>
-
-	<string name="update_message">
-Welcome to version 2.1.1 of Textspansion!\n\n\
-This update mainly fixes a few bugs that snuck by us, including one that would
-crash the app when a large file was imported into Textspansion.\n\
-We also added a new feature! Now you can have it so that the list will only
-show the titles and not both the title and snippet text. This can be changed in
-the settings.\n\n\
-Change Log:\n\
-\t- Added \"No snippet text\" option\n\
-\t- Fixed bug where a multi-lined snippet text will prevent user from
-selecting \"Okay!\"\n\
-\t- Fixed bug where app will crash when importing a large file. App will also
-display a progress meter when importing\n\
-V.2.1:\n\
-\t- Added date/time tokens\n\
-\t- Added a tutorial accessible from Settings</string>
-
 </resources>
