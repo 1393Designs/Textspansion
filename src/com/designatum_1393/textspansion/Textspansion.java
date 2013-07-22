@@ -1,5 +1,6 @@
 package com.designatum_1393.textspansion;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -20,6 +21,10 @@ public class Textspansion extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setHomeButtonEnabled(true);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 	}

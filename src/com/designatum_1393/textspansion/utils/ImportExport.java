@@ -35,7 +35,12 @@ public class ImportExport {
                 for (Sub sub : subs) {
                     JSONObject newSubToAdd = new JSONObject();
                     newSubToAdd.put("SubTitle", sub.getSubTitle());
-                    newSubToAdd.put("PasteText", sub.getPasteText());
+
+                    if (sub.isPrivate())
+                        newSubToAdd.put("PasteText", EncryptDecrypt.encrypt("textspansion", sub.getPasteText()));
+                    else
+                        newSubToAdd.put("PasteText", sub.getPasteText());
+
                     newSubToAdd.put("Privacy", sub.isPrivate());
                     subsJsonArray.put(newSubToAdd);
                 }

@@ -28,5 +28,13 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name="ImportJson" android:label="Import data to Textspansion">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/json" android:pathPattern=".*\\.json" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

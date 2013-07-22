@@ -11,9 +11,13 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.designatum_1393.textspansion.Preferences;
 import com.designatum_1393.textspansion.R;
+import com.designatum_1393.textspansion.Textspansion;
 import com.designatum_1393.textspansion.utils.SubsDataSource;
 
 public class PreferencesFragment extends PreferenceFragment {
