@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -44,9 +45,10 @@ public class ClipFragment extends ListFragment {
     private SubsDataSource subsDataSource;
     private ClipboardManager clipboardManager;
     private SharedPreferences sharedPreferences;
-    public int selectedItem = -1;
-    protected Object mActionMode;
-    private View selectedView;
+    private boolean selected = false;
+    private ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+    protected ActionMode mActionMode;
+    private ArrayList<View> selectedViews = new ArrayList<View>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,26 +66,20 @@ public class ClipFragment extends ListFragment {
         subsDataSource.open();
         fillList();
 
-        final AdapterView.OnItemLongClickListener listener = new AdapterView.OnItemLongClickListener() {
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mActionMode != null)
                     return false;
 
-                selectedItem = position;
-                selectedView = view;
-
-                // WHY DON'T THIS WORK?
-                //view.setSelected(true);
-
-                // Until above gets fixed, WORKAROUNDS!
-                selectedView.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+                view.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+                selectedViews.add(view);
+                selectedItems.add(i);
+                selected = true;
                 mActionMode = getActivity().startActionMode(mActionModeCallback);
                 return true;
             }
-        };
-
-        getListView().setOnItemLongClickListener(listener);
+        });
     }
 
     @Override
@@ -119,6 +115,10 @@ public class ClipFragment extends ListFragment {
         }
 
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            if (selectedItems.size() > 1)
+                menu.findItem(R.id.edit_sub).setVisible(false);
+            else
+                menu.findItem(R.id.edit_sub).setVisible(true);
             return false;
         }
 
@@ -139,11 +139,14 @@ public class ClipFragment extends ListFragment {
 
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
-            selectedItem = -1;
+            selectedItems.clear();
 
             // Please replace this when we find the correct way to do this
-            selectedView.setBackgroundColor(getResources().getColor(android.R.color.background_dark));
-            selectedView = null;
+            selected = false;
+            for (View selectedView : selectedViews) {
+                selectedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            }
+            selectedViews.clear();
         }
     };
 
@@ -174,12 +177,32 @@ public class ClipFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-        Sub clickedSub = subsArrayAdapter.getItem(position);
-        Toast.makeText(getActivity(), clickedSub.getSubTitle() + " has been copied.", Toast.LENGTH_SHORT).show();
+        if (!selected) {
+            // If not in CAB mode
+            Sub clickedSub = subsArrayAdapter.getItem(position);
+            Toast.makeText(getActivity(), clickedSub.getSubTitle() + " has been copied.", Toast.LENGTH_SHORT).show();
 
-        clipboardManager.setPrimaryClip(ClipData.newPlainText("Textspansion Snippet", clickedSub.getPasteText()));
+            clipboardManager.setPrimaryClip(ClipData.newPlainText("Textspansion Snippet", clickedSub.getPasteText()));
 
-        getActivity().finish();
+            getActivity().finish();
+        } else if (selectedItems.contains(position)) {
+            // If in CAB mode and the clicked item has already been clicked on
+            // unselect item by removing from selectedItems and selectedViews
+
+            View selectedView = selectedViews.get(selectedItems.indexOf(position));
+            selectedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            selectedViews.remove(selectedItems.indexOf(position));
+            selectedItems.remove(selectedItems.indexOf(position));
+            mActionMode.invalidate();
+            if (selectedItems.size() == 0)
+                mActionMode.finish();
+        } else {
+            // Otherwise, select the item and add to lists
+            view.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+            selectedItems.add(position);
+            selectedViews.add(view);
+            mActionMode.invalidate();
+        }
     }
 
     public void fillList() {
@@ -203,7 +226,12 @@ public class ClipFragment extends ListFragment {
         final EditText subTitleInput = (EditText) dialog.findViewById(R.id.subTitleEntry);
         final EditText pasteTextInput = (EditText) dialog.findViewById(R.id.pasteTextEntry);
         final CheckBox pvtBox = (CheckBox) dialog.findViewById(R.id.pvt_box);
-        final Sub subToEdit = subsDataSource.getSub(selectedItem);
+
+        int editPostion = -1;
+        if (selectedItems.size() == 1)
+            editPostion = selectedItems.get(0);
+
+        final Sub subToEdit = subsDataSource.getSub(editPostion);
 
         if (modifyType.equals("edit")) {
             subTitleInput.setText(subToEdit.getSubTitle());
@@ -267,8 +295,15 @@ public class ClipFragment extends ListFragment {
     }
 
     private void deleteSub() {
-        Sub subToDelete = subsDataSource.getSub(selectedItem);
-        subsDataSource.deleteSub(subToDelete);
+        for (int selectedPosition : selectedItems) {
+            Sub subToDelete = subsDataSource.getSub(selectedPosition);
+            subsDataSource.deleteSub(subToDelete);
+        }
+        Toast.makeText(
+                getActivity().getApplicationContext(),
+                "Snippets deleted!",
+                Toast.LENGTH_SHORT
+        ).show();
         fillList();
         subsArrayAdapter.notifyDataSetChanged();
     }
