@@ -1,18 +1,16 @@
-package com.designatum_1393.textspansion.utils;
+package com.designs_1393.textspansion.utils;
 
 
 import android.content.Context;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.designatum_1393.textspansion.R;
-import com.designatum_1393.textspansion.Sub;
+import com.designs_1393.textspansion.R;
+import com.designs_1393.textspansion.Sub;
 
 import java.util.ArrayList;
 

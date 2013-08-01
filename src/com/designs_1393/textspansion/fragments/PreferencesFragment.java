@@ -1,24 +1,16 @@
-package com.designatum_1393.textspansion.fragments;
+package com.designs_1393.textspansion.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
-import com.designatum_1393.textspansion.Preferences;
-import com.designatum_1393.textspansion.R;
-import com.designatum_1393.textspansion.Textspansion;
-import com.designatum_1393.textspansion.utils.SubsDataSource;
+import com.designs_1393.textspansion.R;
+import com.designs_1393.textspansion.utils.SubsDataSource;
 
 public class PreferencesFragment extends PreferenceFragment {
     @Override

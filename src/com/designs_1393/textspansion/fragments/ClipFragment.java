@@ -1,4 +1,4 @@
-package com.designatum_1393.textspansion.fragments;
+package com.designs_1393.textspansion.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -20,23 +19,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
-import com.designatum_1393.textspansion.Preferences;
-import com.designatum_1393.textspansion.R;
-import com.designatum_1393.textspansion.Sub;
-import com.designatum_1393.textspansion.utils.ImportExport;
-import com.designatum_1393.textspansion.utils.SubsArrayAdapter;
-import com.designatum_1393.textspansion.utils.SubsDataSource;
+import com.designs_1393.textspansion.Preferences;
+import com.designs_1393.textspansion.R;
+import com.designs_1393.textspansion.Sub;
+import com.designs_1393.textspansion.utils.ImportExport;
+import com.designs_1393.textspansion.utils.SubsArrayAdapter;
+import com.designs_1393.textspansion.utils.SubsDataSource;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ClipFragment extends ListFragment {
@@ -49,11 +47,20 @@ public class ClipFragment extends ListFragment {
     private ArrayList<Integer> selectedItems = new ArrayList<Integer>();
     protected ActionMode mActionMode;
     private ArrayList<View> selectedViews = new ArrayList<View>();
+    private File dbFile = new File("/data/data/com.designs_1393.textspansion/shared_prefs/", "data");
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        if(!sharedPreferences.contains("sortie"))
+        {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("sortie", "subTitle");
+            editor.commit();
+        }
     }
 
     @Override
@@ -227,11 +234,11 @@ public class ClipFragment extends ListFragment {
         final EditText pasteTextInput = (EditText) dialog.findViewById(R.id.pasteTextEntry);
         final CheckBox pvtBox = (CheckBox) dialog.findViewById(R.id.pvt_box);
 
-        int editPostion = -1;
+        int editPosition = -1;
         if (selectedItems.size() == 1)
-            editPostion = selectedItems.get(0);
+            editPosition = selectedItems.get(0);
 
-        final Sub subToEdit = subsDataSource.getSub(editPostion);
+        final Sub subToEdit = subsDataSource.getSub(editPosition);
 
         if (modifyType.equals("edit")) {
             subTitleInput.setText(subToEdit.getSubTitle());
@@ -279,19 +286,22 @@ public class ClipFragment extends ListFragment {
                         "That item already exists.",
                         Toast.LENGTH_SHORT
                     ).show();
+                } else {
+                    subsArrayAdapter.add(newSub);
+                    fillList();
                 }
             } else if (modifyType.equals("edit")) {
+                // TODO: Check to see if Sub Title already exists in list
+                // if yes, show Toast saying item already exists and ignore
+                // if no, continue with edit
                 subsDataSource.editSub(subToEdit, newSub);
                 fillList();
             }
-            if (modifyType.equals("add")) {
-                subsArrayAdapter.add(newSub);
-            }
+
             dialog.dismiss();
             }
         });
         dialog.show();
-        subsArrayAdapter.notifyDataSetChanged();
     }
 
     private void deleteSub() {

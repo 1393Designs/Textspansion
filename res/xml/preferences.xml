@@ -2,14 +2,12 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/menu_settings">
-        <!-- Commenting out for not so it isn't surfaced but is a planned feature
         <ListPreference android:title="Sort by..."
                         android:summary="Choose how to sort the list."
                         android:key="sortie"
                         android:entries="@array/sortBy"
                         android:entryValues="@array/listValues"
-                        android:defaultValue="short" />
-        -->
+                        android:defaultValue="subTitle" />
         <CheckBoxPreference android:title="@string/preferences_access_notification"
                             android:defaultValue="false"
                             android:summary="@string/preferences_notification"

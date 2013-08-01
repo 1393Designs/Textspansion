@@ -1,4 +1,4 @@
-package com.designatum_1393.textspansion;
+package com.designs_1393.textspansion;
 
 import android.app.ActionBar;
 import android.app.Notification;
@@ -10,9 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class Preferences extends PreferenceActivity {

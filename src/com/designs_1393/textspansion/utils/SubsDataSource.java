@@ -1,18 +1,21 @@
-package com.designatum_1393.textspansion.utils;
+package com.designs_1393.textspansion.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.preference.PreferenceManager;
 
-import com.designatum_1393.textspansion.Sub;
+import com.designs_1393.textspansion.Sub;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubsDataSource {
+
+    private SharedPreferences sharedPreferences;
 
     // Database fields
     private SQLiteDatabase database;
@@ -26,6 +29,7 @@ public class SubsDataSource {
 
     public SubsDataSource(Context context) {
         dbHelper = new DbHelper(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void open() throws SQLException {
@@ -96,9 +100,15 @@ public class SubsDataSource {
 
     public List<Sub> getAllSubs() {
         List<Sub> subs = new ArrayList<Sub>();
+        String sortBy = "";
+        if (sharedPreferences.getString("sortie", "DEFAULT").equals("subTitle")) {
+            sortBy = DbHelper.KEY_TITLE;
+        } else if (sharedPreferences.getString("sortie", "DEFAULT").equals("pasteText")) {
+            sortBy = DbHelper.KEY_PASTE;
+        }
 
         Cursor cursor = database.query(DbHelper.SUBS_TABLE,
-                allColumns, null, null, null, null, null);
+                allColumns, null, null, null, null, sortBy);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

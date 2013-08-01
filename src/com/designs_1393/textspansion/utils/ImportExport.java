@@ -1,13 +1,11 @@
-package com.designatum_1393.textspansion.utils;
+package com.designs_1393.textspansion.utils;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
-import com.designatum_1393.textspansion.R;
-import com.designatum_1393.textspansion.Sub;
+import com.designs_1393.textspansion.R;
+import com.designs_1393.textspansion.Sub;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

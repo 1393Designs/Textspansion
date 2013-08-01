@@ -5,7 +5,7 @@
               android:layout_height="match_parent" >
 
     <fragment
-            class="com.designatum_1393.textspansion.fragments.PreferencesFragment"
+            class="com.designs_1393.textspansion.fragments.PreferencesFragment"
             android:id="@+id/prefs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

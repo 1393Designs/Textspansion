@@ -1,4 +1,4 @@
-package com.designatum_1393.textspansion;
+package com.designs_1393.textspansion;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;

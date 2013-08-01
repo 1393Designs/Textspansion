@@ -1,4 +1,4 @@
-package com.designatum_1393.textspansion.utils;
+package com.designs_1393.textspansion.utils;
 
 import java.security.SecureRandom;
 

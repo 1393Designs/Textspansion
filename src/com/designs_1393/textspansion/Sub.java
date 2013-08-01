@@ -1,4 +1,4 @@
-package com.designatum_1393.textspansion;
+package com.designs_1393.textspansion;
 
 public class Sub {
     private long id;
