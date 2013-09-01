@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ImportExport {
+    private static final String TAG = "Textspansion";
     private static final String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -35,7 +36,7 @@ public class ImportExport {
                 fileWriter = new FileWriter(fileToWrite);
 
                 String allSubsAsJson = mapper.writeValueAsString(subs);
-                Log.i("Textspansion", allSubsAsJson);
+                Log.i(TAG, allSubsAsJson);
 
                 fileWriter.write(allSubsAsJson);
                 fileWriter.flush();
