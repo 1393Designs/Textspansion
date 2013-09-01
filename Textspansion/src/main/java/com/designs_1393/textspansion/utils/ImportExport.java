@@ -21,6 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ImportExport {
     private static final String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
     private static final ObjectMapper mapper = new ObjectMapper();
+    static {
+        // use the JSON Pretty Printer
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    }
 
     public static void exportSubs(SubsDataSource subsDataSource, Context context) {
         File root = new File(extStoDir);
