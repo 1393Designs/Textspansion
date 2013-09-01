@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ImportExport {
+    private static final String TAG = "Textspansion";
     private static final String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
     private static final ObjectMapper mapper = new ObjectMapper();
     static {
