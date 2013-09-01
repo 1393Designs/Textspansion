@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.designs_1393.textspansion.utils.ImportExport;
+
 import java.io.File;
 
 public class Textspansion extends Activity
@@ -24,6 +26,12 @@ public class Textspansion extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+        final Intent intent = getIntent();
+        if (intent.getType() != null && intent.getType().equals("application/json")) {
+            // Do import logic here
+            ImportExport.importSubs(intent.getData());
+        }
 
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);

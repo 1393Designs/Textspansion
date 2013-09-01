@@ -1,6 +1,7 @@
 package com.designs_1393.textspansion.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
@@ -50,5 +51,9 @@ public class ImportExport {
         } else {
             Toast.makeText(context, context.getResources().getString(R.string.subs_cant_save), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void importSubs(Uri jsonUri) {
+
     }
 }
