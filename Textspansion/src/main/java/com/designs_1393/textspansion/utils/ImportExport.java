@@ -14,9 +14,13 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ImportExport {
     private static final String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
@@ -49,8 +53,25 @@ public class ImportExport {
         }
     }
 
-    public static void importSubs(Uri jsonUri) {
-        ObjectMapper mapper = new ObjectMapper();
+    public static void importSubs(Uri jsonUri, Context ctx) {
+        SubsDataSource subsDataSource = new SubsDataSource(ctx);
+        subsDataSource.open();
+        List<Sub> importedSubs = new ArrayList();
+        InputStream jsonInputStream = null;
 
+        try {
+            jsonInputStream = ctx.getContentResolver().openInputStream(jsonUri);
+            // Note: TypeReference is used to tell Jackson what the input should be
+            importedSubs = mapper.readValue(jsonInputStream, new TypeReference<List<Sub>>() {});
+            if(jsonInputStream != null) {
+                jsonInputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        subsDataSource.addSubs(importedSubs);
+
+        subsDataSource.close();
     }
 }

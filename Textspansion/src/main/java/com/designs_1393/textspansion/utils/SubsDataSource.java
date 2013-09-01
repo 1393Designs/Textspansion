@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.designs_1393.textspansion.Sub;
 
@@ -52,11 +53,6 @@ public class SubsDataSource {
         long insertId = database.insert(DbHelper.SUBS_TABLE, null,
                 values);
 
-        Cursor cursor = database.query(DbHelper.SUBS_TABLE,
-                allColumns, DbHelper.KEY_ID + " = " + insertId, null,
-                null, null, null);
-        cursor.moveToFirst();
-        cursor.close();
         return insertId;
     }
 
@@ -118,6 +114,27 @@ public class SubsDataSource {
         }
         cursor.close();
         return subs;
+    }
+
+    public void addSubs(List<Sub> subsToImport) {
+        database.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            for(Sub newSub : subsToImport) {
+                values.clear();
+                values.put(DbHelper.KEY_TITLE, newSub.getSubTitle());
+                values.put(DbHelper.KEY_PASTE, newSub.getPasteText());
+                values.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
+                database.insert(DbHelper.SUBS_TABLE, null,
+                        values);
+            }
+
+            database.setTransactionSuccessful();
+        } catch(Exception e) {
+            Log.w("Textspansion", e);
+        } finally {
+            database.endTransaction();
+        }
     }
 
     public Sub getSub(int position) {

@@ -30,7 +30,7 @@ public class Textspansion extends Activity
         final Intent intent = getIntent();
         if (intent.getType() != null && intent.getType().equals("application/json")) {
             // Do import logic here
-            ImportExport.importSubs(intent.getData());
+            ImportExport.importSubs(intent.getData(), getApplicationContext());
         }
 
         ActionBar actionBar = getActionBar();
