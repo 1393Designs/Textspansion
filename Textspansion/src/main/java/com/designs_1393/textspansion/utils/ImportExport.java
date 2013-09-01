@@ -34,10 +34,8 @@ public class ImportExport {
             try {
                 fileWriter = new FileWriter(fileToWrite);
 
-                String allSubsAsJson = mapper.writeValueAsString(subs);
-                Log.i("Textspansion", allSubsAsJson);
+                mapper.writeValue(fileWriter, subs);
 
-                fileWriter.write(allSubsAsJson);
                 fileWriter.flush();
                 fileWriter.close();
                 Toast.makeText(context, context.getResources().getString(R.string.subs_saved), Toast.LENGTH_SHORT).show();
