@@ -1,6 +1,9 @@
 package com.designs_1393.textspansion;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Sub {
+    @JsonIgnore
     private long id;
     private String pasteText;
     private String subTitle;
@@ -49,6 +52,7 @@ public class Sub {
         this.privacy = privacy;
     }
 
+    @JsonIgnore  // keep Jackson from adding a field "private" to JSON output
     public boolean isPrivate() {
         return this.privacy.equals("1");
     }
