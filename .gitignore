@@ -10,3 +10,8 @@ Thumbs.db
 .idea/*
 out/*
 *.iml
+
+# updated for Gradle config
+.gradle/
+Textspansion/build
+Textspansion/gen
