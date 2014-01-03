@@ -16,3 +16,5 @@ Textspansion/src/main/gen
 .gradle/
 Textspansion/build
 Textspansion/gen
+gradlew*
+gradle/*
