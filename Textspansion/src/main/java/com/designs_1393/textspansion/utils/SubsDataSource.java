@@ -56,6 +56,27 @@ public class SubsDataSource {
         return insertId;
     }
 
+    public void addSubs(List<Sub> subsToImport) {
+        database.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            for(Sub newSub : subsToImport) {
+                values.clear();
+                values.put(DbHelper.KEY_TITLE, newSub.getSubTitle());
+                values.put(DbHelper.KEY_PASTE, newSub.getPasteText());
+                values.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
+                database.insert(DbHelper.SUBS_TABLE, null,
+                        values);
+            }
+
+            database.setTransactionSuccessful();
+        } catch(Exception e) {
+            Log.w("Textspansion", e);
+        } finally {
+            database.endTransaction();
+        }
+    }
+
     public boolean editSub(Sub oldSub, Sub newSub) {
         String oldTitle = oldSub.getSubTitle();
         String oldPaste = oldSub.getPasteText();
@@ -114,27 +135,6 @@ public class SubsDataSource {
         }
         cursor.close();
         return subs;
-    }
-
-    public void addSubs(List<Sub> subsToImport) {
-        database.beginTransaction();
-        try {
-            ContentValues values = new ContentValues();
-            for(Sub newSub : subsToImport) {
-                values.clear();
-                values.put(DbHelper.KEY_TITLE, newSub.getSubTitle());
-                values.put(DbHelper.KEY_PASTE, newSub.getPasteText());
-                values.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
-                database.insert(DbHelper.SUBS_TABLE, null,
-                        values);
-            }
-
-            database.setTransactionSuccessful();
-        } catch(Exception e) {
-            Log.w("Textspansion", e);
-        } finally {
-            database.endTransaction();
-        }
     }
 
     public Sub getSub(int position) {

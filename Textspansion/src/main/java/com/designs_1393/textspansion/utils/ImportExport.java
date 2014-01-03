@@ -2,15 +2,15 @@ package com.designs_1393.textspansion.utils;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.os.Environment;
 import android.widget.Toast;
 
 import com.designs_1393.textspansion.R;
 import com.designs_1393.textspansion.Sub;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,6 +21,9 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ImportExport {
     private static final String TAG = "Textspansion";
@@ -73,6 +76,67 @@ public class ImportExport {
 
         subsDataSource.addSubs(importedSubs);
 
+        subsDataSource.close();
+    }
+
+    public static void importLegacySubs(Uri xmlUri, Context ctx) {
+        SubsDataSource subsDataSource = new SubsDataSource(ctx);
+        subsDataSource.open();
+        List<Sub> importedSubs = new ArrayList();
+        InputStream xmlInputStream = null;
+        String subTitleStr, pasteTextStr, privacyStr, encryptionKey = "textspansion";
+        Element textspansion;
+        NodeList subTitle = null, pasteText = null, privacy = null, textie = null, encryptCheck = null;
+
+        try {
+            xmlInputStream = ctx.getContentResolver().openInputStream(xmlUri);
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder();
+            Document doc = builder.parse(xmlInputStream);
+            xmlInputStream.close();
+            textspansion = doc.getDocumentElement();
+            subTitle = textspansion.getElementsByTagName("Short");
+            pasteText = textspansion.getElementsByTagName("Long");
+            privacy = textspansion.getElementsByTagName("Private");
+            encryptCheck = textspansion.getElementsByTagName("Encrypt");
+
+            if(xmlInputStream != null) {
+                xmlInputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(encryptCheck != null && encryptCheck.getLength() == 1){
+            Toast.makeText(ctx,
+                    "Encrypted import file detected - Decryption is, unfortunately, not supported",
+                    Toast.LENGTH_LONG
+            ).show();
+
+            subsDataSource.close();
+            return;
+        }
+
+        int subTitleCount = subTitle.getLength();
+        int pasteTextCount = pasteText.getLength();
+
+        if ((subTitleCount <= 0 || pasteTextCount <= 0) || (subTitleCount != pasteTextCount)) {
+            Toast.makeText(ctx, "The xml is malformed and can't be imported.", Toast.LENGTH_LONG).show();
+        } else{
+            for (int i = 0; i < subTitleCount; i++)
+            {
+                subTitleStr = subTitle.item(i).getFirstChild().getNodeValue();
+                pasteTextStr = pasteText.item(i).getFirstChild().getNodeValue();
+                privacyStr = privacy.item(i).getFirstChild().getNodeValue();
+
+                if(subTitleStr.compareTo("") == 0)
+                    subTitleStr = pasteTextStr;
+
+                importedSubs.add(new Sub(subTitleStr, pasteTextStr, (privacyStr.compareTo("1") == 0)));
+            }
+        }
+
+        subsDataSource.addSubs(importedSubs);
         subsDataSource.close();
     }
 }
