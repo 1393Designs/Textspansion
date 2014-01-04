@@ -16,6 +16,7 @@ import com.designs_1393.textspansion.R;
 import com.designs_1393.textspansion.Sub;
 import com.designs_1393.textspansion.utils.SubsArrayAdapter;
 import com.designs_1393.textspansion.utils.SubsDataSource;
+import com.designs_1393.textspansion.utils.Tokens;
 
 import java.util.ArrayList;
 
@@ -86,16 +87,24 @@ public class QuickViewFragment  extends ListFragment {
         Sub clickedSub = subsArrayAdapter.getItem(position);
         Toast.makeText(getActivity(), clickedSub.getSubTitle() + " has been copied.", Toast.LENGTH_SHORT).show();
 
-        clipboardManager.setPrimaryClip(ClipData.newPlainText("Textspansion Snippet", clickedSub.getPasteText()));
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("Textspansion Snippet",
+                Tokens.replace(clickedSub.getPasteText(), getActivity()))
+        );
 
         getActivity().finish();
     }
 
     public void fillList() {
         if (sharedPreferences.getBoolean("hidePasteText", false)) {
-            subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row_hide_paste, (ArrayList) subsDataSource.getAllSubs());
+            subsArrayAdapter = new SubsArrayAdapter(getActivity(),
+                    R.layout.clip_row_hide_paste,
+                    (ArrayList) subsDataSource.getAllSubs()
+            );
         } else {
-            subsArrayAdapter = new SubsArrayAdapter(getActivity(), R.layout.clip_row, (ArrayList) subsDataSource.getAllSubs());
+            subsArrayAdapter = new SubsArrayAdapter(getActivity(),
+                    R.layout.clip_row,
+                    (ArrayList) subsDataSource.getAllSubs()
+            );
         }
         setListAdapter(subsArrayAdapter);
     }

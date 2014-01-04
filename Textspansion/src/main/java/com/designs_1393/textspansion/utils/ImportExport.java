@@ -3,6 +3,7 @@ package com.designs_1393.textspansion.utils;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.designs_1393.textspansion.R;
@@ -27,7 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ImportExport {
     private static final String TAG = "Textspansion";
-    private static final String extStoDir = Environment.getExternalStorageDirectory().toString() + "/Textspansion";
+    private static final String extStoDir = Environment.getExternalStorageDirectory().getPath() + "/Textspansion";
     private static final ObjectMapper mapper = new ObjectMapper();
     static {
         // use the JSON Pretty Printer
@@ -48,7 +49,6 @@ public class ImportExport {
 
                 mapper.writeValue(fileWriter, subs);
 
-                fileWriter.flush();
                 fileWriter.close();
                 Toast.makeText(context, context.getResources().getString(R.string.subs_saved), Toast.LENGTH_SHORT).show();
             } catch (Exception e) { e.printStackTrace(); }
