@@ -14,8 +14,6 @@ import android.util.Log;
 
 import com.designs_1393.textspansion.utils.ImportExport;
 
-import java.io.File;
-
 public class Textspansion extends Activity
 {
     private SharedPreferences sharedPreferences;
@@ -46,7 +44,7 @@ public class Textspansion extends Activity
     protected void onResume() {
         super.onResume();
         if(sharedPreferences.getBoolean("notification", false)) {
-            Intent notificationIntent = new Intent(this, Textspansion.class);
+            Intent notificationIntent = new Intent(this, QuickView.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 

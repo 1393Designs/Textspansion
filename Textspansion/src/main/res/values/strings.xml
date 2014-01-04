@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Textspansion</string>
-	<string name="tab_title_substitutions">Substitutions</string>
-	<string name="tab_title_settings">Settings</string>
-	<string name="no_clips">No substitutions to display here!\n\nTo add one, click on the \'Add\' button on the top bar!</string>
-	<string name="toast_copied"> copied.</string>
+
+    <string name="app_name">Textspansion</string>
+    <string name="tab_title_substitutions">Substitutions</string>
+    <string name="tab_title_settings">Settings</string>
+    <string name="no_clips">No substitutions to display here!\n\nTo add one, click on the \'Add\' button on the top bar!</string>
+    <string name="toast_copied"> copied.</string>
     <string name="export_title">Choose where to export to:</string>
     <string name="subs_saved">Substitutions saved to SD!</string>
     <string name="subs_cant_save">App isn\'t allowed to write to storage! :(</string>
-
     <string name="sub_title">Title:</string>
     <string name="sub_paste">Text to Paste:</string>
     <string name="add_title">Add an entry</string>
     <string name="edit_title">Edit an entry</string>
-
-	<string name="menu_add_item">Add</string>
-	<string name="menu_delete">Delete</string>
-	<string name="menu_export">Export</string>
-	<string name="menu_history">Clipboard History</string>
-	<string name="menu_import">Import</string>
-	<string name="menu_settings">Settings</string>
-	<string name="menu_saved">Saved Items</string>
-	<string name="menu_cancel">Done</string>
-	<string name="context_edit">Edit</string>
-	<string name="context_clip_save">Save</string>
-
+    <string name="menu_add_item">Add</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_export">Export</string>
+    <string name="menu_history">Clipboard History</string>
+    <string name="menu_import">Import</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_saved">Saved Items</string>
+    <string name="menu_cancel">Done</string>
+    <string name="context_edit">Edit</string>
+    <string name="context_clip_save">Save</string>
     <string name="notification_running">Textspansion is running</string>
     <string name="notification_click">Click to access your snippets</string>
-
     <string name="preferences_access_notification">Access from Notification Shade</string>
     <string name="preferences_notification">Check to access the app from the Status bar (Checking this will start the app automatically when you start your phone).</string>
     <string name="preferences_misc">Misc.</string>
@@ -39,65 +36,59 @@
     <string name="preferences_wipe_data_dialog">WARNING: There is no undo. This will delete the entire database which contains all of your entries!</string>
     <string name="preferences_hide_paste">Show Title Only</string>
     <string name="preferences_hide_paste_summary">List will only display the title and not the paste text.</string>
+    <string name="tokens_how">How to use:</string>
+    <string name="tokens_desc">A token will expand to the appropriate format whenever you select to copy it.\nFor example, \"Today is %ccc\" will expand to \"Today is Thursday.\"\n</string>
+    <string name="date_and_time">Date and time</string>
+    <string name="ptttt">%tttt</string>
+    <string name="vtttt">January 10, 2012 9:19 PM</string>
+    <string name="pttt">%ttt</string>
+    <string name="vttt">Jan 10, 2012 9:19 PM</string>
+    <string name="pt">%t</string>
+    <string name="vt">1/10/2012 9:19 PM</string>
+    <string name="date_only">Only the date</string>
+    <string name="pxxxx">%xxxx</string>
+    <string name="vxxxx">January 10, 2012</string>
+    <string name="pxxx">%xxx</string>
+    <string name="vxxx">Jan 10, 2012</string>
+    <string name="px">%x</string>
+    <string name="vx">1/10/2012</string>
+    <string name="time_only">Time (Full time)</string>
+    <string name="pX">%X</string>
+    <string name="vX">9:19 PM</string>
+    <string name="custom">Custom</string>
+    <string name="month">Month</string>
+    <string name="pMMMM">%MMMM</string>
+    <string name="vMMMM">January</string>
+    <string name="pMMM">%MMM</string>
+    <string name="vMMM">Jan</string>
+    <string name="pM">%M</string>
+    <string name="vM">1</string>
+    <string name="day">Day</string>
+    <string name="pcccc">%cccc</string>
+    <string name="vcccc">Tuesday</string>
+    <string name="pccc">%ccc</string>
+    <string name="vccc">Tues</string>
+    <string name="pd">%d</string>
+    <string name="vd">10</string>
+    <string name="year">Year</string>
+    <string name="pyy">%yy</string>
+    <string name="vyy">12</string>
+    <string name="py">%y</string>
+    <string name="vy">2012</string>
+    <string name="hour_12">Hour (12)</string>
+    <string name="ph">%h</string>
+    <string name="vh">9</string>
+    <string name="hour_24">Hour (24)</string>
+    <string name="pk">%k</string>
+    <string name="vk">21</string>
+    <string name="minute">Minute</string>
+    <string name="pmm">%mm</string>
+    <string name="vmm">19</string>
+    <string name="second">Second</string>
+    <string name="pss">%ss</string>
+    <string name="vss">39</string>
+    <string name="title_activity_quick_view">Snippets Quick View</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
-	<string name="tokens_how">How to use:</string>
-	<string name="tokens_desc">A token will expand to the appropriate format whenever you select to copy it.\nFor example, \"Today is %ccc\" will expand to \"Today is Thursday.\"\n</string>
-
-	<string name="date_and_time">Date and time</string>
-	<string name="ptttt">%tttt</string>
-	<string name="vtttt">January 10, 2012 9:19 PM</string>
-	<string name="pttt" >%ttt</string>
-	<string name="vttt" >Jan 10, 2012 9:19 PM</string>
-	<string name="pt"   >%t</string>
-	<string name="vt"   >1/10/2012 9:19 PM</string>
-
-	<string name="date_only">Only the date</string>
-	<string name="pxxxx">%xxxx</string>
-	<string name="vxxxx">January 10, 2012</string>
-	<string name="pxxx" >%xxx</string>
-	<string name="vxxx" >Jan 10, 2012</string>
-	<string name="px"   >%x</string>
-	<string name="vx"   >1/10/2012</string>
-
-	<string name="time_only">Time (Full time)</string>
-	<string name="pX"   >%X</string>
-	<string name="vX"   >9:19 PM</string>
-
-	<string name="custom">Custom</string>
-	<string name="month">Month</string>
-	<string name="pMMMM">%MMMM</string>
-	<string name="vMMMM">January</string>
-	<string name="pMMM" >%MMM</string>
-	<string name="vMMM" >Jan</string>
-	<string name="pM"   >%M</string>
-	<string name="vM"   >1</string>
-
-	<string name="day"  >Day</string>
-	<string name="pcccc">%cccc</string>
-	<string name="vcccc">Tuesday</string>
-	<string name="pccc" >%ccc</string>
-	<string name="vccc" >Tues</string>
-	<string name="pd"   >%d</string>
-	<string name="vd"   >10</string>
-
-	<string name="year" >Year</string>
-	<string name="pyy"  >%yy</string>
-	<string name="vyy"  >12</string>
-	<string name="py"   >%y</string>
-	<string name="vy"   >2012</string>
-
-	<string name="hour_12">Hour (12)</string>
-	<string name="ph"   >%h</string>
-	<string name="vh"   >9</string>
-	<string name="hour_24">Hour (24)</string>
-	<string name="pk"   >%k</string>
-	<string name="vk"   >21</string>
-
-	<string name="minute">Minute</string>
-	<string name="pmm"  >%mm</string>
-	<string name="vmm"  >19</string>
-
-	<string name="second">Second</string>
-	<string name="pss"  >%ss</string>
-	<string name="vss"  >39</string>
 </resources>

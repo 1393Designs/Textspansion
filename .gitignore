@@ -11,6 +11,7 @@ Thumbs.db
 out/*
 *.iml
 Textspansion/src/main/gen
+*.apk
 
 # updated for Gradle config
 .gradle/

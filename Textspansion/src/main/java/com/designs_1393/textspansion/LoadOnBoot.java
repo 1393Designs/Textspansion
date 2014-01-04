@@ -25,10 +25,8 @@ public class LoadOnBoot extends BroadcastReceiver {
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Log.i("vincetran", "Wat is this");
         if(sharedPreferences.getBoolean(Preferences.PREF_LOAD_ON_BOOT, false)) {
-            Log.i("vincetran", "Found the pref: let's load up this notification");
-            Intent notificationIntent = new Intent(context, Textspansion.class);
+            Intent notificationIntent = new Intent(context, QuickView.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
@@ -41,7 +39,6 @@ public class LoadOnBoot extends BroadcastReceiver {
                     .setOngoing(true)
                     .setContentIntent(contentIntent)
                     .getNotification();
-
 
             mNotificationManager.notify(HELLO_ID, notification);
         } else {
