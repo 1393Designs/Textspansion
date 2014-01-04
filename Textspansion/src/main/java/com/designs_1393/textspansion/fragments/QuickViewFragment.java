@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -47,6 +48,9 @@ public class QuickViewFragment  extends ListFragment {
         subsDataSource = new SubsDataSource(getActivity());
         subsDataSource.open();
         fillList();
+
+        getListView().setDivider(getResources().getDrawable(R.color.list_divider));
+        getListView().setDividerHeight(2);
     }
 
     @Override

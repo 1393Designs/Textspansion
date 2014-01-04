@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -87,6 +88,9 @@ public class ClipFragment extends ListFragment {
                 return true;
             }
         });
+
+        getListView().setDivider(getResources().getDrawable(R.color.list_divider));
+        getListView().setDividerHeight(2);
     }
 
     @Override
@@ -151,7 +155,7 @@ public class ClipFragment extends ListFragment {
             // Please replace this when we find the correct way to do this
             selected = false;
             for (View selectedView : selectedViews) {
-                selectedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                selectedView.setBackgroundColor(getResources().getColor(R.color.sub_row_background));
             }
             selectedViews.clear();
         }
@@ -197,7 +201,7 @@ public class ClipFragment extends ListFragment {
             // unselect item by removing from selectedItems and selectedViews
 
             View selectedView = selectedViews.get(selectedItems.indexOf(position));
-            selectedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            selectedView.setBackgroundColor(getResources().getColor(R.color.sub_row_background));
             selectedViews.remove(selectedItems.indexOf(position));
             selectedItems.remove(selectedItems.indexOf(position));
             mActionMode.invalidate();

@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-
+              android:layout_height="fill_parent"
+              >
 
 	<ListView android:id="@id/android:list"
         android:divider="#DBDBDB"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:choiceMode="multipleChoiceModal"/>
+        android:choiceMode="multipleChoiceModal" />
 	<TextView android:id="@id/android:empty"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:text="@string/no_clips"
 		android:textSize="17sp"
 		android:gravity="center_horizontal|center_vertical"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp" />
 
 </LinearLayout>
