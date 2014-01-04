@@ -9,5 +9,7 @@
               android:layout_height="wrap_content"
               android:layout_alignParentTop="true"
               android:padding="15dp"
+              android:textColor="@color/sub_title_text"
+              android:textStyle="bold"
             />
 </RelativeLayout>

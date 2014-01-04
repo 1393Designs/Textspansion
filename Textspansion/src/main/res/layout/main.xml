@@ -2,14 +2,16 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent" >
+              android:layout_height="match_parent"
+              android:background="@color/sub_row_background">
 
 	<fragment
         class="com.designs_1393.textspansion.fragments.ClipFragment"
         android:id="@+id/clip_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/clips_list">
+        tools:layout="@layout/clips_list"
+        >
     </fragment>
 </LinearLayout>
 
