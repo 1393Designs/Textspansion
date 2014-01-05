@@ -38,6 +38,10 @@ public class Textspansion extends Activity
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (!sharedPreferences.getBoolean("tutorial", false)) {
+            startActivity(new Intent(getApplicationContext(), Tutorial.class));
+        }
 	}
 
     @Override

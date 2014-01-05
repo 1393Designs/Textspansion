@@ -90,5 +90,15 @@
     <string name="title_activity_quick_view">Textspansion Quick View</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_tutorial">Tutorial</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_section4">Section 4</string>
+    <string name="title_section5">Section 5</string>
+    <string name="title_section6">Section 6</string>
+    <string name="tutorial_skip">Skip Tutorial</string>
+    <string name="tutorial_finish">Finish</string>
+
 
 </resources>

@@ -28,7 +28,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/preferences_misc">
-        <Preference android:title="@string/preferences_tutorial" android:summary="@string/preferences_view_tutorial" android:key="tutorial" />
+        <Preference android:title="@string/preferences_tutorial" android:summary="@string/preferences_view_tutorial" android:key="tutorial">
+            <intent android:action="android.intent.action.VIEW"
+                    android:targetClass="com.designs_1393.textspansion.Tutorial"
+                    android:targetPackage="com.designs_1393.textspansion"
+                    />
+        </Preference>
         <Preference android:title="@string/preferences_about" android:key="aboutizzle" />
     </PreferenceCategory>
 </PreferenceScreen>
