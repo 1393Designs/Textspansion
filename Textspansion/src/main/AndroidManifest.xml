@@ -44,16 +44,14 @@
                     android:pathPattern=".*\\.xml" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.designs_1393.textspansion.Preferences"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/tab_title_settings" />
-
         <activity
-                android:name="com.designs_1393.textspansion.QuickView"
-                android:label="@string/title_activity_quick_view"
-                android:theme="@style/Theme.Transparent" >
+            android:name="com.designs_1393.textspansion.QuickView"
+            android:label="@string/title_activity_quick_view"
+            android:theme="@style/Theme.Transparent" >
         </activity>
 
         <receiver android:name="com.designs_1393.textspansion.LoadOnBoot" >
@@ -61,6 +59,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.designs_1393.textspansion.Tutorial"
+            android:label="@string/title_activity_tutorial" >
+        </activity>
     </application>
 
 </manifest>

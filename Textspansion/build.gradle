@@ -14,7 +14,7 @@ repositories {
 
 android {
     compileSdkVersion 18
-    buildToolsVersion "17.0.0"
+    buildToolsVersion '17.0.0'
 
     defaultConfig {
         minSdkVersion 15
@@ -30,8 +30,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:13.0.+'
     compile 'com.fasterxml.jackson.core:jackson-core:2.2.2'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.2'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.2'
+    compile 'com.android.support:support-v13:19.0.+'
 }
