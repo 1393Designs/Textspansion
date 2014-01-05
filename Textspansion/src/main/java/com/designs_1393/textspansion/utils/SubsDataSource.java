@@ -45,15 +45,31 @@ public class SubsDataSource {
         return database.isOpen();
     }
 
-    public long addSub(Sub newSub) {
+    public boolean addSub(Sub newSub) {
         ContentValues values = new ContentValues();
         values.put(DbHelper.KEY_TITLE, newSub.getSubTitle());
         values.put(DbHelper.KEY_PASTE, newSub.getPasteText());
         values.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
-        long insertId = database.insert(DbHelper.SUBS_TABLE, null,
-                values);
 
-        return insertId;
+        /*
+         * Query:
+         * Returns the column KEY_PASTE in all rows in SUBS_TABLE where:
+         * the title = newSubs's title, paste = newSubs's paste, and private = newSub's private
+         * Order by title
+         */
+        if (database.query(
+                DbHelper.SUBS_TABLE,
+                new String[] {DbHelper.KEY_PASTE},
+                DbHelper.KEY_TITLE +"=? and " +DbHelper.KEY_PASTE +"=? and " +DbHelper.KEY_PRIVATE +"=?",
+                new String[] {newSub.getSubTitle(), newSub.getPasteText(), newSub.getPrivacy()},
+                null,
+                null,
+                DbHelper.KEY_TITLE
+        ).getCount() > 0) {
+            return false;
+        } else {
+            return (database.insert(DbHelper.SUBS_TABLE, null, values) > 0);
+        }
     }
 
     public void addSubs(List<Sub> subsToImport) {
@@ -88,6 +104,12 @@ public class SubsDataSource {
         args.put(DbHelper.KEY_PASTE, newSub.getPasteText());
         args.put(DbHelper.KEY_PRIVATE, newSub.getPrivacy());
 
+        /*
+         * Query:
+         * Returns the column KEY_PASTE in all rows in SUBS_TABLE where:
+         * the title = newSubs's title, paste = newSubs's paste, and private = newSub's private
+         * Order by title
+         */
         int count = database.query(
                 DbHelper.SUBS_TABLE,
                 new String[] {DbHelper.KEY_PASTE},

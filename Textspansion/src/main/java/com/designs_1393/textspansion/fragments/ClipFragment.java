@@ -298,21 +298,27 @@ public class ClipFragment extends ListFragment {
 
             Sub newSub = new Sub(subTitle, pasteText, pvtBox.isChecked());
             if (modifyType.equals("add")) {
-                if (subsDataSource.addSub(newSub) == -1) {
-                    Toast.makeText(
-                        getActivity().getApplicationContext(),
-                        "That item already exists.",
-                        Toast.LENGTH_SHORT
-                    ).show();
-                } else {
+                if (subsDataSource.addSub(newSub)) {
                     subsArrayAdapter.add(newSub);
                     fillList();
+                } else {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "That item already exists.",
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             } else if (modifyType.equals("edit")) {
                 // TODO: Check to see if Sub Title already exists in list
                 // if yes, show Toast saying item already exists and ignore
                 // if no, continue with edit
-                subsDataSource.editSub(subToEdit, newSub);
+                if (!subsDataSource.editSub(subToEdit, newSub)) {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "An item like that already exists.",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
                 fillList();
             }
 
