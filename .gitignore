@@ -5,7 +5,6 @@ gen/*
 *.*.swp
 Thumbs.db
 *.keystore
-*.properties
 .gitconfig
 .idea/*
 out/*
@@ -17,5 +16,3 @@ Textspansion/src/main/gen
 .gradle/
 Textspansion/build
 Textspansion/gen
-gradlew*
-gradle/*
