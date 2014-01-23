@@ -91,7 +91,7 @@ public class ClipFragment extends ListFragment {
             }
         });
 
-        getListView().setDivider(getResources().getDrawable(R.color.list_divider));
+        getListView().setDivider(getResources().getDrawable(R.drawable.gradient));
         getListView().setDividerHeight(2);
     }
 

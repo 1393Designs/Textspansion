@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="sub_row_background">#f4f4f4</color>
+    <color name="sub_row_background">#e6e6e6</color>
     <color name="sub_title_text">#3e3e3e</color>
     <color name="paste_text">#7e7e7e</color>
     <color name="list_divider">#909090</color>
