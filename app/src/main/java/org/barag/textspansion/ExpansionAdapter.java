@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.barag.textspansion.domain.Expansion;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public class ExpansionAdapter extends RecyclerView.Adapter {
 
-    private List<String> dataset;
+    private List<Expansion> dataset;
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout heldView;
@@ -30,7 +32,7 @@ public class ExpansionAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public ExpansionAdapter(List<String> seedData) {
+    public ExpansionAdapter(List<Expansion> seedData) {
         this.dataset = seedData;
     }
 
@@ -43,11 +45,14 @@ public class ExpansionAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        String modelToDisplay = this.dataset.get(position); // TODO: switch to Expansion
+        Expansion modelToDisplay = this.dataset.get(position);
 
         LinearLayout layout = ((ViewHolder) holder).getHeldView();
-        TextView key = (TextView) layout.findViewById(R.id.expansion_key);
-        key.setText(modelToDisplay);
+        TextView keyView = (TextView) layout.findViewById(R.id.expansion_key);
+        keyView.setText(modelToDisplay.getKey());
+
+        TextView valueView = (TextView) layout.findViewById(R.id.expansion_value);
+        valueView.setText(modelToDisplay.getValue());
     }
 
     @Override

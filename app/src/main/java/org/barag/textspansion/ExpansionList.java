@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.barag.textspansion.domain.Expansion;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,8 +33,18 @@ public class ExpansionList extends AppCompatActivity
     @Bind(R.id.expansions_recycler_view) RecyclerView expansionsRecyclerView;
     private RecyclerView.LayoutManager expansionsRecyclerLayoutManager;
 
-    private List<String> seedExpansions = Arrays.asList(
-            "Caramels marshmallow pie cheesecake candy marshmallow. Halvah donut bear claw gummies fruitcake.".split(" ")
+    private static List<Expansion> seedExpansions = Arrays.asList(
+            new Expansion("crm", "Caramels", "goooey"),
+            new Expansion("marshie", "marshmallow", "white"),
+            new Expansion("pie", "3.1415927", "pi"),
+            new Expansion("ck", "cheesecake", "meh"),
+            new Expansion("marshie2", "marshmallow again!", "still white"),
+            new Expansion("hlva", "halvah", "dunno"),
+            new Expansion("dnt", "donut", "super delicious"),
+            new Expansion("bc", "bear claw", "omg I want one"),
+            new Expansion("long", "Cupcake ipsum dolor. Sit amet chocolate cake biscuit icing tiramisu cheesecake. Tart gingerbread jelly powder jelly dessert tiramisu. Toffee wafer liquorice cupcake danish. Powder cotton candy lollipop candy canes jelly-o macaroon. Sugar plum danish dessert. Sugar plum marshmallow cake pastry fruitcake chocolate bar. Croissant jujubes halvah. Cheesecake bear claw apple pie apple pie pastry. Halvah apple pie tart wafer lemon drops. Liquorice cotton candy jelly beans apple pie dessert jelly-o pastry danish danish. Toffee cake lemon drops cupcake cake. Lollipop oat cake sugar plum jujubes pie apple pie apple pie sugar plum tart.", "whoops"),
+            new Expansion("gmy", "gummies", "bears?"),
+            new Expansion("fc", "fruitcake", "never had it to be honest")
     );
 
     @Override
