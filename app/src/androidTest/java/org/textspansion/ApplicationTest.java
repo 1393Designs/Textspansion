@@ -1,4 +1,4 @@
-package org.barag.textspansion;
+package com.textspansion;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

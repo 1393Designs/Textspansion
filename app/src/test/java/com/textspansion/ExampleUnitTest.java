@@ -1,4 +1,4 @@
-package org.barag.textspansion;
+package com.textspansion;
 
 import org.junit.Test;
 

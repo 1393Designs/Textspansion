@@ -1,4 +1,4 @@
-package org.barag.textspansion.domain;
+package com.textspansion.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

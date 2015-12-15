@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.barag.textspansion.ExpansionList"
+    tools:context="com.textspansion.ExpansionList"
     tools:showIn="@layout/app_bar_expansion_list">
 
     <android.support.v7.widget.RecyclerView

@@ -1,4 +1,4 @@
-package org.barag.textspansion;
+package com.textspansion;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.barag.textspansion.domain.Expansion;
+import com.textspansion.R;
+import com.textspansion.domain.Expansion;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  */
 public class ExpansionAdapter extends RecyclerView.Adapter {
 
-    /** The set of all {@link org.barag.textspansion.domain.Expansion}s to be displayed. */
+    /** The set of all {@link Expansion}s to be displayed. */
     private List<Expansion> dataset;
 
     /**
