@@ -12,6 +12,8 @@ import org.barag.textspansion.domain.Expansion;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 /**
  * Provides access to persisted text expansions for {@link RecyclerView} implementations.
  */
@@ -48,10 +50,12 @@ public class ExpansionAdapter extends RecyclerView.Adapter {
         Expansion modelToDisplay = this.dataset.get(position);
 
         LinearLayout layout = ((ViewHolder) holder).getHeldView();
-        TextView keyView = (TextView) layout.findViewById(R.id.expansion_key);
+        ButterKnife.bind(this, layout);
+
+        TextView keyView = ButterKnife.findById(layout, R.id.expansion_key);
         keyView.setText(modelToDisplay.getKey());
 
-        TextView valueView = (TextView) layout.findViewById(R.id.expansion_value);
+        TextView valueView = ButterKnife.findById(layout, R.id.expansion_value);
         valueView.setText(modelToDisplay.getValue());
     }
 
